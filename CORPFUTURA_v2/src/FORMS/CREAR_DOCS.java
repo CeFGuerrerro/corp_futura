@@ -287,7 +287,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
     }//GEN-LAST:event_hvCerrarMouseClicked
 
     private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
-       
+        
         
     }//GEN-LAST:event_btnGenerarActionPerformed
 

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Autorizacion" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d5a2ca8-6460-44b0-a230-efd44727809b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dui" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="50" width="480" height="30" uuid="ae81abed-8528-4ba0-8dd7-156f983738ae"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZACIÓN PARA CONSULTAR Y COMPARTIR INFORMACIÓN]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="541" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="10" width="23" height="30" uuid="9620a4f3-fe30-432b-88d0-3fe255061581"/>
+				<textElement textAlignment="Justified" verticalAlignment="Bottom">
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<text><![CDATA[Yo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="10" width="500" height="30" uuid="c56e89bd-54cc-4a66-a09d-909cdb8f840d"/>
+				<box bottomPadding="5">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="40" width="520" height="450" uuid="335e47ff-3f5d-46aa-a4f1-89d7bac60ce8"/>
+				<textElement textAlignment="Justified" verticalAlignment="Justified">
+					<font fontName="Calibri" size="14"/>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<text><![CDATA[conforme a los articulos 14 letra d) y 15 de la Ley de Regulación de los servicios de Información sobre el Historial de Crédito de las Personas y, además, el artículo 18 letra g) de la Ley de Protección al Consumidor, por este medio, AUTORIZO Y CONSIENTO para que, CORPORACION FUTURA S.A. DE C.V., recopile, transmita, comparta, acceda, consulte y verifique mi información personla y crediticia, para análisis presente y futuros relacionados con la contratación de servicios. Expreso, en relación a la autorización y consentimiento consignado en este documento, que tengo pleno conocimiento y, por lo tanto, autorizo y consiento que: a) CORPORACION FUTURA S.A DE C.V. podrá acceder, consultar y verificar mi información personal y crediticia si estuviese contenida en las bases de datos de las Agencias de Información de Datos, con las que CORPORACION FUTURA S.A DE C.V. tuviere acuerdos de carácter comercial y/o contractual; b) que CORPORACION FUTURA S.A DE C.V. podrá recopilar, transmitir, y compartir mi información personal y crediticia, con las Agencias de Información de Datos, a fin de que tales datos pasen a formar parte de mi historial crediticio en las bases de datos que al efecto lleva la Agencia de Información de Datos; c) que CORPORACION FUTURA S.A DE C.V. podrá adicionar, modificar y/o actualizar, cualquier información personal y crediticia proporcionada por mi persona, incluyendo los de esta solicitud y cualquier otra información que CORPORACION FUTURA S.A DE C.V. requiera en un futuro tanto de carácter personal como crediticio; y d) que la presente autorización y consentimiento tendrá una vigencia igual al plazo que perdure la relación contractual entre el suscrito y CORPORACION FUTURA S.A DE C.V. Conozco y admito que la presente autorización no afecta ni afectará en modo alguno las condiciones jurídicas y económicas del crédito que eventualemente me otorgue CORPORACION FUTURA S.A DE C.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="510" width="40" height="30" uuid="28df78cf-1a64-46b9-a567-e4e6d62c28bd"/>
+				<textElement textAlignment="Justified" verticalAlignment="Bottom">
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<text><![CDATA[Firma:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="510" width="130" height="30" uuid="9961f121-476f-49f2-80b7-cd6e012a6e03"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Bottom">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="511" width="40" height="30" uuid="ae3a0f76-d56d-4e87-b71a-b6cb6f1eb1b4"/>
+				<textElement textAlignment="Justified" verticalAlignment="Bottom">
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<text><![CDATA[DUI:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="350" y="511" width="160" height="30" uuid="d57b8b2c-6d8b-47d2-ab1d-03f3f1ce311b"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dui}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
