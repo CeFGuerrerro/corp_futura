@@ -353,6 +353,7 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         
         codeudores.clear();
+        boolean verificacion=true;
         if(modelo.getRowCount()>=1){
             codeudores = modelo.llenarLista(datospersonales);     
             try {
@@ -367,17 +368,25 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
                 }
         
             } catch (Exception ex) {
+                verificacion=false;
                 Logger.getLogger(CODEUDORES_PNL.class.getName()).log(Level.SEVERE, null, ex);
             }
-            datospersonales.setCodeudoresList1(codeudores);
+            if(verificacion==true){
+                datospersonales.setCodeudoresList1(codeudores);
+                JOptionPane.showMessageDialog(null,"Registro de Codeudores realizado con exito.");
+            }
         }else if(modelo.getRowCount()<1 && !datospersonales.getCodeudoresList1().isEmpty()){
                 for (Codeudores codeudores : datospersonales.getCodeudoresList1()){
                     try {
                         cojc.destroy(codeudores.getCodeudoresPK());
                     } catch (NonexistentEntityException ex) {
+                        verificacion=false;
                         Logger.getLogger(CODEUDORES_PNL.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } 
+                }
+                if(verificacion=true){
+                    JOptionPane.showMessageDialog(null,"Actualización de Codeudores realizado con exito.");
+                }
         }
      
 
