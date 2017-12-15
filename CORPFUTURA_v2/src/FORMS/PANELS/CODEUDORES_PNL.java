@@ -396,6 +396,7 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
         txtNombre.setText("");
         txtDui.setText("");
         txttelcodeudor.setText("");
+        dtCodeudor=null;
     }//GEN-LAST:event_btnlimpiarActionPerformed
 
     public void cargarCliente(DatosPersonales dp){
