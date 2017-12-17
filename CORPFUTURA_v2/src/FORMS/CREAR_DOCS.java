@@ -1,9 +1,11 @@
-
 package FORMS;
 
-
+import DOCS_DATASOURCES.DS_Autorizacion;
+import DOCS_DATASOURCES.DS_Solicitud;
+import DOCS_DATASOURCES.JasperGenerator;
 import Entidades.SolicitudCredito;
-import UTILIDADES.monto;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -11,19 +13,20 @@ import UTILIDADES.monto;
  */
 public class CREAR_DOCS extends javax.swing.JFrame {
 
-   
     private SolicitudCredito solicitud;
+    JasperGenerator jasper = new JasperGenerator();
+    DS_Autorizacion aut = new DS_Autorizacion();
+    DS_Solicitud sol = new DS_Solicitud();
     
+
     public CREAR_DOCS(SolicitudCredito sol) {
-        
+
         initComponents();
         this.setLocationRelativeTo(null);
-        solicitud=sol;
+        solicitud = sol;
         cargarSolicitud();
-        
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -287,19 +290,40 @@ public class CREAR_DOCS extends javax.swing.JFrame {
     }//GEN-LAST:event_hvCerrarMouseClicked
 
     private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
-        
-        
+
+        if (chkformAutorizaciones.isSelected()) {
+            String doc = "Autorizacion";
+            try {
+                jasper.crearReporte(doc, solicitud.getDatosPersonales().getNombre(), aut);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+
+            }
+        }
+        if (chksolicitud.isSelected()) {
+            String doc = "Solicitud1";
+            try {
+                jasper.crearReporte(doc, solicitud.getDatosPersonales().getNombre(), sol);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+
+            }
+        }
+
     }//GEN-LAST:event_btnGenerarActionPerformed
 
-    public void cargarSolicitud(){
-    
+    public void cargarSolicitud() {
+
         txtNombre.setText(solicitud.getDatosPersonales().getNombre());
         txtDui.setText(solicitud.getDatosPersonales().getDui());
         fechsolicitud.setDate(solicitud.getFechaSolicitud());
         txtIdsolicitud.setText(String.valueOf(solicitud.getSolicitudCreditoPK().getIdSolicitudCredito()));
         
+        aut.addDatosPersonales(solicitud.getDatosPersonales());
+        sol.addSolicitud(solicitud);
+        
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgroup;
