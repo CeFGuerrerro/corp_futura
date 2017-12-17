@@ -51,6 +51,7 @@ public class DeclaracionBienesJpaController implements Serializable {
                 datosPersonales = em.merge(datosPersonales);
             }
             em.getTransaction().commit();
+            em.refresh(datosPersonales);
         } catch (Exception ex) {
             if (findDeclaracionBienes(declaracionBienes.getDeclaracionBienesPK()) != null) {
                 throw new PreexistingEntityException("DeclaracionBienes " + declaracionBienes + " already exists.", ex);
@@ -86,6 +87,7 @@ public class DeclaracionBienesJpaController implements Serializable {
                 datosPersonalesNew = em.merge(datosPersonalesNew);
             }
             em.getTransaction().commit();
+            em.refresh(declaracionBienes);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -172,6 +174,34 @@ public class DeclaracionBienesJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public void actualizarBienes(List<DeclaracionBienes> newLista, List<DeclaracionBienes> oldLista ) throws Exception{
+        
+        int cont =1;
+        int indice = oldLista.size();
+        int nuevoIndice = newLista.size();
+        
+        if(indice<nuevoIndice){
+            for(DeclaracionBienes bien: newLista){
+                if(cont<=indice){
+                    edit(bien);
+                }else{
+                    create(bien);   
+                }
+                cont++;
+            }
+        }else{
+            for(DeclaracionBienes bien: oldLista){
+                if(cont<=nuevoIndice){
+                  edit(bien);
+                }else{
+                  destroy(bien.getDeclaracionBienesPK()); 
+                }
+                cont++;
+            }
+        }
+        
     }
     
 }

@@ -3,7 +3,6 @@ package MODELOSTBL;
 
 
 import Entidades.DeclaracionBienes;
-import javafx.scene.layout.Border;
 import javax.swing.JButton;
 
 /**
@@ -42,13 +41,13 @@ public class Bien {
         JButton boton = new JButton();
         boton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/ICONS/foto.png")));
         return boton;
-        
-    
+
     }
     
-    
-    
-    
-    
-    
+    public void setTotal(){
+        
+        this.getDeclaracion().setTotalGarantia(this.getDeclaracion().getCantidad()*this.getDeclaracion().getValuo());
+        
+    }
+      
 }

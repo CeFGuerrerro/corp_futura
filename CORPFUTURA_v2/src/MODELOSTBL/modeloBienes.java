@@ -2,8 +2,14 @@
 package MODELOSTBL;
 
 
+import Entidades.Codeudores;
+import Entidades.CodeudoresPK;
+import Entidades.DatosPersonales;
+import Entidades.DeclaracionBienes;
+import Entidades.DeclaracionBienesPK;
 import java.io.File;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.event.TableModelEvent;
@@ -15,7 +21,7 @@ import javax.swing.table.TableModel;
  * @author DFUENTES
  */
 public class modeloBienes implements TableModel {
-    private LinkedList datos = new LinkedList();
+    private LinkedList<DeclaracionBienes> datos = new LinkedList();
     private LinkedList listeners = new LinkedList();
     
     final Class[] tipoColumnas = {
@@ -23,10 +29,14 @@ public class modeloBienes implements TableModel {
         java.lang.String.class,
         java.lang.String.class,
         java.lang.String.class,
-        java.lang.Long.class,
-        JButton.class};
+        java.lang.Double.class,
+        java.lang.Double.class,};
 
     public modeloBienes(){
+    }
+    
+    public LinkedList<DeclaracionBienes> getDatos() {
+        return datos;
     }
 
     @Override
@@ -53,7 +63,7 @@ public class modeloBienes implements TableModel {
                          break;
             case 4:      columna="Valuo"; 
                          break;
-            case 5:      columna=""; 
+            case 5:      columna="Total"; 
                          break;
         }
         return columna;
@@ -66,10 +76,10 @@ public class modeloBienes implements TableModel {
 
     @Override
     public boolean isCellEditable(int i, int i1) {
-       return !(this.getColumnClass(i1).equals(JButton.class));
+       return !(i1==5);
     }
     
-    public void agregarBien (Bien bien)
+    public void agregarBien (DeclaracionBienes bien)
     {
         // Añade la persona al modelo 
         datos.add (bien);
@@ -95,30 +105,16 @@ public class modeloBienes implements TableModel {
     
     public void nuevaFila(){
 
-        Bien bien = new Bien();
+        DeclaracionBienes bien = new DeclaracionBienes();
         datos.add(bien);
         
     }
     
-    public Bien obtenerBien(int index)
+    public DeclaracionBienes obtenerBien(int index)
     {
-        return (Bien)datos.get(index);
+        return (DeclaracionBienes)datos.get(index);
     }
     
-     public void obtenerFoto(int row){
-         
-        JFileChooser fc = new JFileChooser();
-        int result = fc.showOpenDialog(null);
-        
-        if(result == JFileChooser.APPROVE_OPTION){
-            File file = fc.getSelectedFile();
-            Bien bien; 
-            bien = (Bien)(datos.get(row));
-            bien.getDeclaracion().setFotoBien(String.valueOf(file));
-            bien.getBoton().setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/check.png")));
-        }
-    }
-     
     public void borrartodos(){
         datos.clear();
     }
@@ -133,25 +129,25 @@ public class modeloBienes implements TableModel {
  
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Bien aux;
+        DeclaracionBienes aux;
         
         // Se obtiene la persona de la fila indicada
-        aux = (Bien)(datos.get(rowIndex));
+        aux = (DeclaracionBienes)(datos.get(rowIndex));
         // Se obtiene el campo apropiado según el valor de columnIndex
         switch (columnIndex)
         {
             case 0:
-                return aux.getDeclaracion().getCantidad();
+                return aux.getCantidad();
             case 1:
-                return aux.getDeclaracion().getNombre();
+                return aux.getNombre();
             case 2:
-                return aux.getDeclaracion().getDescripcion();
+                return aux.getDescripcion();
             case 3:
-                return aux.getDeclaracion().getUbicacion();
+                return aux.getUbicacion();
             case 4:
-                return aux.getDeclaracion().getValuo();
+                return aux.getValuo();
             case 5:
-                return aux.getBoton();
+                return aux.getTotalGarantia();
             
             default:
                 return null;
@@ -161,29 +157,29 @@ public class modeloBienes implements TableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // Obtiene la persona de la fila indicada
-        Bien aux;
-        aux = (Bien)(datos.get(rowIndex));
+        DeclaracionBienes aux;
+        aux = (DeclaracionBienes)(datos.get(rowIndex));
         // Cambia el campo de Persona que indica columnIndex, poniendole el 
         // aValue que se nos pasa.
         switch (columnIndex)
         {
             case 0:
-                aux.getDeclaracion().setCantidad(Integer.parseInt(aValue.toString()));
+                aux.setCantidad(Integer.parseInt(aValue.toString()));
                 break;
             case 1:
-                aux.getDeclaracion().setNombre((String)aValue);
+                aux.setNombre((String)aValue);
                 break;
             case 2:
-                aux.getDeclaracion().setDescripcion(((String)aValue));
+                aux.setDescripcion(((String)aValue));
                 break;
             case 3:
-                aux.getDeclaracion().setUbicacion((String)aValue);
+                aux.setUbicacion((String)aValue);
                 break; 
             case 4:
-                aux.getDeclaracion().setValuo(Double.valueOf(aValue.toString()));
+                aux.setValuo(Double.valueOf(aValue.toString()));
                 break;
             case 5:
-                aux.setBoton((JButton)aValue);
+                aux.setTotalGarantia(Double.valueOf(aValue.toString()));
                 break;
             default:
                 break;
@@ -200,5 +196,41 @@ public class modeloBienes implements TableModel {
       // Elimina los suscriptores.
       listeners.remove(l);
     }
+    
+    public List<DeclaracionBienes> llenarLista(DatosPersonales dt){
+   
+       int i = 1;
+       LinkedList<DeclaracionBienes> lista = new LinkedList();
+ 
+        for (DeclaracionBienes bien : this.getDatos()) {
+            
+            bien.setTotalGarantia(bien.getValuo()*bien.getCantidad());
+            
+            DeclaracionBienesPK bienpk = new DeclaracionBienesPK();
+            bienpk.setDui(dt.getDui());
+            bienpk.setIdBien(i);
+            bien.setDeclaracionBienesPK(bienpk);
+            bien.setDatosPersonales(dt);
+
+            lista.add(bien);
+            i=i+1;  
+        }
+       return lista;   
+    }
+    
+    public String cargarTotales(){
+        
+        double total=0;
+        for(DeclaracionBienes bien:datos){ 
+            if(bien.getCantidad()!=null && bien.getValuo()!=null){
+                bien.setTotalGarantia(bien.getValuo()*bien.getCantidad());
+                total+=bien.getTotalGarantia();
+            }
+        }
+        return String.valueOf(total);
+    }
+    
+    
+    
     
 }
