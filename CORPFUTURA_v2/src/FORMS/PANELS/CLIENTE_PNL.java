@@ -351,6 +351,7 @@ public class CLIENTE_PNL extends javax.swing.JPanel {
         icp.limpiarcampos();
         rfp.limpiarcampos();
         cop.limpiarcampos();
+        dbp.limpiarcampos();
     }
     
     public void cargarDatos(){
@@ -360,6 +361,7 @@ public class CLIENTE_PNL extends javax.swing.JPanel {
         icp.recibirDatos(datospersonalesdb);
         rfp.recibirDatos(datospersonalesdb);
         cop.recibirDatos(datospersonalesdb);
+        dbp.recibirDatos(datospersonalesdb);
     }
     
     public void actualizarPanelesCliente(){
@@ -368,6 +370,7 @@ public class CLIENTE_PNL extends javax.swing.JPanel {
         icp.cargarCliente(dpp.datospersonales);
         rfp.cargarCliente(dpp.datospersonales);
         cop.cargarCliente(dpp.datospersonales);
+        dbp.cargarCliente(dpp.datospersonales);
         
         activarBtnGuardar();
         
@@ -378,6 +381,7 @@ public class CLIENTE_PNL extends javax.swing.JPanel {
         inp.btnGuardar.setEnabled(true);
         rfp.btnGuardar.setEnabled(true);
         cop.btnGuardar.setEnabled(true);
+        dbp.btnGuardar.setEnabled(true);
     }
     
     

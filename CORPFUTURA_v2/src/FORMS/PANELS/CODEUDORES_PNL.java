@@ -352,7 +352,7 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         
-        codeudores.clear();
+  
         boolean verificacion=true;
         if(modelo.getRowCount()>=1){
             codeudores = modelo.llenarLista(datospersonales);     
@@ -366,7 +366,6 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
                             cojc.actualizarCodeudores(codeudores,datospersonales.getCodeudoresList1());
                     }
                 }
-        
             } catch (Exception ex) {
                 verificacion=false;
                 Logger.getLogger(CODEUDORES_PNL.class.getName()).log(Level.SEVERE, null, ex);

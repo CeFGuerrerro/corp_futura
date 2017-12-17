@@ -61,7 +61,7 @@ public class CodeudoresJpaController implements Serializable {
             }
             em.getTransaction().commit();
             em.refresh(datosPersonales);
-            em.refresh(codeudores);
+        
         } catch (Exception ex) {
             if (findCodeudores(codeudores.getCodeudoresPK()) != null) {
                 throw new PreexistingEntityException("Codeudores " + codeudores + " already exists.", ex);
@@ -111,7 +111,7 @@ public class CodeudoresJpaController implements Serializable {
                 datosPersonalesNew = em.merge(datosPersonalesNew);
             }
             em.getTransaction().commit();
-            em.refresh(datosPersonalesNew);
+            em.refresh(codeudores);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
