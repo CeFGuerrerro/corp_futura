@@ -41,7 +41,7 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "SolicitudCredito.findByIvaCuota", query = "SELECT s FROM SolicitudCredito s WHERE s.ivaCuota = :ivaCuota")
     , @NamedQuery(name = "SolicitudCredito.findByFormaPago", query = "SELECT s FROM SolicitudCredito s WHERE s.formaPago = :formaPago")
     , @NamedQuery(name = "SolicitudCredito.findByDestinoCredito", query = "SELECT s FROM SolicitudCredito s WHERE s.destinoCredito = :destinoCredito")
-    , @NamedQuery(name = "SolicitudCredito.findByEstado", query = "SELECT s FROM SolicitudCredito s WHERE s.estado = :estado")
+    , @NamedQuery(name = "SolicitudCredito.findByEstado", query = "SELECT s FROM SolicitudCredito s WHERE s.estado < :estado and s.desembolso = :desembolso")
     , @NamedQuery(name = "SolicitudCredito.findByObservacion", query = "SELECT s FROM SolicitudCredito s WHERE s.observacion = :observacion")
     , @NamedQuery(name = "SolicitudCredito.findByVisita", query = "SELECT s FROM SolicitudCredito s WHERE s.visita = :visita")
     , @NamedQuery(name = "SolicitudCredito.findByEstadosFinancieros", query = "SELECT s FROM SolicitudCredito s WHERE s.estadosFinancieros = :estadosFinancieros")
