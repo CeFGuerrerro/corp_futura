@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author DFUENTES
+ * @author dvid1
  */
 @Entity
 @Table(name = "datos_personales", catalog = "corpfutura", schema = "")

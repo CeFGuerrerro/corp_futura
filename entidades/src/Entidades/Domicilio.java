@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author DFUENTES
+ * @author dvid1
  */
 @Entity
 @Table(name = "domicilio", catalog = "corpfutura", schema = "")

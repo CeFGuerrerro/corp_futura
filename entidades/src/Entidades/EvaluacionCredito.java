@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author DFUENTES
+ * @author dvid1
  */
 @Entity
 @Table(name = "evaluacion_credito", catalog = "corpfutura", schema = "")

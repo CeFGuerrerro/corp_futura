@@ -19,7 +19,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author DFUENTES
+ * @author dvid1
  */
 @Entity
 @Table(name = "usuarios", catalog = "corpfutura", schema = "")

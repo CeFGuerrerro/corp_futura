@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author DFUENTES
+ * @author dvid1
  */
 @Entity
 @Table(name = "declaracion_bienes", catalog = "corpfutura", schema = "")
@@ -30,7 +30,6 @@ import javax.persistence.Table;
     , @NamedQuery(name = "DeclaracionBienes.findByDescripcion", query = "SELECT d FROM DeclaracionBienes d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "DeclaracionBienes.findByUbicacion", query = "SELECT d FROM DeclaracionBienes d WHERE d.ubicacion = :ubicacion")
     , @NamedQuery(name = "DeclaracionBienes.findByValuo", query = "SELECT d FROM DeclaracionBienes d WHERE d.valuo = :valuo")
-    , @NamedQuery(name = "DeclaracionBienes.findByFotoBien", query = "SELECT d FROM DeclaracionBienes d WHERE d.fotoBien = :fotoBien")
     , @NamedQuery(name = "DeclaracionBienes.findByTotalGarantia", query = "SELECT d FROM DeclaracionBienes d WHERE d.totalGarantia = :totalGarantia")})
 public class DeclaracionBienes implements Serializable {
 
@@ -48,8 +47,6 @@ public class DeclaracionBienes implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valuo", precision = 22)
     private Double valuo;
-    @Column(name = "foto_bien", length = 200)
-    private String fotoBien;
     @Column(name = "total_garantia", precision = 22)
     private Double totalGarantia;
     @JoinColumn(name = "dui", referencedColumnName = "dui", nullable = false, insertable = false, updatable = false)
@@ -113,14 +110,6 @@ public class DeclaracionBienes implements Serializable {
 
     public void setValuo(Double valuo) {
         this.valuo = valuo;
-    }
-
-    public String getFotoBien() {
-        return fotoBien;
-    }
-
-    public void setFotoBien(String fotoBien) {
-        this.fotoBien = fotoBien;
     }
 
     public Double getTotalGarantia() {

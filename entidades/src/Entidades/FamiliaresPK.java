@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author DFUENTES
+ * @author dvid1
  */
 @Embeddable
 public class FamiliaresPK implements Serializable {

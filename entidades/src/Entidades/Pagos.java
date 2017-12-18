@@ -6,6 +6,7 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,16 +17,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
- * @author DFUENTES
+ * @author dvid1
  */
 @Entity
 @Table(name = "pagos", catalog = "corpfutura", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Pagos.findAll", query = "SELECT p FROM Pagos p")
     , @NamedQuery(name = "Pagos.findByIdPago", query = "SELECT p FROM Pagos p WHERE p.idPago = :idPago")
+    , @NamedQuery(name = "Pagos.findByFechaPago", query = "SELECT p FROM Pagos p WHERE p.fechaPago = :fechaPago")
     , @NamedQuery(name = "Pagos.findByNumFactura", query = "SELECT p FROM Pagos p WHERE p.numFactura = :numFactura")
     , @NamedQuery(name = "Pagos.findByMontoPagado", query = "SELECT p FROM Pagos p WHERE p.montoPagado = :montoPagado")
     , @NamedQuery(name = "Pagos.findByCapitalAbonado", query = "SELECT p FROM Pagos p WHERE p.capitalAbonado = :capitalAbonado")
@@ -42,6 +46,9 @@ public class Pagos implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_pago", nullable = false)
     private Integer idPago;
+    @Column(name = "fecha_pago")
+    @Temporal(TemporalType.DATE)
+    private Date fechaPago;
     @Column(name = "num_factura", length = 15)
     private String numFactura;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -80,6 +87,14 @@ public class Pagos implements Serializable {
 
     public void setIdPago(Integer idPago) {
         this.idPago = idPago;
+    }
+
+    public Date getFechaPago() {
+        return fechaPago;
+    }
+
+    public void setFechaPago(Date fechaPago) {
+        this.fechaPago = fechaPago;
     }
 
     public String getNumFactura() {
