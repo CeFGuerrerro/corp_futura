@@ -1,9 +1,15 @@
 package FORMS;
 
 import DOCS_DATASOURCES.DS_Autorizacion;
-import DOCS_DATASOURCES.DS_Solicitud;
+import DOCS_DATASOURCES.DS_Solicitud1;
+import DOCS_DATASOURCES.DS_Solicitud2;
 import DOCS_DATASOURCES.JasperGenerator;
+import Entidades.Referencias;
 import Entidades.SolicitudCredito;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 
@@ -14,10 +20,13 @@ import net.sf.jasperreports.engine.JRException;
 public class CREAR_DOCS extends javax.swing.JFrame {
 
     private SolicitudCredito solicitud;
-    JasperGenerator jasper = new JasperGenerator();
-    DS_Autorizacion aut = new DS_Autorizacion();
-    DS_Solicitud sol = new DS_Solicitud();
-    
+    private List<Referencias> listaRefFam = new ArrayList<Referencias>();
+    private List<Referencias> listaRefPer = new ArrayList<Referencias>();
+    private Map parametros = new HashMap();
+    private JasperGenerator jasper = new JasperGenerator();
+    private DS_Autorizacion aut = new DS_Autorizacion();
+    private DS_Solicitud1 sol1 = new DS_Solicitud1();
+    private DS_Solicitud2 sol2 = new DS_Solicitud2();
 
     public CREAR_DOCS(SolicitudCredito sol) {
 
@@ -301,9 +310,20 @@ public class CREAR_DOCS extends javax.swing.JFrame {
             }
         }
         if (chksolicitud.isSelected()) {
-            String doc = "Solicitud1";
+            String doc1 = "Solicitud1";
+            String doc2 = "Solicitud2";
+            parametros.put("Familiares", solicitud.getDatosPersonales().getFamiliaresList());
             try {
-                jasper.crearReporte(doc, solicitud.getDatosPersonales().getNombre(), sol);
+                jasper.crearReporteConParam(doc1, solicitud.getDatosPersonales().getNombre(), parametros, sol1);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+
+            }
+            parametros.clear();
+            parametros.put("RefFamiliares", listaRefFam);
+            parametros.put("RefPersonales", listaRefPer);
+            try {
+                jasper.crearReporteConParam(doc2, solicitud.getDatosPersonales().getNombre(), parametros, sol2);
             } catch (JRException ex) {
                 JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
 
@@ -318,10 +338,21 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         txtDui.setText(solicitud.getDatosPersonales().getDui());
         fechsolicitud.setDate(solicitud.getFechaSolicitud());
         txtIdsolicitud.setText(String.valueOf(solicitud.getSolicitudCreditoPK().getIdSolicitudCredito()));
-        
+
         aut.addDatosPersonales(solicitud.getDatosPersonales());
-        sol.addSolicitud(solicitud);
-        
+        sol1.addSolicitud(solicitud);
+        sol2.addSolicitud(solicitud);
+
+        for (Referencias r : solicitud.getDatosPersonales().getReferenciasList()) {
+            if(r.getTipoReferencia()==false){
+                listaRefFam.add(r);
+                System.out.println(r.getParentesco());                
+            }
+            else{
+                listaRefPer.add(r);
+                System.out.println(r.getParentesco());                
+            }
+        }
     }
 
 

@@ -8,6 +8,7 @@ package DOCS_DATASOURCES;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -25,30 +26,39 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author o-a19
  */
 public class JasperGenerator {
-    
+
     String dir = null;
     String path = null;
     FileInputStream is;
     File fichero;
-    
-    public void crearReporte(String nombreDoc, String nombreCli, JRDataSource dataSource) throws JRException{
-        try{
-            path = System.getProperty("user.home") + "\\Desktop\\" + nombreCli;
-            fichero = new File(path);
-            dir = System.getProperty("user.dir") + "\\src\\DOCS_PLANTILLAS\\" + nombreDoc+".jrxml";
-            is = new FileInputStream(dir);
-            
-            if(!fichero.exists()){
-                fichero.mkdir();
-            }
-            JasperDesign jasperDesign = JRXmlLoader.load(is);
-            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path+"\\"+nombreDoc+".pdf");
-            JasperViewer.viewReport(jasperPrint,false);
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Error al leer el fichero de carga: " + ex.getMessage());
+
+    public void crearReporte(String nombreDoc, String nombreCli, JRDataSource dataSource) throws JRException {
+        path = System.getProperty("user.home") + "\\Desktop\\" + nombreCli;
+        crearDirectorio(path);
+        JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
+        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + nombreDoc + ".pdf");
+        JasperViewer.viewReport(jasperPrint, false);
+
+    }
+
+    private void crearDirectorio(String path) {
+        fichero = new File(path);
+
+        if (!fichero.exists()) {
+            fichero.mkdir();
         }
-        
+    }
+
+    public void crearReporteConParam(String nombreDoc, String nombreCli, Map parametros, JRDataSource dataSource) throws JRException {
+        path = System.getProperty("user.home") + "\\Desktop\\" + nombreCli;
+        crearDirectorio(path);
+        JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + nombreDoc + ".pdf");
+        JasperViewer.viewReport(jasperPrint, false);
+
     }
 }
