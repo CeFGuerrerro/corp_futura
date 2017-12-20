@@ -8,6 +8,8 @@ import Entidades.Mora;
 import MODELOSTBL.modeloCreditos;
 import MODELOSTBL.modeloMoras;
 import UTILIDADES.monto;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableCellRenderer;
 import utilidades.fechas;
@@ -142,8 +144,12 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
             
         }
         
+        
+        
     }//GEN-LAST:event_calcularMoraActionPerformed
 
+    
+     
 
     
 

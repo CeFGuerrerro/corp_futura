@@ -16,6 +16,7 @@ public class fechas {
 
     public static Integer calcularEdad(Date fecha) {
         
+       
         Calendar fechaNacimiento = Calendar.getInstance();
         Calendar fechaActual = Calendar.getInstance();
         fechaNacimiento.setTime(fecha);
@@ -32,7 +33,7 @@ public class fechas {
          Date fechaAct = new Date();
          return fechaAct;
     }
-
+    
     public static boolean verificarPrimerPago(Date fechaInicio, Date fechaActual1){
     
         boolean verificar=false;
@@ -46,6 +47,5 @@ public class fechas {
         return verificar;
 
     }
-        
-        
+
 }
