@@ -7,6 +7,9 @@
 	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="Total" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -35,9 +38,6 @@
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="garantia" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="total" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="fecha" class="java.lang.String">
@@ -274,7 +274,7 @@
 				<textFieldExpression><![CDATA[$F{garantia}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-1" y="510" width="151" height="15" uuid="0043b10b-7bf9-4a37-9fd0-3961f00ac7ec"/>
+				<reportElement x="-1" y="510" width="142" height="15" uuid="0043b10b-7bf9-4a37-9fd0-3961f00ac7ec"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
@@ -288,16 +288,6 @@
 				<text><![CDATA[FECHA DE EVALUACIÓN:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="131" y="510" width="87" height="14" uuid="702fa462-2e4b-4635-8478-b4837c35f279"/>
-				<box>
-					<bottomPen lineWidth="1.0"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="401" y="510" width="107" height="14" uuid="8583b127-87ad-4440-892f-c71c8a25e6ba"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
@@ -306,6 +296,18 @@
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="510" width="100" height="14" uuid="d618a963-d16f-4cc6-a9e7-e45c9e4d508d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

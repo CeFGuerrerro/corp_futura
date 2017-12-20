@@ -1,15 +1,19 @@
 package FORMS;
 
 import DOCS_DATASOURCES.DS_Autorizacion;
+import DOCS_DATASOURCES.DS_PerfilCliente;
 import DOCS_DATASOURCES.DS_Solicitud1;
 import DOCS_DATASOURCES.DS_Solicitud2;
 import DOCS_DATASOURCES.JasperGenerator;
+import Entidades.DeclaracionBienes;
 import Entidades.Referencias;
 import Entidades.SolicitudCredito;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 
@@ -20,6 +24,7 @@ import net.sf.jasperreports.engine.JRException;
 public class CREAR_DOCS extends javax.swing.JFrame {
 
     private SolicitudCredito solicitud;
+    private String total=null;
     private List<Referencias> listaRefFam = new ArrayList<Referencias>();
     private List<Referencias> listaRefPer = new ArrayList<Referencias>();
     private Map parametros = new HashMap();
@@ -27,6 +32,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
     private DS_Autorizacion aut = new DS_Autorizacion();
     private DS_Solicitud1 sol1 = new DS_Solicitud1();
     private DS_Solicitud2 sol2 = new DS_Solicitud2();
+    private DS_PerfilCliente perf = new DS_PerfilCliente();
 
     public CREAR_DOCS(SolicitudCredito sol) {
 
@@ -34,6 +40,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         solicitud = sol;
         cargarSolicitud();
+        getTotalBienes();
     }
 
     @SuppressWarnings("unchecked")
@@ -329,6 +336,17 @@ public class CREAR_DOCS extends javax.swing.JFrame {
 
             }
         }
+        if(chkperfil.isSelected()){
+            String doc = "PerfilCliente";
+            parametros.clear();
+            parametros.put("Total", total);
+            System.out.println(total);
+            try{
+                jasper.crearReporteConParam(doc, solicitud.getDatosPersonales().getNombre(), parametros, perf);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());;
+            }
+        }
 
     }//GEN-LAST:event_btnGenerarActionPerformed
 
@@ -342,18 +360,30 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         aut.addDatosPersonales(solicitud.getDatosPersonales());
         sol1.addSolicitud(solicitud);
         sol2.addSolicitud(solicitud);
+        perf.addSolicitud(solicitud);
 
         for (Referencias r : solicitud.getDatosPersonales().getReferenciasList()) {
             if(r.getTipoReferencia()==false){
-                listaRefFam.add(r);
-                System.out.println(r.getParentesco());                
+                listaRefFam.add(r);               
             }
             else{
-                listaRefPer.add(r);
-                System.out.println(r.getParentesco());                
+                listaRefPer.add(r);               
             }
         }
     }
+    
+    public String getTotalBienes(){
+        double subtotal = 0;
+        for(DeclaracionBienes bien:solicitud.getDatosPersonales().getDeclaracionBienesList()){ 
+            if(bien.getCantidad()!=null && bien.getValuo()!=null){
+                bien.setTotalGarantia(bien.getValuo()*bien.getCantidad());
+                subtotal+=bien.getTotalGarantia();
+            }
+            total= String.valueOf(subtotal);
+        }
+        return total;
+    
+ }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
