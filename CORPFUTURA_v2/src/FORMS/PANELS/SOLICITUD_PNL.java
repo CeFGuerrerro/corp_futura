@@ -155,7 +155,7 @@ public class SOLICITUD_PNL extends javax.swing.JPanel {
         if(sp.getTblSolicitudes().getSelectedRow()!= -1){
             SolicitudCredito sol = sp.modelo.obtenersolicitud(sp.tblSolicitudes.getSelectedRow());
             if(sol.getEstado()<3){
-            evaluacion = new EVALUACION_FORM(sp.modelo.obtenersolicitud(sp.tblSolicitudes.getSelectedRow()),sp);
+            evaluacion = new EVALUACION_FORM(sol,sp);
             evaluacion.setVisible(true);}
             else{JOptionPane.showMessageDialog(null,"La solicitud ya ha sido evaluada.");}
         }

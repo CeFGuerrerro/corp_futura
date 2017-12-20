@@ -194,7 +194,7 @@ public class CreditosJpaController implements Serializable {
         }
     }
 
-    
+ 
     public List<Creditos> getCreditosActivos(Short estado1) {
         
         short estado = estado1;
@@ -214,8 +214,7 @@ public class CreditosJpaController implements Serializable {
         return lista;
     }
     
-    
-    
+      
     public int getCreditosCount() {
         EntityManager em = getEntityManager();
         try {

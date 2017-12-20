@@ -13,6 +13,7 @@ import CONTROLADORES.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 /**
@@ -167,5 +168,25 @@ public class MoraJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Mora> getMorasActivas(Short estado1) {
+        
+   
+        EntityManager em = getEntityManager();
+        Query consulta = em.createNamedQuery("Mora.findByEstado", Mora.class);
+        consulta.setParameter("estado", estado1);
+        
+        List<Mora> lista =null;
+        
+        try{
+            lista = consulta.getResultList();
+        } catch (NoResultException e){
+        } finally {
+            em.close();
+        }
+        
+        return lista;
+    }
+    
     
 }

@@ -14,8 +14,8 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
 
-    modeloCreditos modelo = new modeloCreditos();
-    CreditosJpaController cjc = new  CreditosJpaController();
+    public modeloCreditos modelo = new modeloCreditos();
+    public CreditosJpaController cjc = new  CreditosJpaController();
     
     public LISTA_CREDITOS_PNL() {
         
@@ -54,6 +54,12 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         jLabel26 = new javax.swing.JLabel();
         txtTotalCuota = new javax.swing.JTextField();
         hvreload = new Label.HoverIcon();
+        jLabel27 = new javax.swing.JLabel();
+        txtCuota = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        cmbplazos = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        cmbformapagos = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(240, 236, 236));
 
@@ -131,6 +137,28 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
             }
         });
 
+        jLabel27.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel27.setText("Cuota:");
+
+        txtCuota.setEditable(false);
+        txtCuota.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+
+        jLabel9.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel9.setText("Plazo:");
+
+        cmbplazos.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        cmbplazos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "1 mes / 4 semanas", "2 meses / 8 semanas", "3 meses / 12 semanas", "4 meses / 16 semanas", "5 meses / 20 semanas", "6 meses / 24 semanas", "7 meses / 28 semanas", "8 meses / 32 semanas", "9 meses / 36 semanas", "10 meses / 40 semanas", "11 meses / 44 semanas", "12 meses / 48 semanas" }));
+
+        jLabel11.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel11.setText("Forma de Pago:");
+
+        cmbformapagos.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        cmbformapagos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "SEMANAL", "CATORCENAL", "MENSUAL" }));
+        cmbformapagos.setFocusable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,11 +183,21 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
                                     .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTotalPago, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTotalIva, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtTotalIntereses, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTotalCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(txtTotalPago, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTotalCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTotalIva, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel27))
+                                .addGap(7, 7, 7)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbplazos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbformapagos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(585, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,15 +211,22 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25)
-                    .addComponent(txtTotalPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTotalPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27)
+                    .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel23)
-                    .addComponent(txtTotalIntereses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTotalIntereses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbformapagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel24)
-                    .addComponent(txtTotalIva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel24)
+                        .addComponent(txtTotalIva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel9)
+                    .addComponent(cmbplazos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
@@ -196,7 +241,6 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         cargarModelo();
     }//GEN-LAST:event_hvreloadMouseClicked
 
-   
     public void cargarTotalesCredito(int indice){
     
         Creditos credito = modelo.obtenerCredito(indice);
@@ -205,7 +249,9 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         txtTotalIntereses.setText(monto.getTotalIntereses());
         txtTotalIva.setText(monto.getTotalIva());
         txtTotalCuota.setText(String.valueOf(monto.numeroCuotas()));
-        
+        txtCuota.setText(credito.getCuota().toString());
+        cmbplazos.setSelectedIndex(credito.getPlazo());
+        cmbformapagos.setSelectedIndex(credito.getFormaPago());
     }
     
     public void limpiarTotales(){
@@ -213,20 +259,30 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         txtTotalPago.setText("");
         txtTotalIntereses.setText("");
         txtTotalIva.setText("");
-        txtTotalCuota.setText("");   
+        txtTotalCuota.setText("");  
+        
+        txtCuota.setText("");
+        cmbplazos.setSelectedIndex(0);
+        cmbformapagos.setSelectedIndex(0);
         
     }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmbformapagos;
+    private javax.swing.JComboBox<String> cmbplazos;
     private Label.HoverIcon hvreload;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTable tblCreditos;
+    private javax.swing.JTextField txtCuota;
     private javax.swing.JTextField txtTotalCuota;
     private javax.swing.JTextField txtTotalIntereses;
     private javax.swing.JTextField txtTotalIva;

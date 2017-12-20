@@ -22,7 +22,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jPanel1" pref="780" max="32767" attributes="0"/>
-          <Component id="contenidoSolicitud" alignment="0" max="32767" attributes="0"/>
+          <Component id="contenidoCreditos" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -30,7 +30,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" pref="98" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="contenidoSolicitud" pref="414" max="32767" attributes="0"/>
+              <Component id="contenidoCreditos" pref="414" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,17 +49,83 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="780" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="hvCreditos" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="hvMoras" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="hvPagos" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="458" max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="98" max="32767" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace pref="35" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="hvPagos" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="hvMoras" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="hvCreditos" alignment="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
+      <SubComponents>
+        <Component class="Label.HvLabel" name="hvPagos">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/IMAGES/LABELS/pagosAct.png"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 50]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="hvPagosMouseClicked"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="hvPagos.setImages(&quot;/IMAGES/LABELS/pagosDes.png&quot;,&quot;/IMAGES/LABELS/pagosDes.png&quot;, &quot;/IMAGES/LABELS/pagosAct.png&quot;);"/>
+          </AuxValues>
+        </Component>
+        <Component class="Label.HvLabel" name="hvMoras">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/IMAGES/LABELS/morasDes.png"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 50]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="hvMorasMouseClicked"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="hvMoras.setImages(&quot;/IMAGES/LABELS/morasAct.png&quot;,&quot;/IMAGES/LABELS/morasAct.png&quot;, &quot;/IMAGES/LABELS/morasDes.png&quot;);"/>
+          </AuxValues>
+        </Component>
+        <Component class="Label.HvLabel" name="hvCreditos">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/IMAGES/LABELS/listacreditosDes.png"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 50]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="hvCreditosMouseClicked"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="hvCreditos.setImages(&quot;/IMAGES/LABELS/listacreditosAct.png&quot;,&quot;/IMAGES/LABELS/listacreditosAct.png&quot;, &quot;/IMAGES/LABELS/listacreditosDes.png&quot;);"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="contenidoSolicitud">
+    <Container class="javax.swing.JPanel" name="contenidoCreditos">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ec" green="ec" red="f0" type="rgb"/>

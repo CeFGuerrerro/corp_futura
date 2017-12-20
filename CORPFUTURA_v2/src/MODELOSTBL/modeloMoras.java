@@ -3,6 +3,7 @@ package MODELOSTBL;
 
 
 import Entidades.Creditos;
+import Entidades.Mora;
 import java.util.LinkedList;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -12,22 +13,22 @@ import javax.swing.table.TableModel;
  *
  * @author DFUENTES
  */
-public class modeloCreditos implements TableModel {
-    private LinkedList<Creditos> datos = new LinkedList();
+public class modeloMoras implements TableModel {
+    private LinkedList<Mora> datos = new LinkedList();
     private LinkedList listeners = new LinkedList();
     
     final Class[] tipoColumnas = {
         java.lang.Integer.class,
         java.lang.String.class,
         java.lang.Long.class,
+        java.util.Date.class,
         java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
-        java.lang.Long.class,
-        java.lang.Integer.class
+       
     };
 
-    public modeloCreditos(){
+    public modeloMoras(){
     }
 
     @Override
@@ -37,7 +38,7 @@ public class modeloCreditos implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 8;
+        return 7;
     }
 
     @Override
@@ -48,18 +49,17 @@ public class modeloCreditos implements TableModel {
                          break;
             case 1:      columna="Cliente"; 
                          break;
-            case 2:      columna="Monto Aprobado"; 
+            case 2:      columna="Monto"; 
                          break;
-            case 3:      columna="Capital Pagado"; 
+            case 3:      columna="Fecha de inicio"; 
                          break;
-            case 4:      columna="Capital Pendiente"; 
+            case 4:      columna="Mora Pendiente"; 
                          break;
-            case 5:      columna="Intereses Pagados"; 
+            case 5:      columna="Mora Pagada"; 
                          break;
-            case 6:      columna="Mora Pagada"; 
+            case 6:      columna="Mora Total"; 
                          break;
-            case 7:      columna="Cuotas Pagadas"; 
-                         break;
+
         }
         return columna;
     }
@@ -71,12 +71,12 @@ public class modeloCreditos implements TableModel {
 
     @Override
     public boolean isCellEditable(int i, int i1) {
-       return false;
+       return true;
     }
     
-    public void agregarCredito (Creditos credito){
+    public void agregarMora (Mora mora){
         // Añade la persona al modelo 
-        datos.add (credito);
+        datos.add (mora);
         // Avisa a los suscriptores creando un TableModelEvent...
         TableModelEvent evento;
         evento = new TableModelEvent (this, this.getRowCount()-1,
@@ -86,7 +86,7 @@ public class modeloCreditos implements TableModel {
         avisaSuscriptores (evento);
     }
     
-    public void borrarCredito(int fila){
+    public void borrarMora(int fila){
         // Se borra la fila 
         datos.remove(fila);
         // Y se avisa a los suscriptores, creando un TableModelEvent...
@@ -98,13 +98,13 @@ public class modeloCreditos implements TableModel {
     
     public void nuevaFila(){
 
-        Creditos credito = new Creditos();
-        datos.add(credito);
+        Mora mora = new Mora();
+        datos.add(mora);
         
     }
     
-    public Creditos obtenerCredito(int index){
-        return (Creditos)datos.get(index);
+    public Mora obtenerMora(int index){
+        return (Mora)datos.get(index);
     }
     
     public void borrartodos(){
@@ -119,27 +119,26 @@ public class modeloCreditos implements TableModel {
      
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Creditos aux;
+        Mora aux;
         
-        aux = (Creditos)(datos.get(rowIndex));
+        aux = (Mora)(datos.get(rowIndex));
         switch (columnIndex)
         {
             case 0:
-                return aux.getCreditosPK().getIdSolicitudCredito();
+                return aux.getSolicitudCredito().getCreditos().getCreditosPK().getIdSolicitudCredito();
             case 1:
                 return aux.getSolicitudCredito().getDatosPersonales().getNombre();
             case 2:
-                return aux.getMonto();
+                return aux.getSolicitudCredito().getCreditos().getMonto();
             case 3:
-                return aux.getSaldoPagado();
+                return aux.getFechaInicio();
             case 4:
-                return aux.getSaldoRestante();
+                return aux.getMoraTotal()-aux.getMoraCancelada();
             case 5:
-                return aux.getInteresPagados();
+                return aux.getMoraCancelada();
             case 6:
-                return aux.getMoraPagada();
-            case 7:
-                return aux.getCuotasPagadas();
+                return aux.getMoraTotal();
+
             default:
                 return null;
         }
