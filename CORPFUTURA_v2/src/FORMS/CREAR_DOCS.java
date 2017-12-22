@@ -1,10 +1,13 @@
 package FORMS;
 
+import CONTROLADORES.DatosPersonalesJpaController;
 import DOCS_DATASOURCES.DS_Autorizacion;
 import DOCS_DATASOURCES.DS_PerfilCliente;
 import DOCS_DATASOURCES.DS_Solicitud1;
 import DOCS_DATASOURCES.DS_Solicitud2;
 import DOCS_DATASOURCES.JasperGenerator;
+import Entidades.Codeudores;
+import Entidades.DatosPersonales;
 import Entidades.DeclaracionBienes;
 import Entidades.Referencias;
 import Entidades.SolicitudCredito;
@@ -27,6 +30,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
     private String total=null;
     private List<Referencias> listaRefFam = new ArrayList<Referencias>();
     private List<Referencias> listaRefPer = new ArrayList<Referencias>();
+    private List<DatosPersonales> listaCod = new ArrayList<DatosPersonales>();
     private Map parametros = new HashMap();
     private JasperGenerator jasper = new JasperGenerator();
     private DS_Autorizacion aut = new DS_Autorizacion();
@@ -41,6 +45,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         solicitud = sol;
         cargarSolicitud();
         getTotalBienes();
+        getCodeudores();
     }
 
     @SuppressWarnings("unchecked")
@@ -340,7 +345,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
             String doc = "PerfilCliente";
             parametros.clear();
             parametros.put("Total", total);
-            System.out.println(total);
+            parametros.put("Codeudores", listaCod);
             try{
                 jasper.crearReporteConParam(doc, solicitud.getDatosPersonales().getNombre(), parametros, perf);
             } catch (JRException ex) {
@@ -384,6 +389,12 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         return total;
     
  }
+    
+    public List<DatosPersonales> getCodeudores(){
+        for(Codeudores c : solicitud.getDatosPersonales().getCodeudoresList1())
+           listaCod.add(c.getDuiCodeudor());
+        return listaCod;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
