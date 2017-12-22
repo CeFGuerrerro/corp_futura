@@ -2,9 +2,6 @@
 package utilidades;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -46,6 +43,11 @@ public class fechas {
        
         return verificar;
 
+    }
+    
+    public static String formatearFecha(Date fecha){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha);
     }
 
 }

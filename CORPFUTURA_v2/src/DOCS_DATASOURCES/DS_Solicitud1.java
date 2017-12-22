@@ -11,6 +11,7 @@ import java.util.List;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
+import static utilidades.fechas.formatearFecha;
 
 /**
  *
@@ -36,7 +37,7 @@ public class DS_Solicitud1 implements JRDataSource {
         if (null != jrf.getName()) {
             switch (jrf.getName()) {
                 case "fecha":
-                    valor = listaSolicitudes.get(indice).getFechaSolicitud().toString();
+                    valor = formatearFecha(listaSolicitudes.get(indice).getFechaSolicitud());
                     return valor;
                 case "nombre":
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getNombre();
@@ -65,7 +66,7 @@ public class DS_Solicitud1 implements JRDataSource {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getDui();
                     return valor;
                 case "fechaexp":
-                    valor = listaSolicitudes.get(indice).getDatosPersonales().getFechaExpedicion().toString();
+                    valor = formatearFecha(listaSolicitudes.get(indice).getDatosPersonales().getFechaExpedicion());
                     return valor;
                 case "nit":
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getNit();

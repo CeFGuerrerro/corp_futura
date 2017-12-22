@@ -11,6 +11,7 @@ import java.util.List;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
+import static utilidades.fechas.formatearFecha;
 
 /**
  *
@@ -103,7 +104,7 @@ public class DS_PerfilCliente implements JRDataSource {
                         valor = "DECALARACION JURADA DE BIENES MUEBLES";
                     } return valor;
                 case "fecha":
-                    valor =listaSolicitudes.get(indice).getEvaluacionCredito().getFechaEvaluacion().toString();
+                    valor =formatearFecha(listaSolicitudes.get(indice).getEvaluacionCredito().getFechaEvaluacion());
             }
         }
         return valor;
