@@ -201,7 +201,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="10"/>
+					<font fontName="Calibri" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plazocli}]]></textFieldExpression>
 			</textField>
@@ -550,7 +550,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="10"/>
+					<font fontName="Calibri" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plazoase}]]></textFieldExpression>
 			</textField>
@@ -625,7 +625,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="10"/>
+					<font fontName="Calibri" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plazocom}]]></textFieldExpression>
 			</textField>

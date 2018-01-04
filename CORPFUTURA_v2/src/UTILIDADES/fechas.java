@@ -1,30 +1,18 @@
 
 package utilidades;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author o-a19
  */
 public class fechas {
-
-    public static Integer calcularEdad(Date fecha) {
-        
-       
-        Calendar fechaNacimiento = Calendar.getInstance();
-        Calendar fechaActual = Calendar.getInstance();
-        fechaNacimiento.setTime(fecha);
-        int año = fechaActual.get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
-        int mes = fechaActual.get(Calendar.MONTH) - fechaNacimiento.get(Calendar.MONTH);
-        int dia = fechaActual.get(Calendar.DATE) - fechaNacimiento.get(Calendar.DATE);
-        if (mes < 0 || (mes == 0 && dia < 0)) {
-            año--;
-        }
-        return año;
-    }
     
     public static Date fechaActual(){
          Date fechaAct = new Date();

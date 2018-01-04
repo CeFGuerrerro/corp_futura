@@ -46,41 +46,40 @@ public class DS_PerfilCliente implements JRDataSource {
                     valor = String.valueOf(listaSolicitudes.get(indice).getEvaluacionCredito().getCuota());
                     return valor;
                 case "fpago":
-                    if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 1) {
+                    if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 1) {
                         valor = "SEMANAL";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 2) {
+                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 2) {
                         valor = "CATORCENAL";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 3) {
+                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 3) {
                         valor = "MENSUAL";
                     }
                     return valor;
                 case "plazo":
-                    if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 1) {
+                    if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 1) {
                         valor = "1 MES / 4 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 2) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 2) {
                         valor = "2 MESES / 8 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 3) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo()== 3) {
                         valor = "3 MESES / 12 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 4) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 4) {
                         valor = "4 MESES / 16 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 5) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 5) {
                         valor = "5 MESES / 20 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 6) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 6) {
                         valor = "6 MESES / 24 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 7) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo()== 7) {
                         valor = "7 MESES / 28 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 8) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 8) {
                         valor = "8 MESES / 32 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 9) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 9) {
                         valor = "9 MESES / 36 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 10) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 10) {
                         valor = "10 MESES / 40 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 11) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 11) {
                         valor = "11 MESES / 44 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 12) {
+                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 12) {
                         valor = "12 MESES / 48 SEMANAS";
-                    }
-                    return valor;
+                    } return valor;
                 case "tasa":
                     valor = "9%";
                     return valor;

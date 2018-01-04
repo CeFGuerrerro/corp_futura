@@ -2,7 +2,9 @@ package FORMS;
 
 import CONTROLADORES.DatosPersonalesJpaController;
 import DOCS_DATASOURCES.DS_Autorizacion;
+import DOCS_DATASOURCES.DS_DeclaracionBienes;
 import DOCS_DATASOURCES.DS_PerfilCliente;
+import DOCS_DATASOURCES.DS_ResolucionComite;
 import DOCS_DATASOURCES.DS_Solicitud1;
 import DOCS_DATASOURCES.DS_Solicitud2;
 import DOCS_DATASOURCES.JasperGenerator;
@@ -27,16 +29,19 @@ import net.sf.jasperreports.engine.JRException;
 public class CREAR_DOCS extends javax.swing.JFrame {
 
     private SolicitudCredito solicitud;
-    private String total=null;
+    private String total = null;
     private List<Referencias> listaRefFam = new ArrayList<Referencias>();
     private List<Referencias> listaRefPer = new ArrayList<Referencias>();
     private List<DatosPersonales> listaCod = new ArrayList<DatosPersonales>();
+    private List<DeclaracionBienes> listaBienes = new ArrayList<DeclaracionBienes>();
     private Map parametros = new HashMap();
     private JasperGenerator jasper = new JasperGenerator();
     private DS_Autorizacion aut = new DS_Autorizacion();
     private DS_Solicitud1 sol1 = new DS_Solicitud1();
     private DS_Solicitud2 sol2 = new DS_Solicitud2();
     private DS_PerfilCliente perf = new DS_PerfilCliente();
+    private DS_ResolucionComite resc = new DS_ResolucionComite();
+    private DS_DeclaracionBienes decl = new DS_DeclaracionBienes();
 
     public CREAR_DOCS(SolicitudCredito sol) {
 
@@ -341,13 +346,34 @@ public class CREAR_DOCS extends javax.swing.JFrame {
 
             }
         }
-        if(chkperfil.isSelected()){
+        if (chkperfil.isSelected()) {
             String doc = "PerfilCliente";
             parametros.clear();
             parametros.put("Total", total);
             parametros.put("Codeudores", listaCod);
-            try{
+            try {
                 jasper.crearReporteConParam(doc, solicitud.getDatosPersonales().getNombre(), parametros, perf);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());;
+            }
+        }
+        if (chkresolucion.isSelected()) {
+            String doc = "ResolucionComite";
+            try {
+                jasper.crearReporteConParam(doc, solicitud.getDatosPersonales().getNombre(), parametros, resc);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());;
+            }
+
+        }
+        if (chkdeclaracionbienes.isSelected()) {
+            String doc = "DeclaracionJuradaBienes";
+
+            try {
+                parametros.clear();
+                parametros.put("Bienes", listaBienes);
+                parametros.put("TotalBienes", total);
+                jasper.crearReporteConParam(doc, solicitud.getDatosPersonales().getNombre(), parametros, decl);
             } catch (JRException ex) {
                 JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());;
             }
@@ -366,33 +392,38 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         sol1.addSolicitud(solicitud);
         sol2.addSolicitud(solicitud);
         perf.addSolicitud(solicitud);
+        resc.addResolucion(solicitud);
+        decl.addSolicitud(solicitud);
 
         for (Referencias r : solicitud.getDatosPersonales().getReferenciasList()) {
-            if(r.getTipoReferencia()==false){
-                listaRefFam.add(r);               
+            if (r.getTipoReferencia() == false) {
+                listaRefFam.add(r);
+            } else {
+                listaRefPer.add(r);
             }
-            else{
-                listaRefPer.add(r);               
-            }
+        }
+        for (DeclaracionBienes b : solicitud.getDatosPersonales().getDeclaracionBienesList()) {
+            listaBienes.add(b);
         }
     }
-    
-    public String getTotalBienes(){
+
+    public String getTotalBienes() {
         double subtotal = 0;
-        for(DeclaracionBienes bien:solicitud.getDatosPersonales().getDeclaracionBienesList()){ 
-            if(bien.getCantidad()!=null && bien.getValuo()!=null){
-                bien.setTotalGarantia(bien.getValuo()*bien.getCantidad());
-                subtotal+=bien.getTotalGarantia();
+        for (DeclaracionBienes bien : solicitud.getDatosPersonales().getDeclaracionBienesList()) {
+            if (bien.getCantidad() != null && bien.getValuo() != null) {
+                bien.setTotalGarantia(bien.getValuo() * bien.getCantidad());
+                subtotal += bien.getTotalGarantia();
             }
-            total= String.valueOf(subtotal);
+            total = String.valueOf(subtotal);
         }
         return total;
-    
- }
-    
-    public List<DatosPersonales> getCodeudores(){
-        for(Codeudores c : solicitud.getDatosPersonales().getCodeudoresList1())
-           listaCod.add(c.getDuiCodeudor());
+
+    }
+
+    public List<DatosPersonales> getCodeudores() {
+        for (Codeudores c : solicitud.getDatosPersonales().getCodeudoresList1()) {
+            listaCod.add(c.getDuiCodeudor());
+        }
         return listaCod;
     }
 
