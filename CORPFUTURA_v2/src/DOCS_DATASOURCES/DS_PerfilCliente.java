@@ -11,7 +11,7 @@ import java.util.List;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
-import static utilidades.fechas.formatearFecha;
+import static UTILIDADES.fechas.formatearFecha;
 
 /**
  *

@@ -47,6 +47,7 @@ public class MoraJpaController implements Serializable {
                 solicitudCredito = em.merge(solicitudCredito);
             }
             em.getTransaction().commit();
+            em.refresh(solicitudCredito);
         } catch (Exception ex) {
             if (findMora(mora.getIdMora()) != null) {
                 throw new PreexistingEntityException("Mora " + mora + " already exists.", ex);
@@ -81,6 +82,7 @@ public class MoraJpaController implements Serializable {
                 solicitudCreditoNew = em.merge(solicitudCreditoNew);
             }
             em.getTransaction().commit();
+            em.refresh(mora);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {

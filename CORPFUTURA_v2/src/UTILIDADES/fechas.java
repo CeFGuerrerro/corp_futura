@@ -1,5 +1,5 @@
 
-package utilidades;
+package UTILIDADES;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,21 +14,121 @@ import java.util.logging.Logger;
  */
 public class fechas {
     
-    public static Date fechaActual(){
+       public static Date fechaActual(){
          Date fechaAct = new Date();
          return fechaAct;
     }
-    
+
     public static boolean verificarPrimerPago(Date fechaInicio, Date fechaActual1){
     
         boolean verificar=false;
-        Calendar fechaActual = Calendar.getInstance();  fechaActual.setTime(fechaActual1);
-        Calendar PrimerPago = Calendar.getInstance(); PrimerPago.setTime(fechaInicio);
+  
+        Date nuevaPrimerpago= normalizarFecha(fechaInicio);
+        Date nuevaActual=normalizarFecha(fechaActual1);
 
-        if(PrimerPago.after(fechaActual) || PrimerPago==fechaActual){
-            verificar=true;
+        if(!nuevaPrimerpago.equals(nuevaActual)){
+            if(nuevaActual.after(nuevaPrimerpago)){
+                   verificar=true;
+            }
         }
+     
+        return verificar;
+
+    }
+    
+    public static int numerodepagos(int formaPago,Date fechaInicio,boolean primercuota, Date fechasistema){
+        
+        int pagos=0;
+        
+
+        
+        Date nuevaPrimerpago= normalizarFecha(fechaInicio);
+        Date nuevaActual=normalizarFecha(fechasistema);
+        
        
+        int dias=(int) ((nuevaActual.getTime()-nuevaPrimerpago.getTime())/86400000);
+        
+        switch(formaPago){
+               case 1:    pagos=dias/(7); 
+                           break;
+               case 2:    pagos=dias/(14); 
+                           break;
+               case 3:    pagos=dias/(28); 
+                           break;
+        }
+        
+        return pagos+1;
+    
+    }
+    
+    public static int numeroSemanas(Date actual, Date inicio){
+    
+        int semanas =0;
+        
+        Date nuevaActual = normalizarFecha(actual);
+        Date nuevainicio = normalizarFecha(inicio);
+         
+        int dias=(int) ((nuevaActual.getTime()-nuevainicio.getTime())/86400000);
+        semanas=(dias/7)+1;
+            
+    
+        return semanas;
+    }
+    
+    public static boolean mismaSemana(Date actual, Date cancelacion){
+        
+        boolean misma=true;
+          
+        Date nuevaActual = normalizarFecha(actual);
+        Date nuevacancelacion = normalizarFecha(cancelacion);
+        
+        Calendar factual = Calendar.getInstance();
+        Calendar fcancelacion = Calendar.getInstance();
+        
+        factual.setTime(nuevaActual);
+        fcancelacion.setTime(nuevacancelacion);
+        
+        if(factual.get(Calendar.WEEK_OF_YEAR)!= fcancelacion.get(Calendar.WEEK_OF_YEAR)){
+            misma = false;
+        }
+ 
+        return misma;
+    }
+ 
+    public static Date normalizarFecha(Date fecha){
+    
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+        String fechaFormateada = formato.format(fecha);
+   
+        Date nuevaFecha=null;
+
+        try{
+            nuevaFecha = new SimpleDateFormat("dd-MM-yyyy").parse(fechaFormateada);
+        }catch(Exception ex){}
+        
+        return nuevaFecha;
+
+    }
+    
+    public static boolean esLunes(){
+        
+        boolean verificar=false;
+        
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaActual());
+        if(cal.get(Calendar.DAY_OF_WEEK)==2){verificar=true;}
+        
+        return verificar;
+    }
+    
+    public static boolean esLunes_Jueves(){
+        
+        boolean verificar=false;
+        
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaActual());
+        if(cal.get(Calendar.DAY_OF_WEEK)>1 && cal.get(Calendar.DAY_OF_WEEK)<6 ){verificar=true;}
+        
         return verificar;
 
     }

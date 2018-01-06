@@ -3,11 +3,14 @@ package FORMS;
 
 
 import CONTROLADORES.CreditosJpaController;
+import CONTROLADORES.MoraJpaController;
 import CONTROLADORES.PagosJpaController;
 import Entidades.Creditos;
+import Entidades.Mora;
 import Entidades.Pagos;
 import FORMS.PANELS.LISTA_CREDITOS_PNL;
-import UTILIDADES.monto;
+import FORMS.PANELS.LISTA_MORAS_PNL;
+import UTILIDADES.Monto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -19,23 +22,32 @@ import javax.swing.JOptionPane;
 public class PAGO_FORM extends javax.swing.JFrame {
     
     public Creditos credito;
+    public Mora mora;
     public Pagos pago;
+    public double totalpendiente;
     public LISTA_CREDITOS_PNL cp;
-    public monto monto;
+     public LISTA_MORAS_PNL mp;
+    public Monto monto;
+    double indicador;
     
     public CreditosJpaController cjc = new CreditosJpaController();
     public PagosJpaController pjc = new PagosJpaController();
+    public MoraJpaController mjc = new MoraJpaController();
     
-    public PAGO_FORM(Creditos credito1, LISTA_CREDITOS_PNL cp1) {
+    public PAGO_FORM(Creditos credito1, LISTA_CREDITOS_PNL cp1,LISTA_MORAS_PNL mp1) {
         
         initComponents();
         this.setLocationRelativeTo(null);
         
         
         credito=credito1;
+        mora = cjc.obtenerMoraActual(credito);
+        
+        
         cp=cp1;
+        mp=mp1;
         cargarCredito();
-        monto = new monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago());
+        monto = new Monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago(), String.valueOf(credito.getSolicitudCredito().getTasaInteres()));
     }
 
    
@@ -68,8 +80,6 @@ public class PAGO_FORM extends javax.swing.JFrame {
         btnguardar = new javax.swing.JButton();
         txtIVA = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        txtIVAMora = new javax.swing.JTextField();
         hvreload = new Label.HoverIcon();
         jLabel27 = new javax.swing.JLabel();
         txtCuota = new javax.swing.JTextField();
@@ -79,6 +89,17 @@ public class PAGO_FORM extends javax.swing.JFrame {
         cmbplazos = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         txtfactura = new javax.swing.JTextField();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        txtMoraPendiente = new javax.swing.JTextField();
+        txtMontoPendiente = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        txtCuotasPendientes = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        txtTotalPendiente = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(240, 236, 236));
@@ -210,17 +231,6 @@ public class PAGO_FORM extends javax.swing.JFrame {
         jLabel22.setForeground(new java.awt.Color(51, 51, 51));
         jLabel22.setText("IVA:");
 
-        jLabel23.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("IVA mora:");
-
-        txtIVAMora.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        txtIVAMora.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIVAMoraKeyTyped(evt);
-            }
-        });
-
         hvreload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/ICONS/reload.png"))); // NOI18N
         hvreload.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -256,6 +266,38 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
         txtfactura.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
+        jLabel6.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel6.setText("MONTO DEL PAGO");
+
+        jLabel7.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel7.setText("DETALLE DE MORA");
+
+        jLabel19.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel19.setText("Mora pendiente de pag0:");
+
+        jLabel24.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText("Monto pendiente de pago:");
+
+        txtMoraPendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+
+        txtMontoPendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+
+        jLabel25.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel25.setText("Nº de cuotas pendientes:");
+
+        txtCuotasPendientes.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+
+        jLabel26.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel26.setText("Total Pendiente:");
+
+        txtTotalPendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
         contenidoLayout.setHorizontalGroup(
@@ -265,22 +307,6 @@ public class PAGO_FORM extends javax.swing.JFrame {
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(contenidoLayout.createSequentialGroup()
                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel20)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel18))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtMora, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-                            .addComponent(txtIVA, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtintereses, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtcapital, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIVAMora))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(contenidoLayout.createSequentialGroup()
-                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addGroup(contenidoLayout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(15, 15, 15)
@@ -315,17 +341,59 @@ public class PAGO_FORM extends javax.swing.JFrame {
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(126, Short.MAX_VALUE))))
+                        .addContainerGap(125, Short.MAX_VALUE))
+                    .addGroup(contenidoLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(contenidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(contenidoLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jSeparator1)
-                    .addComponent(jSeparator2))
-                .addContainerGap())
+                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1)
+                            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSeparator2)
+                            .addGroup(contenidoLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(contenidoLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(contenidoLayout.createSequentialGroup()
+                                    .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel24)
+                                        .addComponent(jLabel19)
+                                        .addComponent(jLabel25))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(txtMontoPendiente, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtMoraPendiente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtCuotasPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(contenidoLayout.createSequentialGroup()
+                                    .addComponent(jLabel26)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtTotalPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(28, 28, 28)
+                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(contenidoLayout.createSequentialGroup()
+                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jLabel22)
+                                    .addComponent(jLabel21)
+                                    .addComponent(jLabel18))
+                                .addGap(5, 5, 5)
+                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtMora, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtIVA, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtintereses, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtcapital, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         contenidoLayout.setVerticalGroup(
             contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,19 +406,17 @@ public class PAGO_FORM extends javax.swing.JFrame {
                     .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(cmbformapagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27)
+                    .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
-                    .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel9)
-                        .addComponent(cmbplazos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel27)
-                        .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(cmbformapagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(cmbplazos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel8)
                     .addComponent(txtmonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -360,30 +426,41 @@ public class PAGO_FORM extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(txtfactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel18)
-                    .addComponent(txtcapital, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
+                    .addComponent(txtcapital, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19)
+                    .addComponent(txtMoraPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel20)
-                    .addComponent(txtintereses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
+                    .addComponent(txtintereses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24)
+                    .addComponent(txtMontoPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel22)
-                    .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
+                    .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25)
+                    .addComponent(txtCuotasPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel21)
-                    .addComponent(txtMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
-                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel23)
-                    .addComponent(txtIVAMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtTotalPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel26)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
         );
 
         hvreload.setImages("/IMAGES/ICONS/reload1.png","/IMAGES/ICONS/reload.png");
@@ -442,24 +519,34 @@ public class PAGO_FORM extends javax.swing.JFrame {
         if((!Character.isDigit(caracter)) && (caracter!=punto)) evt.consume();
     }//GEN-LAST:event_txtIVAKeyTyped
 
-    private void txtIVAMoraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIVAMoraKeyTyped
-        char caracter= evt.getKeyChar();
-        char punto = '.';
-        if((!Character.isDigit(caracter)) && (caracter!=punto)) evt.consume();
-    }//GEN-LAST:event_txtIVAMoraKeyTyped
-
     private void hvreloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvreloadMouseClicked
     
         if(!txtmonto.getText().trim().isEmpty()){
             
-            double pago= Double.parseDouble(txtmonto.getText());
-
-            if(pago == credito.getCuota()){
-                txtintereses.setText(monto.valorXCuota(monto.getTotalIntereses()));
-                txtIVA.setText(monto.valorXCuota(monto.getTotalIva()));
-                txtcapital.setText(monto.valorXCuota(credito.getMonto().toString()));
+            double montopago= Double.parseDouble(txtmonto.getText());
+            if(montopago>0.0){
+               
+                if(mora==null){ 
+                    if(montopago==credito.getCuota()){
+                        indicador=1;
+                        txtintereses.setText(monto.valorXCuota(monto.getTotalIntereses()));
+                        txtIVA.setText(monto.valorXCuota(monto.getTotalIva()));
+                        txtcapital.setText(monto.valorXCuota(credito.getMonto().toString()));
+                    }   
+                }
+                if(mora!=null){ 
+                    if(mora.getEstado()==0){
+                        if(totalpendiente==montopago){
+                            indicador=2;
+                            txtintereses.setText(monto.valorXCuota(monto.getTotalIntereses()));
+                            txtIVA.setText(monto.valorXCuota(monto.getTotalIva()));
+                            txtcapital.setText(monto.valorXCuota(credito.getMonto().toString()));
+                            txtMora.setText(mora.getMoraTotal().toString());
+                        }
+                    }   
+                }
+                
             }
-            
         }
         
         
@@ -470,21 +557,45 @@ public class PAGO_FORM extends javax.swing.JFrame {
         
         boolean cumple = true;
         if(!txtmonto.getText().isEmpty() && fechpago.getDate()!=null){
+            if(indicador==1){
+                try {
+                    pago = pagoCuotaCompleta();
+                    pjc.create(pago);
+                    actualizarCredito();
+                    cjc.edit(credito);
+                } catch (Exception ex) {
+                    cumple=false;
+                    Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                }
             
-            try {
-                pago = pagoCuotaCompleta();
-                pjc.create(pago);
-                actualizarCredito();
-                cjc.edit(credito);
-            } catch (Exception ex) {
-                cumple=false;
-                Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                if(cumple==true){
+                    cp.cargarModelo();
+                    cp.tblCreditos.clearSelection();
+                    mp.listaCreditos = cjc.getCreditosActivos((short)2);
+                    mp.cargarModelo();
+                    this.dispose();
+                }
             }
+            if(indicador==2){
+                try {
+                    pago = pagoCuotaCompletaconmora();
+                    pjc.create(pago);
+                    actualizarCredito();
+                    cjc.edit(credito);
+                    actualizarMora();
+                    mjc.edit(mora);
+                } catch (Exception ex) {
+                    cumple=false;
+                    Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                }
             
-            if(cumple==true){
-                cp.cargarModelo();
-                cp.tblCreditos.clearSelection();
-                this.dispose();
+                if(cumple==true){
+                    cp.cargarModelo();
+                    cp.tblCreditos.clearSelection();
+                    mp.listaCreditos = cjc.getCreditosActivos((short)2);
+                    mp.cargarModelo();
+                    this.dispose();
+                }
             }
             
         }else{JOptionPane.showMessageDialog(null,"Ingrese el monto del Pago y la fecha");}
@@ -500,6 +611,16 @@ public class PAGO_FORM extends javax.swing.JFrame {
         cmbplazos.setSelectedIndex(credito.getPlazo());
         cmbformapagos.setSelectedIndex(credito.getFormaPago());
         
+        if (mora!=null){
+           txtMoraPendiente.setText(String.valueOf(mora.getMoraTotal()-mora.getMoraCancelada()));
+           txtMontoPendiente.setText(mora.getMontoPendiente().toString());
+           txtCuotasPendientes.setText(mora.getCuotasPendientes().toString());
+        
+           totalpendiente =(mora.getMoraTotal()-mora.getMoraCancelada())+mora.getMontoPendiente();
+           totalpendiente = Monto.redondear(totalpendiente, 2);
+           txtTotalPendiente.setText(String.valueOf(totalpendiente));
+        }
+        
     
     }
     
@@ -514,6 +635,27 @@ public class PAGO_FORM extends javax.swing.JFrame {
         pago.setCapitalAbonado(Double.parseDouble(txtcapital.getText()));
         pago.setInteres(Double.parseDouble(txtintereses.getText()));
         pago.setIvaIntereses(Double.parseDouble(txtIVA.getText()));
+        pago.setMora(0.0);
+        pago.setIvaMora(0.0);
+        pago.setCancelado(true);
+        pago.setCuotaNumero(credito.getCuotasPagadas()+1);
+        
+        return pago;
+    }
+    
+     private Pagos pagoCuotaCompletaconmora(){
+       
+        Pagos pago = new Pagos();
+        pago.setIdPago(pjc.getPagosCount()+1);
+        pago.setSolicitudCredito(credito.getSolicitudCredito());
+        pago.setFechaPago(fechpago.getDate());
+        pago.setNumFactura(txtfactura.getText());
+        pago.setMontoPagado(totalpendiente);
+        pago.setCapitalAbonado(Double.parseDouble(txtcapital.getText()));
+        pago.setInteres(Double.parseDouble(txtintereses.getText()));
+        pago.setIvaIntereses(Double.parseDouble(txtIVA.getText()));
+        pago.setMora(5.0);
+        pago.setIvaMora(0.65);
         pago.setCancelado(true);
         pago.setCuotaNumero(credito.getCuotasPagadas()+1);
         
@@ -521,16 +663,23 @@ public class PAGO_FORM extends javax.swing.JFrame {
     }
     
     private void actualizarCredito(){
-        
-        System.out.println(credito.getInteresPagados());
-        System.out.println(pago.getInteres());
+
         credito.setCuotasPagadas(pago.getCuotaNumero());
         credito.setCuotasPorPagar(monto.numeroCuotas()-credito.getCuotasPagadas());
         credito.setInteresPagados(credito.getInteresPagados()+pago.getInteres());
         credito.setIvaPagado(credito.getIvaPagado()+pago.getIvaIntereses());
         credito.setSaldoPagado(credito.getSaldoPagado()+pago.getCapitalAbonado());
-        credito.setSaldoRestante(credito.getMonto()-credito.getSaldoPagado());
+        credito.setSaldoRestante(Monto.redondear(credito.getMonto()-credito.getSaldoPagado(), 2));
+        credito.setMoraPagada(Monto.redondear(credito.getMoraPagada()+pago.getMora()+pago.getIvaMora(), 2));
+    }
     
+    private void actualizarMora(){
+        
+        mora.setCuotasPendientes(0.0);
+        mora.setEstado((short)2);
+        mora.setFechaCancelacion(fechpago.getDate());
+        mora.setMoraCancelada(5.65);
+        
     }
     
 
@@ -549,24 +698,33 @@ public class PAGO_FORM extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField txtCuota;
+    private javax.swing.JTextField txtCuotasPendientes;
     private javax.swing.JTextField txtDui;
     private javax.swing.JTextField txtIVA;
-    private javax.swing.JTextField txtIVAMora;
+    private javax.swing.JTextField txtMontoPendiente;
     private javax.swing.JTextField txtMora;
+    private javax.swing.JTextField txtMoraPendiente;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtTotalPendiente;
     private javax.swing.JTextField txtcapital;
     private javax.swing.JTextField txtfactura;
     private javax.swing.JTextField txtintereses;

@@ -4,7 +4,7 @@ package FORMS.PANELS;
 import CONTROLADORES.CreditosJpaController;
 import Entidades.Creditos;
 import MODELOSTBL.modeloCreditos;
-import UTILIDADES.monto;
+import UTILIDADES.Monto;
 import java.util.List;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -33,6 +33,7 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
             for(Creditos credito:lista){
                 modelo.agregarCredito(credito); 
             }
+        tblCreditos.clearSelection();
         tblCreditos.updateUI();
     
     }
@@ -60,6 +61,7 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         cmbplazos = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         cmbformapagos = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(240, 236, 236));
 
@@ -88,12 +90,12 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         tblCreditos.getColumn("Capital Pagado").setCellRenderer( leftRenderer );
         tblCreditos.getColumn("Capital Pendiente").setCellRenderer( leftRenderer );
         tblCreditos.getColumn("Intereses Pagados").setCellRenderer( leftRenderer );
+        tblCreditos.getColumn("IVA Pagado").setCellRenderer( leftRenderer );
         tblCreditos.getColumn("Mora Pagada").setCellRenderer( leftRenderer );
         tblCreditos.getColumn("Cuotas Pagadas").setCellRenderer( leftRenderer );
 
         tblCreditos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
-
                 cargarTotalesCredito(tblCreditos.getSelectedRow());
             }
         });
@@ -159,6 +161,8 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         cmbformapagos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "SEMANAL", "CATORCENAL", "MENSUAL" }));
         cmbformapagos.setFocusable(false);
 
+        jButton1.setText("Ver detalle de pagos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,8 +200,10 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmbplazos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbformapagos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addContainerGap(585, Short.MAX_VALUE))))
+                                    .addComponent(cmbformapagos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(410, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,12 +214,13 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
                     .addComponent(hvreload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25)
                     .addComponent(txtTotalPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27)
-                    .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel23)
@@ -231,7 +238,7 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
                     .addComponent(txtTotalCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
 
         hvreload.setImages("/IMAGES/ICONS/reload1.png","/IMAGES/ICONS/reload.png");
@@ -244,7 +251,7 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
     public void cargarTotalesCredito(int indice){
     
         Creditos credito = modelo.obtenerCredito(indice);
-        monto monto = new monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago());
+        Monto monto = new Monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago(), credito.getSolicitudCredito().getTasaInteres());
         txtTotalPago.setText(monto.getTotalPago());
         txtTotalIntereses.setText(monto.getTotalIntereses());
         txtTotalIva.setText(monto.getTotalIva());
@@ -272,6 +279,7 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cmbformapagos;
     private javax.swing.JComboBox<String> cmbplazos;
     private Label.HoverIcon hvreload;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel23;

@@ -61,9 +61,11 @@
                                   <Component id="cmbplazos" max="32767" attributes="0"/>
                                   <Component id="cmbformapagos" alignment="0" max="32767" attributes="0"/>
                               </Group>
+                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="jButton1" min="-2" pref="143" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="585" max="32767" attributes="0"/>
+                      <EmptySpace pref="410" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -79,12 +81,13 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="300" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtTotalPago" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel27" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtCuota" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
@@ -107,7 +110,7 @@
                   <Component id="jLabel26" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtTotalCuota" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="218" max="32767" attributes="0"/>
+              <EmptySpace pref="216" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -140,7 +143,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="tblCreditos.setModel(modelo);&#xa;DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();&#xa;leftRenderer.setHorizontalAlignment(DefaultTableCellRenderer.LEFT);&#xa;&#xa;tblCreditos.getColumnModel().getColumn(1).setPreferredWidth(250);&#xa;tblCreditos.getColumnModel().getColumn(0).setPreferredWidth(50);&#xa;tblCreditos.getColumn(&quot;Cr&#xe9;dito&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Monto Aprobado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Capital Pagado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Capital Pendiente&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Intereses Pagados&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Mora Pagada&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Cuotas Pagadas&quot;).setCellRenderer( leftRenderer );&#xa;&#xa;tblCreditos.addMouseListener(new java.awt.event.MouseAdapter() {&#xa;    public void mouseClicked(java.awt.event.MouseEvent e) {&#xa;&#xa;        cargarTotalesCredito(tblCreditos.getSelectedRow());&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="tblCreditos.setModel(modelo);&#xa;DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();&#xa;leftRenderer.setHorizontalAlignment(DefaultTableCellRenderer.LEFT);&#xa;&#xa;tblCreditos.getColumnModel().getColumn(1).setPreferredWidth(250);&#xa;tblCreditos.getColumnModel().getColumn(0).setPreferredWidth(50);&#xa;tblCreditos.getColumn(&quot;Cr&#xe9;dito&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Monto Aprobado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Capital Pagado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Capital Pendiente&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Intereses Pagados&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;IVA Pagado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Mora Pagada&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Cuotas Pagadas&quot;).setCellRenderer( leftRenderer );&#xa;&#xa;tblCreditos.addMouseListener(new java.awt.event.MouseAdapter() {&#xa;    public void mouseClicked(java.awt.event.MouseEvent e) {&#xa;        cargarTotalesCredito(tblCreditos.getSelectedRow());&#xa;    }&#xa;});"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>
@@ -332,6 +335,11 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ver detalle de pagos"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

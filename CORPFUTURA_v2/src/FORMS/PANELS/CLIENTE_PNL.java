@@ -93,7 +93,7 @@ public class CLIENTE_PNL extends javax.swing.JPanel {
         bgroup.add(rbnnombre);
         rbnnombre.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         rbnnombre.setForeground(new java.awt.Color(204, 204, 204));
-        rbnnombre.setText("NOMNBRE");
+        rbnnombre.setText("NOMBRE");
 
         hvConyuge.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/conyugeDes.png"))); // NOI18N
         hvConyuge.setPreferredSize(new java.awt.Dimension(100, 50));

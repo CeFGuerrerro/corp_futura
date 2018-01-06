@@ -12,7 +12,12 @@ import Entidades.SolicitudCredito;
 import CONTROLADORES.exceptions.IllegalOrphanException;
 import CONTROLADORES.exceptions.NonexistentEntityException;
 import CONTROLADORES.exceptions.PreexistingEntityException;
+import Entidades.Mora;
+import Entidades.Pagos;
+import UTILIDADES.fechas;
+import UTILIDADES.Monto;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -119,6 +124,7 @@ public class CreditosJpaController implements Serializable {
                 solicitudCreditoNew = em.merge(solicitudCreditoNew);
             }
             em.getTransaction().commit();
+            em.refresh(creditos);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -194,7 +200,19 @@ public class CreditosJpaController implements Serializable {
         }
     }
 
- 
+    public int getCreditosCount() {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Root<Creditos> rt = cq.from(Creditos.class);
+            cq.select(em.getCriteriaBuilder().count(rt));
+            Query q = em.createQuery(cq);
+            return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
     public List<Creditos> getCreditosActivos(Short estado1) {
         
         short estado = estado1;
@@ -213,19 +231,45 @@ public class CreditosJpaController implements Serializable {
         
         return lista;
     }
-    
-      
-    public int getCreditosCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Creditos> rt = cq.from(Creditos.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+     
+    public double obtenerSaldoalafecha(Creditos credito, Date fechasistema){
+        double saldo = Monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
+        int numeropagos=fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), credito.getDescuentoCf(), fechasistema);
+        saldo=saldo*numeropagos;
+        return saldo;
     }
     
+    public double obtenerTotalPagadoalafecha(Creditos credito){
+        double saldo = 0.0;
+           if(credito.getSolicitudCredito().getPagosList().size()>0){
+               for(Pagos pago:credito.getSolicitudCredito().getPagosList()){
+                   saldo=saldo+pago.getCapitalAbonado()+pago.getInteres()+pago.getIvaIntereses();
+               }
+           }
+        return saldo;
+    }
+    
+    public Mora obtenerMoraActual(Creditos credito){
+        
+        Mora mora=null;
+        
+        if(credito.getSolicitudCredito().getMoraList().size()>0){
+            for(Mora mora1: credito.getSolicitudCredito().getMoraList()){
+                if(mora1.getEstado()<2){mora=mora1;}
+                
+            }
+            
+        }
+        return mora;
+    }
+    
+    public double obtenerTotalPendiente(Creditos credito, Date fechasistema){
+        double saldoapagar=0.0;
+        int numeropagos=fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), credito.getDescuentoCf(),fechasistema);
+        saldoapagar = credito.getCuota()*numeropagos;
+        saldoapagar = saldoapagar-obtenerTotalPagadoalafecha(credito);
+        return saldoapagar;
+    }
+    
+      
 }

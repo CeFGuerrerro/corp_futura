@@ -23,7 +23,7 @@ public class MAIN_FORM extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.WHITE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
-        cargarPanel(cliente);       
+        cargarPanel(creditos);       
     }
     
     public void cargarPanel(JPanel panel){
@@ -57,7 +57,7 @@ public class MAIN_FORM extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(45, 74, 103));
         jPanel1.setPreferredSize(new java.awt.Dimension(220, 543));
 
-        a.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/clienteAct.png"))); // NOI18N
+        a.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/clienteDes.png"))); // NOI18N
         a.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 aMouseClicked(evt);
@@ -71,7 +71,8 @@ public class MAIN_FORM extends javax.swing.JFrame {
             }
         });
 
-        a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/creditosDes.png"))); // NOI18N
+        a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/creditosAct.png"))); // NOI18N
+        a2.setToolTipText("");
         a2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 a2MouseClicked(evt);

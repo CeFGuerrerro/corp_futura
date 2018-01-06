@@ -7,12 +7,16 @@ import Entidades.Creditos;
 import Entidades.Mora;
 import MODELOSTBL.modeloCreditos;
 import MODELOSTBL.modeloMoras;
-import UTILIDADES.monto;
+import UTILIDADES.Monto;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableCellRenderer;
-import utilidades.fechas;
+import UTILIDADES.fechas;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -26,12 +30,15 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
     
     public List<Creditos> listaCreditos;
     
+    public CREDITOS_PNL panel;
     
-    public LISTA_MORAS_PNL() {
+    
+    public LISTA_MORAS_PNL(CREDITOS_PNL panel1) {
         
         initComponents();
         cargarModelo();
         listaCreditos = cjc.getCreditosActivos((short)2);
+        panel=panel1;
     
     }
     
@@ -43,7 +50,8 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
             for(Mora mora:lista){
                 modelo.agregarMora(mora); 
             }
-        tblCreditos.updateUI();
+        tblMoras.clearSelection();
+        tblMoras.updateUI();
     
     }
 
@@ -53,14 +61,18 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCreditos = new javax.swing.JTable();
+        tblMoras = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         calcularMora = new javax.swing.JButton();
+        jLabel25 = new javax.swing.JLabel();
+        txtmontopendiente = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        txtcuotaspendientes = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(240, 236, 236));
 
-        tblCreditos.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        tblCreditos.setModel(new javax.swing.table.DefaultTableModel(
+        tblMoras.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        tblMoras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -68,27 +80,27 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
 
             }
         ));
-        tblCreditos.setRowHeight(30);
-        tblCreditos.setSelectionBackground(new java.awt.Color(204, 255, 204));
-        tblCreditos.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        tblCreditos.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tblCreditos);
-        tblCreditos.setModel(modelo);
+        tblMoras.setRowHeight(30);
+        tblMoras.setSelectionBackground(new java.awt.Color(204, 255, 204));
+        tblMoras.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblMoras.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tblMoras);
+        tblMoras.setModel(modelo);
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         leftRenderer.setHorizontalAlignment(DefaultTableCellRenderer.LEFT);
 
-        tblCreditos.getColumnModel().getColumn(1).setPreferredWidth(250);
-        tblCreditos.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tblCreditos.getColumn("Crédito").setCellRenderer( leftRenderer );
-        tblCreditos.getColumn("Cliente").setCellRenderer( leftRenderer );
-        tblCreditos.getColumn("Monto").setCellRenderer( leftRenderer );
-        tblCreditos.getColumn("Mora Pendiente").setCellRenderer( leftRenderer );
-        tblCreditos.getColumn("Mora Pagada").setCellRenderer( leftRenderer );
-        tblCreditos.getColumn("Mora Total").setCellRenderer( leftRenderer );
+        tblMoras.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tblMoras.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tblMoras.getColumn("Crédito").setCellRenderer( leftRenderer );
+        tblMoras.getColumn("Cliente").setCellRenderer( leftRenderer );
+        tblMoras.getColumn("Monto").setCellRenderer( leftRenderer );
+        tblMoras.getColumn("Mora Pendiente").setCellRenderer( leftRenderer );
+        tblMoras.getColumn("Mora Pagada").setCellRenderer( leftRenderer );
+        tblMoras.getColumn("Mora Total").setCellRenderer( leftRenderer );
 
-        tblCreditos.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblMoras.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
-
+                cargarDatosMora(tblMoras.getSelectedRow());
             }
         });
 
@@ -105,6 +117,20 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
             }
         });
 
+        jLabel25.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel25.setText("MONTO PENDIENTE");
+
+        txtmontopendiente.setEditable(false);
+        txtmontopendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+
+        jLabel26.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel26.setText("Nº  CUOTAS PENDIENTES");
+
+        txtcuotaspendientes.setEditable(false);
+        txtcuotaspendientes.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +144,16 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(calcularMora, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel25)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtmontopendiente, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel26)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtcuotaspendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -126,11 +161,19 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(calcularMora, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(calcularMora, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel25)
+                    .addComponent(txtmontopendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txtcuotaspendientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26))
+                .addContainerGap(248, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -138,25 +181,121 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
       
         for(Creditos credito: listaCreditos){
             
-            if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), fechas.fechaActual())){
-                System.out.println("aun no es momento de primerpago");
-            }else{System.out.println("ya se paso");}
-            
+            if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), panel.fechadesistema)){
+                
+                double saldoalafecha = cjc.obtenerSaldoalafecha(credito,panel.fechadesistema);
+                if(saldoalafecha>credito.getSaldoPagado()){
+                    
+                    Mora mora = cjc.obtenerMoraActual(credito);
+                    
+                    if(mora==null){
+                        
+                        mora = obtenerMoraconDatos(credito);
+                        
+                        try {
+                            mjc.create(mora);
+                        } catch (Exception ex) {
+                            Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                    }else{
+                        System.out.println(mora.getFechaInicio());
+                        double pendiente = cjc.obtenerTotalPendiente(credito,panel.fechadesistema);
+                        if(mora.getMontoPendiente()!= pendiente){
+                            
+                            mora.setMontoPendiente(Monto.redondear(pendiente,2));
+                            mora.setCuotasPendientes(Monto.redondear(pendiente/credito.getCuota(),2));
+                       
+                        }
+                        
+                        if(mora.getEstado()==0){
+               
+                            int semanas = fechas.numeroSemanas(panel.fechadesistema, mora.getFechaInicio());
+                            
+                            if(mora.getSemana()<semanas){
+                               mora.setSemana(semanas);
+                               mora.setMoraTotal(Monto.redondear(5.65*semanas,2));
+                            }
+                            
+                            
+                        }else if(mora.getEstado()==1){
+                            
+                            if(!fechas.mismaSemana(panel.fechadesistema, mora.getFechaCancelacion())){
+                                mora.setEstado((short)2); 
+                                Mora nuevaMora = obtenerMoraconDatos(credito);
+                                try {
+                                    mjc.create(nuevaMora);
+                                } catch (Exception ex) {
+                                    Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);
+                                }  
+                            }
+
+                        }
+                        
+                        
+                        try {
+                            mjc.edit(mora);
+                        } catch (Exception ex) {
+                            Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                    }
+                    
+                }  
+                
+            }
+    
         }
         
+        cargarModelo();
+        listaCreditos = cjc.getCreditosActivos((short)2);
+        panel.cp.cargarModelo();
         
         
     }//GEN-LAST:event_calcularMoraActionPerformed
 
+    public void cargarDatosMora(int indice){
+        
+        Mora mora = modelo.obtenerMora(indice);
+        txtmontopendiente.setText(mora.getMontoPendiente().toString());
+        txtcuotaspendientes.setText(mora.getCuotasPendientes().toString());
     
-     
+        
+    
+    }
+    
+    public Mora obtenerMoraconDatos(Creditos credito){
+        System.out.println("se creara mora");
+        Mora mora = new Mora();
+        mora.setIdMora(mjc.getMoraCount()+1);
+        mora.setEstado((short)0);
+        mora.setFechaInicio(panel.fechadesistema);
+        mora.setMoraTotal(5.65);
+        mora.setMoraCancelada(0.0);
+        mora.setSemana(1);
+        double pendiente = cjc.obtenerTotalPendiente(credito,panel.fechadesistema);
+        mora.setMontoPendiente(pendiente);
+        mora.setCuotasPendientes(pendiente/credito.getCuota());
+        mora.setSolicitudCredito(credito.getSolicitudCredito());
+       
+        return mora;
+    }
+    
+    
+    
+    
+    
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calcularMora;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable tblCreditos;
+    public javax.swing.JTable tblMoras;
+    private javax.swing.JTextField txtcuotaspendientes;
+    private javax.swing.JTextField txtmontopendiente;
     // End of variables declaration//GEN-END:variables
 }

@@ -24,6 +24,7 @@ public class modeloCreditos implements TableModel {
         java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
+        java.lang.Long.class,
         java.lang.Integer.class
     };
 
@@ -37,7 +38,7 @@ public class modeloCreditos implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 8;
+        return 9;
     }
 
     @Override
@@ -56,9 +57,11 @@ public class modeloCreditos implements TableModel {
                          break;
             case 5:      columna="Intereses Pagados"; 
                          break;
-            case 6:      columna="Mora Pagada"; 
+            case 6:      columna="IVA Pagado"; 
                          break;
-            case 7:      columna="Cuotas Pagadas"; 
+            case 7:      columna="Mora Pagada"; 
+                         break;
+            case 8:      columna="Cuotas Pagadas"; 
                          break;
         }
         return columna;
@@ -137,8 +140,10 @@ public class modeloCreditos implements TableModel {
             case 5:
                 return aux.getInteresPagados();
             case 6:
-                return aux.getMoraPagada();
+                return aux.getIvaPagado();
             case 7:
+                return aux.getMoraPagada();
+            case 8:
                 return aux.getCuotasPagadas();
             default:
                 return null;

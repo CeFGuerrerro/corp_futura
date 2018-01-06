@@ -3,7 +3,7 @@ package FORMS;
 
 
 import Entidades.SolicitudCredito;
-import UTILIDADES.monto;
+import UTILIDADES.Monto;
 import CONTROLADORES.EvaluacionCreditoJpaController;
 import CONTROLADORES.SolicitudCreditoJpaController;
 import Entidades.EvaluacionCredito;
@@ -24,7 +24,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
     
     private EvaluacionCredito evaluacion;
     private SolicitudCredito solicitud;
-    private monto monto = new monto();
+    private Monto monto = new Monto();
     private int indice;
     
     private EvaluacionCreditoJpaController ecjc = new EvaluacionCreditoJpaController();
@@ -718,7 +718,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         txtAsesoria.setText("");
         txtcuotafinal.setText("");
         if(!txtmonto.getText().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0){
-            monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex()); 
+            monto = new Monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), solicitud.getTasaInteres()); 
             obtenerdetallemonto(monto);          
         }
 
@@ -789,7 +789,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         evaluacion.setTipoGarantia((short)cmbtipogarantia.getSelectedIndex());
         evaluacion.setJustificacion(txtjustificacion.getText());
         
-        monto monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex());
+        Monto monto = new Monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(),solicitud.getTasaInteres());
         evaluacion.setCuota(Double.valueOf(monto.getCuota()));
         evaluacion.setIvaCuota(Double.valueOf(monto.valorXCuota(monto.getTotalIva())));
         
@@ -829,11 +829,11 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         }
         
         cmbEstadocredito.setSelectedIndex(solicitud.getEstado());
-        monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex()); 
+        monto = new Monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(),solicitud.getTasaInteres()); 
         obtenerdetallemonto(monto);
     }
     
-    public void obtenerdetallemonto(monto monto){
+    public void obtenerdetallemonto(Monto monto){
         
         txtTotalIntereses.setText(monto.getTotalIntereses());
         txtTotalIva.setText(monto.getTotalIva());

@@ -3,7 +3,7 @@ package FORMS;
 
 
 import Entidades.SolicitudCredito;
-import UTILIDADES.monto;
+import UTILIDADES.Monto;
 
 /**
  *
@@ -11,7 +11,7 @@ import UTILIDADES.monto;
  */
 public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
 
-    public monto monto;
+    public Monto monto;
   
     public DETALLE_SOLICITUD_FORM(SolicitudCredito solicitud) {
         
@@ -498,7 +498,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
         cmbplazos.setSelectedIndex(solicitud.getPlazo());
         cmbformapagos.setSelectedIndex(solicitud.getFormaPago());
         
-        monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex()); 
+        monto = new Monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(),solicitud.getTasaInteres()); 
         
         txtcuota.setText(monto.getCuota());
         txtInteresCuota.setText(monto.valorXCuota(monto.getTotalIntereses()));
