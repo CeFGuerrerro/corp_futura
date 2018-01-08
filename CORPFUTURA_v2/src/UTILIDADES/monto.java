@@ -22,12 +22,12 @@ public class monto {
     private double totalDeducciones;
     
 
-    public monto(String monto, int plazo, int formaPago) {
+    public monto(String monto, int plazo, int formaPago, String tasa) {
         
         this.monto = Double.parseDouble(monto);
         this.plazo = plazo;
         this.formaPago = formaPago;
-        setTotalIntereses();
+        setTotalIntereses(convertirtasa(tasa));
         setTotalIva();
         setAsesoria();
         setTotalPago();
@@ -41,15 +41,30 @@ public class monto {
         return Math.rint(numero*cifras)/cifras;
     }
     
+    public static double convertirtasa(String tasa){
+        
+        double tasa1 = Double.parseDouble(tasa);
+        tasa1 = tasa1/100.0;
+        return tasa1;
+    
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
+     
     public String getTotalIntereses() {
         return String.valueOf(totalIntereses);
     }
     
-    public void setTotalIntereses(){
-        totalIntereses = redondear((monto*0.09*plazo),2);
+    public void setTotalIntereses(double tasa){
+        totalIntereses = redondear((monto*tasa*plazo),2);
            
     }
-    
     
     public String getTotalIva(){
         return String.valueOf(totalIva);
@@ -60,7 +75,6 @@ public class monto {
         totalIva = redondear((totalIntereses*0.13),2);
            
     }
-    
     
     public String getAsesoria(){
         return String.valueOf(asesoria);
@@ -75,7 +89,14 @@ public class monto {
            
     }
     
-    
+    public String getTotalPago() {
+        return String.valueOf(totalPago);
+    }
+
+    public void setTotalPago() {
+        this.totalPago = monto+totalIntereses+totalIva;
+    }
+          
     public String getCuota() {
         return String.valueOf(cuota);
     }
@@ -100,6 +121,23 @@ public class monto {
            cuota = String.valueOf(monto);
            
         return cuota;
+    }
+    
+    public static double valorXCuota(double monto,int plazo,int formaPago){
+       
+           switch(formaPago){
+               case 1:     monto = monto/(4*plazo);
+                           monto = redondear(monto,2);
+                           break;
+               case 2:     monto = monto/(2*plazo);
+                           monto = redondear(monto,2);
+                           break;
+               case 3:     monto = monto/plazo;
+                           monto = redondear(monto,2);
+                           break;
+           }
+           
+        return monto;
     }
     
     public int numeroCuotas(){
@@ -131,15 +169,6 @@ public class monto {
         totalDeducciones = redondear(totalDeducciones,2);         
     }
 
-    
-    public String getTotalPago() {
-        return String.valueOf(totalPago);
-    }
-
-    public void setTotalPago() {
-        this.totalPago = monto+totalIntereses+totalIva;
-    }
-    
     public String getMontoRecibir(){
         Double monto=this.monto;
         monto= this.monto-totalDeducciones;
@@ -148,10 +177,11 @@ public class monto {
     }
  
     public String getMontoaPagar(){
-        Double total=totalPago-totalDeducciones;
+        Double total=totalPago;
         total = redondear(total,2);         
         return String.valueOf(total);
     }
+    
     
     
     
