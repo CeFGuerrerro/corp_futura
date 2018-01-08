@@ -6,6 +6,7 @@
 package DOCS_DATASOURCES;
 
 import Entidades.SolicitudCredito;
+import static UTILIDADES.fechas.calcularEdad;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -81,6 +82,9 @@ public class DS_Solicitud1 implements JRDataSource {
                     } else if (listaSolicitudes.get(indice).getDatosPersonales().getEstadoCivil() == 4) {
                         valor = "VIUDO/A";
                     }
+                    return valor;
+                case "edad":
+                    valor = calcularEdad(listaSolicitudes.get(indice).getDatosPersonales().getFechaNacimiento());
                     return valor;
                 case "tel":
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getTelefono();
