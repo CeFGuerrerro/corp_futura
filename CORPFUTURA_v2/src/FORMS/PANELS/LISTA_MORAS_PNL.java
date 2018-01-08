@@ -7,7 +7,7 @@ import Entidades.Creditos;
 import Entidades.Mora;
 import MODELOSTBL.modeloCreditos;
 import MODELOSTBL.modeloMoras;
-import UTILIDADES.Monto;
+import UTILIDADES.monto;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -203,8 +203,8 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                         double pendiente = cjc.obtenerTotalPendiente(credito,panel.fechadesistema);
                         if(mora.getMontoPendiente()!= pendiente){
                             
-                            mora.setMontoPendiente(Monto.redondear(pendiente,2));
-                            mora.setCuotasPendientes(Monto.redondear(pendiente/credito.getCuota(),2));
+                            mora.setMontoPendiente(monto.redondear(pendiente,2));
+                            mora.setCuotasPendientes(monto.redondear(pendiente/credito.getCuota(),2));
                        
                         }
                         
@@ -214,7 +214,7 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                             
                             if(mora.getSemana()<semanas){
                                mora.setSemana(semanas);
-                               mora.setMoraTotal(Monto.redondear(5.65*semanas,2));
+                               mora.setMoraTotal(monto.redondear(5.65*semanas,2));
                             }
                             
                             

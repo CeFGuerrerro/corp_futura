@@ -4,7 +4,7 @@ package FORMS.PANELS;
 import CONTROLADORES.CreditosJpaController;
 import Entidades.Creditos;
 import MODELOSTBL.modeloCreditos;
-import UTILIDADES.Monto;
+import UTILIDADES.monto;
 import java.util.List;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -251,7 +251,7 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
     public void cargarTotalesCredito(int indice){
     
         Creditos credito = modelo.obtenerCredito(indice);
-        Monto monto = new Monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago(), credito.getSolicitudCredito().getTasaInteres());
+        monto monto = new monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago(), credito.getSolicitudCredito().getTasaInteres());
         txtTotalPago.setText(monto.getTotalPago());
         txtTotalIntereses.setText(monto.getTotalIntereses());
         txtTotalIva.setText(monto.getTotalIva());

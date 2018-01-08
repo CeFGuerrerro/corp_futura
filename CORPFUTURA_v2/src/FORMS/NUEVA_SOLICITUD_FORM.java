@@ -7,7 +7,7 @@ import Entidades.SolicitudCredito;
 import Entidades.SolicitudCreditoPK;
 import Entidades.Usuarios;
 import FORMS.PANELS.LISTA_SOLICITUDES_PNL;
-import UTILIDADES.Monto;
+import UTILIDADES.monto;
 import CONTROLADORES.DatosPersonalesJpaController;
 import CONTROLADORES.SolicitudCreditoJpaController;
 import UTILIDADES.archivos;
@@ -26,7 +26,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
     public DatosPersonales datospersonales;
     public SolicitudCredito solicitud;
-    public Monto monto = new Monto();
+    public monto monto = new monto();
     public LISTA_SOLICITUDES_PNL listasolicitud;
     
     private DatosPersonalesJpaController dtjc = new DatosPersonalesJpaController();
@@ -706,7 +706,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
          if(!txtmonto.getText().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0 && !txttasa.getText().trim().isEmpty()){
              
-            monto = new Monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
+            monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
              
              txtTotalIntereses.setText(monto.getTotalIntereses());
              txtTotalIva.setText(monto.getTotalIva());

@@ -10,7 +10,7 @@ import Entidades.Mora;
 import Entidades.Pagos;
 import FORMS.PANELS.LISTA_CREDITOS_PNL;
 import FORMS.PANELS.LISTA_MORAS_PNL;
-import UTILIDADES.Monto;
+import UTILIDADES.monto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,7 +27,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
     public double totalpendiente;
     public LISTA_CREDITOS_PNL cp;
      public LISTA_MORAS_PNL mp;
-    public Monto monto;
+    public monto monto;
     double indicador;
     
     public CreditosJpaController cjc = new CreditosJpaController();
@@ -47,7 +47,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         cp=cp1;
         mp=mp1;
         cargarCredito();
-        monto = new Monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago(), String.valueOf(credito.getSolicitudCredito().getTasaInteres()));
+        monto = new monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago(), String.valueOf(credito.getSolicitudCredito().getTasaInteres()));
     }
 
    
@@ -617,7 +617,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
            txtCuotasPendientes.setText(mora.getCuotasPendientes().toString());
         
            totalpendiente =(mora.getMoraTotal()-mora.getMoraCancelada())+mora.getMontoPendiente();
-           totalpendiente = Monto.redondear(totalpendiente, 2);
+           totalpendiente = monto.redondear(totalpendiente, 2);
            txtTotalPendiente.setText(String.valueOf(totalpendiente));
         }
         
@@ -669,8 +669,8 @@ public class PAGO_FORM extends javax.swing.JFrame {
         credito.setInteresPagados(credito.getInteresPagados()+pago.getInteres());
         credito.setIvaPagado(credito.getIvaPagado()+pago.getIvaIntereses());
         credito.setSaldoPagado(credito.getSaldoPagado()+pago.getCapitalAbonado());
-        credito.setSaldoRestante(Monto.redondear(credito.getMonto()-credito.getSaldoPagado(), 2));
-        credito.setMoraPagada(Monto.redondear(credito.getMoraPagada()+pago.getMora()+pago.getIvaMora(), 2));
+        credito.setSaldoRestante(monto.redondear(credito.getMonto()-credito.getSaldoPagado(), 2));
+        credito.setMoraPagada(monto.redondear(credito.getMoraPagada()+pago.getMora()+pago.getIvaMora(), 2));
     }
     
     private void actualizarMora(){

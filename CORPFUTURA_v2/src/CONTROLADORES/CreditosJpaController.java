@@ -15,7 +15,7 @@ import CONTROLADORES.exceptions.PreexistingEntityException;
 import Entidades.Mora;
 import Entidades.Pagos;
 import UTILIDADES.fechas;
-import UTILIDADES.Monto;
+import UTILIDADES.monto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -233,7 +233,7 @@ public class CreditosJpaController implements Serializable {
     }
      
     public double obtenerSaldoalafecha(Creditos credito, Date fechasistema){
-        double saldo = Monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
+        double saldo = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
         int numeropagos=fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), credito.getDescuentoCf(), fechasistema);
         saldo=saldo*numeropagos;
         return saldo;

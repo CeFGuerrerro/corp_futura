@@ -11,7 +11,7 @@ import Entidades.CreditosPK;
 import Entidades.EvaluacionCredito;
 import Entidades.SolicitudCredito;
 import FORMS.PANELS.LISTA_SOLICITUDES_PNL;
-import UTILIDADES.Monto;
+import UTILIDADES.monto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -685,7 +685,7 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
        txtAsesoria.setText("");
         txtcuotafinal.setText("");
         if(!txtmonto.getText().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0){
-            Monto monto1 = new Monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), solicitud.getTasaInteres()); 
+            monto monto1 = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), solicitud.getTasaInteres()); 
             obtenerdetallemonto(monto1);          
         }
         
@@ -768,7 +768,7 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
             cmbformapagos.setSelectedIndex(evaluacion.getFormaPago());  
     }
     
-    public void obtenerdetallemonto(Monto monto){
+    public void obtenerdetallemonto(monto monto){
         
         txtmontoaprobado.setText(txtmonto.getText());
         txtTotalIntereses.setText(monto.getTotalIntereses());
@@ -811,7 +811,7 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         credito.setFechaPrimerPago(fechprimerpago.getDate());
         credito.setFechaVencimiento(fechvencimiento.getDate());
         
-        Monto monto = new Monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), solicitud.getTasaInteres());
+        monto monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), solicitud.getTasaInteres());
         credito.setCuota(Double.parseDouble(monto.getCuota()));
         if(chkAsesoria.isSelected()){credito.setAsesoria(Double.parseDouble(monto.getAsesoria()));}
         if(chkcuotafinal.isSelected()){credito.setCuotaFinal(Double.parseDouble(monto.getCuota()));}
