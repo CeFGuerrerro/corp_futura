@@ -41,7 +41,7 @@
 				</textElement>
 				<text><![CDATA[Yo]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField>
 				<reportElement x="40" y="10" width="500" height="30" uuid="c56e89bd-54cc-4a66-a09d-909cdb8f840d"/>
 				<box bottomPadding="5">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -49,13 +49,13 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Calibri" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="20" y="40" width="530" height="450" uuid="335e47ff-3f5d-46aa-a4f1-89d7bac60ce8"/>
+				<reportElement x="20" y="40" width="520" height="450" uuid="335e47ff-3f5d-46aa-a4f1-89d7bac60ce8"/>
 				<textElement textAlignment="Justified" verticalAlignment="Justified">
 					<font fontName="Calibri" size="14"/>
 					<paragraph lineSpacing="Proportional"/>
@@ -91,8 +91,8 @@
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font size="12" isBold="true"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{dui}]]></textFieldExpression>
 			</textField>

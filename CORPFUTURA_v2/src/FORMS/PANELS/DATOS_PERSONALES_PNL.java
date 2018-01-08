@@ -533,8 +533,8 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
             datospersonales.setCelular(txtcel.getText().trim());
             datospersonales.setDui(txtdui.getText().trim());
             datospersonales.setEstadoCivil((short)cmbcivil.getSelectedIndex());
-            datospersonales.setFechaExpedicion(dtexpedicion.getDate());
-            datospersonales.setFechaNacimiento(dtnacimiento.getDate());
+            datospersonales.setFechaExpedicion(dtnacimiento.getDate());
+            datospersonales.setFechaNacimiento(dtexpedicion.getDate());
             datospersonales.setNit(txtnit.getText().trim());
             datospersonales.setNivelEstudio((short)cmbestudio.getSelectedIndex());
             datospersonales.setNombre(txtnombre.getText().trim());
@@ -576,8 +576,8 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         txtocupacion.setText(dt.getOcupacion());
         cmbcivil.setSelectedIndex(dt.getEstadoCivil());
         cmbestudio.setSelectedIndex(dt.getNivelEstudio());
-        dtnacimiento.setDate(dt.getFechaNacimiento());
-        dtexpedicion.setDate(dt.getFechaExpedicion());  
+        dtnacimiento.setDate(dt.getFechaExpedicion());
+        dtexpedicion.setDate(dt.getFechaNacimiento());  
         txtdependen.setText(dt.getDependen());
         txtnumhijos.setText(dt.getCantidadHijos());
     

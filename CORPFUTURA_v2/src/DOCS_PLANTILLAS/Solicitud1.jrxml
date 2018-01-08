@@ -299,7 +299,7 @@
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<text><![CDATA[TELEFONO:]]></text>
+				<text><![CDATA[CELULAR:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="362" y="135" width="53" height="13" uuid="f2602f4a-a4e9-40a0-94b8-edde4c91faaf">
@@ -309,7 +309,7 @@
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<text><![CDATA[CELULAR:]]></text>
+				<text><![CDATA[TELEFONO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="66" y="132" width="94" height="15" uuid="d3c2adc6-69ce-4094-b706-6b2b7a3a2f18"/>
@@ -745,7 +745,7 @@
 				<text><![CDATA[TELEFONO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="543" width="89" height="13" uuid="aa822a88-d19a-4239-a72f-22b562952cb7">
+				<reportElement x="300" y="543" width="108" height="13" uuid="aa822a88-d19a-4239-a72f-22b562952cb7">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -824,7 +824,7 @@
 				<textFieldExpression><![CDATA[$F{telneg}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="389" y="540" width="98" height="15" uuid="7e0d538d-282a-4662-8901-052197a7fda9"/>
+				<reportElement x="408" y="540" width="79" height="15" uuid="7e0d538d-282a-4662-8901-052197a7fda9"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -923,9 +923,9 @@
 			</textField>
 			<componentElement>
 				<reportElement x="0" y="347" width="489" height="100" uuid="16736eab-c97c-4d2a-a6b8-f94c638cc287"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Dataset1" uuid="b34bd5ac-278b-4457-aed7-bb5c75922901">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{Familiares})]]></dataSourceExpression>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{Familiares}) ]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="14" width="489">
 						<textField>
