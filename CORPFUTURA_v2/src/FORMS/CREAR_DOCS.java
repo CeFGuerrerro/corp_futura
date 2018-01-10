@@ -51,6 +51,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         cargarSolicitud();
         getTotalBienes();
         getCodeudores();
+        validarDocumentos();
     }
 
     @SuppressWarnings("unchecked")
@@ -425,6 +426,19 @@ public class CREAR_DOCS extends javax.swing.JFrame {
             listaCod.add(c.getDuiCodeudor());
         }
         return listaCod;
+    }
+    
+    public void validarDocumentos(){
+        if(solicitud.getDatosPersonales().getDeclaracionBienesList().isEmpty() == true){
+            chkdeclaracionbienes.setEnabled(false);
+        }
+        if(solicitud.getEvaluacionCredito() == null){
+            chkperfil.setEnabled(false);
+        }
+        if(solicitud.getCreditos() == null){
+            chkresolucion.setEnabled(false);
+            chkhojadesembolso.setEnabled(false);
+        }
     }
 
 

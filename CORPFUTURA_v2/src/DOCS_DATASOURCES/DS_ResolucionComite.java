@@ -75,6 +75,13 @@ public class DS_ResolucionComite implements JRDataSource {
             case "monto":
                 valor = listaSolicitudes.get(indice).getCreditos().getMonto();
                 return valor;
+            case "tipocredito":
+                if (listaSolicitudes.get(indice).getTipo() == 0) {
+                    valor = "COMERCIAL";
+                } else if (listaSolicitudes.get(indice).getTipo() == 1) {
+                    valor = "EMPLEADO";
+                }
+
             case "destino":
                 valor = listaSolicitudes.get(indice).getDestinoCredito();
                 return valor;
@@ -114,7 +121,7 @@ public class DS_ResolucionComite implements JRDataSource {
                 } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getTipoGarantia() == 2) {
                     valor = "CODEUDORES";
                 } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getTipoGarantia() == 3) {
-                    valor = "GARANTIA PRENDARIA";
+                    valor = "PRENDARIA";
                 }
                 return valor;
             case "descripciongarantia":
@@ -156,13 +163,22 @@ public class DS_ResolucionComite implements JRDataSource {
             case "asesoria":
                 valor = listaSolicitudes.get(indice).getCreditos().getAsesoria();
                 return valor;
-            case "cuotafinal":
-                if (listaSolicitudes.get(indice).getCreditos().getCuotaFinal() != null) {
-                    valor = listaSolicitudes.get(indice).getCreditos().getCuotaFinal();
-                }else {
-                 valor = 0.0;   
-                }
+            case "ivaase":
+                valor = listaSolicitudes.get(indice).getCreditos().getIvaAsesoria();
                 return valor;
+            case "cuotafinal":
+                valor = listaSolicitudes.get(indice).getCreditos().getCuotaFinal();
+                return valor;
+            case "ivacuota":
+                valor = listaSolicitudes.get(indice).getCreditos().getIvaCuotaFinal();
+                return valor;
+            case "capital":
+                valor = listaSolicitudes.get(indice).getCapitalDes();
+                return valor;
+            case "intereses":
+                valor = listaSolicitudes.get(indice).getInteresesDes();
+                return valor;
+            case "mora":
         }
 
         return valor;

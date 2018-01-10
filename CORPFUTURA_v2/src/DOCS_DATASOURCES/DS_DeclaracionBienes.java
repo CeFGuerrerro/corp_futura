@@ -6,7 +6,10 @@
 package DOCS_DATASOURCES;
 
 import Entidades.SolicitudCredito;
+import UTILIDADES.fechas;
+import static UTILIDADES.fechas.calcularEdad;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -45,6 +48,13 @@ public class DS_DeclaracionBienes implements JRDataSource {
                 return valor;
             case "dui":
                 valor = listaSolicitudes.get(indice).getDatosPersonales().getDui();
+                return valor;
+            case "edad":
+                valor = calcularEdad(listaSolicitudes.get(indice).getDatosPersonales().getFechaNacimiento());
+                return valor;
+            case "fecha":
+                valor = fechas.formatearFecha(Calendar.getInstance().getTime());
+                return valor;
         }
         return valor;
     }

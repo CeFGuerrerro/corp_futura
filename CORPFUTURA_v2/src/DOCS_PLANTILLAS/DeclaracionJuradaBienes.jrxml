@@ -65,7 +65,7 @@
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="14"/>
+					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
@@ -240,7 +240,7 @@
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="225" y="43" width="225" height="18" uuid="bbfd4f37-30bc-4a55-b488-5402fbb67d2f">
+				<reportElement x="225" y="43" width="275" height="18" uuid="bbfd4f37-30bc-4a55-b488-5402fbb67d2f">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -256,7 +256,7 @@
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="450" y="43" width="150" height="18" uuid="afeff461-6bfd-43ca-aa79-8f694f4ad719">
+				<reportElement x="500" y="43" width="100" height="18" uuid="afeff461-6bfd-43ca-aa79-8f694f4ad719">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -334,7 +334,7 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 						</textField>
-						<textField isBlankWhenNull="true">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement x="75" y="0" width="150" height="18" uuid="0dde1004-669f-47f0-8703-1947902296c1">
 								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 							</reportElement>
@@ -349,8 +349,8 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 						</textField>
-						<textField isBlankWhenNull="true">
-							<reportElement x="225" y="0" width="225" height="18" uuid="35735a63-6689-436d-ad21-8c0946ffb4a0">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="225" y="0" width="275" height="18" uuid="35735a63-6689-436d-ad21-8c0946ffb4a0">
 								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 							</reportElement>
 							<box>
@@ -364,8 +364,8 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 						</textField>
-						<textField isBlankWhenNull="true">
-							<reportElement x="450" y="0" width="150" height="18" uuid="77505dd9-ef19-46d7-82a1-da30d32d31dd">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="500" y="0" width="100" height="18" uuid="77505dd9-ef19-46d7-82a1-da30d32d31dd">
 								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
