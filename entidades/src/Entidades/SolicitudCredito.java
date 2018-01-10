@@ -50,6 +50,23 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "SolicitudCredito.findByDesembolso", query = "SELECT s FROM SolicitudCredito s WHERE s.desembolso = :desembolso")})
 public class SolicitudCredito implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "tasa_interes")
+    private String tasaInteres;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "capital_des")
+    private Double capitalDes;
+    @Column(name = "intereses_des")
+    private Double interesesDes;
+    @Column(name = "iva_des")
+    private Double ivaDes;
+    @Column(name = "mora_des")
+    private Double moraDes;
+    @Column(name = "id_Credito_des")
+    private Integer idCreditodes;
+    @Column(name = "tipo")
+    private Short tipo;
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected SolicitudCreditoPK solicitudCreditoPK;
@@ -332,6 +349,62 @@ public class SolicitudCredito implements Serializable {
     @Override
     public String toString() {
         return "Entidades.SolicitudCredito[ solicitudCreditoPK=" + solicitudCreditoPK + " ]";
+    }
+
+    public String getTasaInteres() {
+        return tasaInteres;
+    }
+
+    public void setTasaInteres(String tasaInteres) {
+        this.tasaInteres = tasaInteres;
+    }
+
+    public Double getCapitalDes() {
+        return capitalDes;
+    }
+
+    public void setCapitalDes(Double capitalDes) {
+        this.capitalDes = capitalDes;
+    }
+
+    public Double getInteresesDes() {
+        return interesesDes;
+    }
+
+    public void setInteresesDes(Double interesesDes) {
+        this.interesesDes = interesesDes;
+    }
+
+    public Double getIvaDes() {
+        return ivaDes;
+    }
+
+    public void setIvaDes(Double ivaDes) {
+        this.ivaDes = ivaDes;
+    }
+
+    public Double getMoraDes() {
+        return moraDes;
+    }
+
+    public void setMoraDes(Double moraDes) {
+        this.moraDes = moraDes;
+    }
+
+    public Integer getIdCreditodes() {
+        return idCreditodes;
+    }
+
+    public void setIdCreditodes(Integer idCreditodes) {
+        this.idCreditodes = idCreditodes;
+    }
+
+    public Short getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Short tipo) {
+        this.tipo = tipo;
     }
     
 }

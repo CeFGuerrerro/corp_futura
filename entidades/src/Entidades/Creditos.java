@@ -52,6 +52,17 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Creditos.findByEstado", query = "SELECT c FROM Creditos c WHERE c.estado = :estado")})
 public class Creditos implements Serializable {
 
+    @Column(name = "total_intereses")
+    private Double totalIntereses;
+    @Column(name = "total_iva")
+    private Double totalIva;
+    @Column(name = "desembolso")
+    private Double desembolso;
+    @Column(name = "iva_asesoria")
+    private Double ivaAsesoria;
+    @Column(name = "iva_cuota_final")
+    private Double ivaCuotaFinal;
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CreditosPK creditosPK;
@@ -325,6 +336,46 @@ public class Creditos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Creditos[ creditosPK=" + creditosPK + " ]";
+    }
+
+    public Double getTotalIntereses() {
+        return totalIntereses;
+    }
+
+    public void setTotalIntereses(Double totalIntereses) {
+        this.totalIntereses = totalIntereses;
+    }
+
+    public Double getTotalIva() {
+        return totalIva;
+    }
+
+    public void setTotalIva(Double totalIva) {
+        this.totalIva = totalIva;
+    }
+
+    public Double getDesembolso() {
+        return desembolso;
+    }
+
+    public void setDesembolso(Double desembolso) {
+        this.desembolso = desembolso;
+    }
+
+    public Double getIvaAsesoria() {
+        return ivaAsesoria;
+    }
+
+    public void setIvaAsesoria(Double ivaAsesoria) {
+        this.ivaAsesoria = ivaAsesoria;
+    }
+
+    public Double getIvaCuotaFinal() {
+        return ivaCuotaFinal;
+    }
+
+    public void setIvaCuotaFinal(Double ivaCuotaFinal) {
+        this.ivaCuotaFinal = ivaCuotaFinal;
     }
     
 }

@@ -36,6 +36,13 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Mora.findByFechaCancelacion", query = "SELECT m FROM Mora m WHERE m.fechaCancelacion = :fechaCancelacion")})
 public class Mora implements Serializable {
 
+    @Column(name = "semana")
+    private Integer semana;
+    @Column(name = "monto_pendiente")
+    private Double montoPendiente;
+    @Column(name = "cuotas_pendientes")
+    private Double cuotasPendientes;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -146,6 +153,30 @@ public class Mora implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Mora[ idMora=" + idMora + " ]";
+    }
+
+    public Integer getSemana() {
+        return semana;
+    }
+
+    public void setSemana(Integer semana) {
+        this.semana = semana;
+    }
+
+    public Double getMontoPendiente() {
+        return montoPendiente;
+    }
+
+    public void setMontoPendiente(Double montoPendiente) {
+        this.montoPendiente = montoPendiente;
+    }
+
+    public Double getCuotasPendientes() {
+        return cuotasPendientes;
+    }
+
+    public void setCuotasPendientes(Double cuotasPendientes) {
+        this.cuotasPendientes = cuotasPendientes;
     }
     
 }
