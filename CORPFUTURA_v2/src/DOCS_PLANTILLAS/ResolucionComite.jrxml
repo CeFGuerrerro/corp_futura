@@ -41,7 +41,6 @@
 	<field name="formapago" class="java.lang.String"/>
 	<field name="otrascondiciones" class="java.lang.String"/>
 	<field name="cantidadaprobada" class="java.lang.Double"/>
-	<field name="saldodescontado" class="java.lang.Double"/>
 	<field name="capital" class="java.lang.Double"/>
 	<field name="intereses" class="java.lang.Double"/>
 	<field name="mora" class="java.lang.Double"/>
@@ -53,7 +52,10 @@
 		<variableExpression><![CDATA[$F{cantidadaprobada}-$V{totaldescuentos}]]></variableExpression>
 	</variable>
 	<variable name="totaldescuentos" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}]]></variableExpression>
+		<variableExpression><![CDATA[$F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$V{saldodescontado}]]></variableExpression>
+	</variable>
+	<variable name="saldodescontado" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{capital}+$F{intereses}+$F{mora}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -600,18 +602,6 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{cantidadaprobada}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="478" width="124" height="18" uuid="03d718fa-a218-4956-a83f-e041664467e8">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<bottomPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{saldodescontado}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
 				<reportElement x="143" y="496" width="124" height="18" uuid="a64f286f-12de-4f9f-9d52-c255e5c316e6">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -771,6 +761,16 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totaldescuentos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="478" width="124" height="18" uuid="6e90232e-7b77-4ae8-8a1b-ba9a8b0b829d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldodescontado}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -179,6 +179,8 @@ public class DS_ResolucionComite implements JRDataSource {
                 valor = listaSolicitudes.get(indice).getInteresesDes();
                 return valor;
             case "mora":
+                valor = listaSolicitudes.get(indice).getMoraDes();
+                return valor;
         }
 
         return valor;
