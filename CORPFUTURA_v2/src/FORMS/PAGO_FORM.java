@@ -669,7 +669,6 @@ public class PAGO_FORM extends javax.swing.JFrame {
         credito.setInteresPagados(credito.getInteresPagados()+pago.getInteres());
         credito.setIvaPagado(credito.getIvaPagado()+pago.getIvaIntereses());
         credito.setSaldoPagado(credito.getSaldoPagado()+pago.getCapitalAbonado());
-        credito.setSaldoRestante(monto.redondear(credito.getMonto()-credito.getSaldoPagado(), 2));
         credito.setMoraPagada(monto.redondear(credito.getMoraPagada()+pago.getMora()+pago.getIvaMora(), 2));
     }
     

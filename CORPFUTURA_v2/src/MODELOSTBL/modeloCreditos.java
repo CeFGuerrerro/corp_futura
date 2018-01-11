@@ -136,7 +136,7 @@ public class modeloCreditos implements TableModel {
             case 3:
                 return aux.getSaldoPagado();
             case 4:
-                return aux.getSaldoRestante();
+                return (aux.getMonto()-aux.getSaldoPagado());
             case 5:
                 return aux.getInteresPagados();
             case 6:

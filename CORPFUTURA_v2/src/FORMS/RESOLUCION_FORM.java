@@ -816,7 +816,6 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         if(chkAsesoria.isSelected()){credito.setAsesoria(Double.parseDouble(monto.getAsesoria()));}
         if(chkcuotafinal.isSelected()){credito.setCuotaFinal(Double.parseDouble(monto.getCuota()));}
         credito.setDescuentoCf(chkcuotafinal.isSelected());
-        credito.setSaldoRestante(Double.parseDouble(txtmonto.getText()));
         credito.setCuotasPorPagar(monto.numeroCuotas());
         credito.setCuotasPagadas(0);
         credito.setInteresPagados(0.0);
@@ -824,12 +823,7 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         credito.setSaldoPagado(0.0);
         credito.setMoraPagada(0.0);
        
-        if(!txtcapitald.getText().trim().isEmpty()){credito.setCapitalDes(Double.parseDouble(txtcapitald.getText()));}
-        else{credito.setCapitalDes(0.0);}
-        if(!txtmorad.getText().trim().isEmpty()){credito.setMoraDes(Double.parseDouble(txtmorad.getText()));}
-        else{credito.setMoraDes(0.0);}
-        if(!txtinteresesd.getText().trim().isEmpty()){credito.setInteresesDes(Double.parseDouble(txtinteresesd.getText()));}
-        else{credito.setInteresesDes(0.0);}
+       
         
         credito.setEstado((short)1); 
           
