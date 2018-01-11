@@ -416,6 +416,18 @@ public class SolicitudCreditoJpaController implements Serializable {
         return valido;
     }
     
+     public boolean validarCreditosActivos(DatosPersonales dp){
+        boolean valido = true;
+        int cont = 0;
+            for(SolicitudCredito solicitud: dp.getSolicitudCreditoList()){
+                if (solicitud.getCreditos()!=null){
+                    if (solicitud.getCreditos().getEstado()==2){cont=cont+1;}
+                }
+            }
+            if(cont==2){valido=false;}
+        return valido;
+    }
+    
     public int obtenerID(){
         int id = this.getSolicitudCreditoCount()+1;
         return id; 

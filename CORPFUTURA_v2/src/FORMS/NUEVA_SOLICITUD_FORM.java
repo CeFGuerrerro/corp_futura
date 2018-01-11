@@ -12,7 +12,6 @@ import CONTROLADORES.DatosPersonalesJpaController;
 import CONTROLADORES.SolicitudCreditoJpaController;
 import UTILIDADES.archivos;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +25,10 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
     public DatosPersonales datospersonales;
     public SolicitudCredito solicitud;
-    public monto monto = new monto();
+    public monto monto;
+    public SALDOS_PENDIENTES_FORM saldosform;
+    public int idCreditoACambiar;
+
     public LISTA_SOLICITUDES_PNL listasolicitud;
     
     private DatosPersonalesJpaController dtjc = new DatosPersonalesJpaController();
@@ -113,6 +115,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         jLabel29 = new javax.swing.JLabel();
         txttasa = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
+        btnDetalle = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -192,7 +195,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         bgroup.add(rbnnombre);
         rbnnombre.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         rbnnombre.setForeground(new java.awt.Color(51, 51, 51));
-        rbnnombre.setText("NOMNBRE");
+        rbnnombre.setText("NONBRE");
 
         rbndui.setBackground(new java.awt.Color(240, 236, 236));
         bgroup.add(rbndui);
@@ -399,6 +402,14 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         jLabel30.setForeground(new java.awt.Color(51, 51, 51));
         jLabel30.setText("%");
 
+        btnDetalle.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        btnDetalle.setText("VER DETALLES");
+        btnDetalle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetalleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
         contenidoLayout.setHorizontalGroup(
@@ -425,12 +436,14 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                                             .addComponent(txtcuotafinal)
                                             .addComponent(txtcapitald)))
                                     .addGroup(contenidoLayout.createSequentialGroup()
+                                        .addGap(38, 38, 38)
+                                        .addComponent(jLabel2))
+                                    .addGroup(contenidoLayout.createSequentialGroup()
                                         .addComponent(jLabel7)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmbtipocredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(contenidoLayout.createSequentialGroup()
-                                        .addGap(38, 38, 38)
-                                        .addComponent(jLabel2)))
+                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(btnDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(cmbtipocredito, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(contenidoLayout.createSequentialGroup()
@@ -589,13 +602,18 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                     .addComponent(cmbplazos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel29)
-                    .addComponent(jLabel30)
-                    .addComponent(txttasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addComponent(cmbformapagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(contenidoLayout.createSequentialGroup()
+                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel29)
+                            .addComponent(jLabel30)
+                            .addComponent(txttasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)
+                            .addComponent(cmbformapagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()
+                        .addComponent(btnDetalle)
+                        .addGap(18, 18, 18)))
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2)
                     .addComponent(jLabel10)
@@ -730,34 +748,39 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
         boolean valido = true;
         if(scjc.comprobarSolicitud(datospersonales)){
-            if(validarcampos()){
-                solicitud = new SolicitudCredito();
-                cargarDatosSolicitud(solicitud);
-                try {
-                    scjc.create(solicitud);
-                } catch (Exception ex) {
-                    valido = false;
-                    Logger.getLogger(NUEVA_SOLICITUD_FORM.class.getName()).log(Level.SEVERE, null, ex);
-                }
-               
-                if(valido){
-                    listasolicitud.cargarModelo();
-                    listasolicitud.tblSolicitudes.clearSelection();
-                    try {archivos.crearCarpetaPerfil(datospersonales.getNombre());} 
-                    catch (IOException ex) {System.out.println(ex);}
-                    this.dispose(); 
-                }else{
-                    JOptionPane.showMessageDialog(null,"Error al registrar la transaccion en la base de datos");
-                }     
+            if(scjc.validarCreditosActivos(datospersonales)){
                 
+                if(validarcampos()){
+                    solicitud = new SolicitudCredito();
+                    cargarDatosSolicitud(solicitud);
+                    try {
+                        scjc.create(solicitud);
+                    } catch (Exception ex) {
+                        valido = false;
+                        Logger.getLogger(NUEVA_SOLICITUD_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+               
+                    if(valido){
+                        listasolicitud.cargarModelo();
+                        listasolicitud.tblSolicitudes.clearSelection();
+                        try {archivos.crearCarpetaPerfil(datospersonales.getNombre());} 
+                        catch (IOException ex) {System.out.println(ex);}
+                        this.dispose(); 
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Error al registrar la transaccion en la base de datos");
+                    }     
+       
+                }else{
+                    JOptionPane.showMessageDialog(null,"Hace falta especificar algunos campos.");
+                }
             }else{
-                JOptionPane.showMessageDialog(null,"Hace falta especificar algunos campos.");
+                JOptionPane.showMessageDialog(this,"La Solicitud no puede ser registrada.\nEl Cliente "+datospersonales.getNombre()
+                                              +"\nactualmente cuenta con dos Creditos activos.");
             }
         }else{
             JOptionPane.showMessageDialog(this, "La Solicitud no puede ser registrada.\nEl Cliente "+datospersonales.getNombre()
                                           +"\nactualmente cuenta con una solicitud en proceso.");
-        } 
-        
+        }     
     }//GEN-LAST:event_btnGenerarsolicitudActionPerformed
 
     private void txtbusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtbusquedaKeyReleased
@@ -793,6 +816,16 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         char caracter= evt.getKeyChar();
         if(!Character.isDigit(caracter)) evt.consume();
     }//GEN-LAST:event_txttasaKeyTyped
+
+    private void btnDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetalleActionPerformed
+        
+        if(datospersonales!=null && cmbtipocredito.getSelectedIndex()!=0){
+            saldosform = new SALDOS_PENDIENTES_FORM(datospersonales, cmbtipocredito.getSelectedIndex());
+            saldosform.setVisible(true);
+        
+        }
+    
+    }//GEN-LAST:event_btnDetalleActionPerformed
 
     public void cargarCliente(){
         txtNombre.setText(datospersonales.getNombre());
@@ -832,12 +865,15 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         
     }
     
+
+    
     
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgroup;
     private javax.swing.JButton btnCalcular;
+    private javax.swing.JButton btnDetalle;
     private javax.swing.JButton btnGenerarsolicitud;
     private javax.swing.JCheckBox chkAsesoria;
     private javax.swing.JCheckBox chkcuotafinal;
