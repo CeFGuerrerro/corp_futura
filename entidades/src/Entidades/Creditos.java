@@ -33,17 +33,18 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Creditos.findByPlazo", query = "SELECT c FROM Creditos c WHERE c.plazo = :plazo")
     , @NamedQuery(name = "Creditos.findByCuota", query = "SELECT c FROM Creditos c WHERE c.cuota = :cuota")
     , @NamedQuery(name = "Creditos.findByFormaPago", query = "SELECT c FROM Creditos c WHERE c.formaPago = :formaPago")
+    , @NamedQuery(name = "Creditos.findByTotalIntereses", query = "SELECT c FROM Creditos c WHERE c.totalIntereses = :totalIntereses")
+    , @NamedQuery(name = "Creditos.findByTotalIva", query = "SELECT c FROM Creditos c WHERE c.totalIva = :totalIva")
+    , @NamedQuery(name = "Creditos.findByDesembolso", query = "SELECT c FROM Creditos c WHERE c.desembolso = :desembolso")
     , @NamedQuery(name = "Creditos.findByFechaInicio", query = "SELECT c FROM Creditos c WHERE c.fechaInicio = :fechaInicio")
     , @NamedQuery(name = "Creditos.findByFechaVencimiento", query = "SELECT c FROM Creditos c WHERE c.fechaVencimiento = :fechaVencimiento")
     , @NamedQuery(name = "Creditos.findByFechaPrimerPago", query = "SELECT c FROM Creditos c WHERE c.fechaPrimerPago = :fechaPrimerPago")
     , @NamedQuery(name = "Creditos.findByAsesoria", query = "SELECT c FROM Creditos c WHERE c.asesoria = :asesoria")
+    , @NamedQuery(name = "Creditos.findByIvaAsesoria", query = "SELECT c FROM Creditos c WHERE c.ivaAsesoria = :ivaAsesoria")
+    , @NamedQuery(name = "Creditos.findByIvaCuotaFinal", query = "SELECT c FROM Creditos c WHERE c.ivaCuotaFinal = :ivaCuotaFinal")
     , @NamedQuery(name = "Creditos.findByCuotaFinal", query = "SELECT c FROM Creditos c WHERE c.cuotaFinal = :cuotaFinal")
     , @NamedQuery(name = "Creditos.findByDescuentoCf", query = "SELECT c FROM Creditos c WHERE c.descuentoCf = :descuentoCf")
-    , @NamedQuery(name = "Creditos.findByCapitalDes", query = "SELECT c FROM Creditos c WHERE c.capitalDes = :capitalDes")
-    , @NamedQuery(name = "Creditos.findByInteresesDes", query = "SELECT c FROM Creditos c WHERE c.interesesDes = :interesesDes")
-    , @NamedQuery(name = "Creditos.findByMoraDes", query = "SELECT c FROM Creditos c WHERE c.moraDes = :moraDes")
     , @NamedQuery(name = "Creditos.findBySaldoPagado", query = "SELECT c FROM Creditos c WHERE c.saldoPagado = :saldoPagado")
-    , @NamedQuery(name = "Creditos.findBySaldoRestante", query = "SELECT c FROM Creditos c WHERE c.saldoRestante = :saldoRestante")
     , @NamedQuery(name = "Creditos.findByInteresPagados", query = "SELECT c FROM Creditos c WHERE c.interesPagados = :interesPagados")
     , @NamedQuery(name = "Creditos.findByIvaPagado", query = "SELECT c FROM Creditos c WHERE c.ivaPagado = :ivaPagado")
     , @NamedQuery(name = "Creditos.findByMoraPagada", query = "SELECT c FROM Creditos c WHERE c.moraPagada = :moraPagada")
@@ -51,17 +52,6 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Creditos.findByCuotasPorPagar", query = "SELECT c FROM Creditos c WHERE c.cuotasPorPagar = :cuotasPorPagar")
     , @NamedQuery(name = "Creditos.findByEstado", query = "SELECT c FROM Creditos c WHERE c.estado = :estado")})
 public class Creditos implements Serializable {
-
-    @Column(name = "total_intereses")
-    private Double totalIntereses;
-    @Column(name = "total_iva")
-    private Double totalIva;
-    @Column(name = "desembolso")
-    private Double desembolso;
-    @Column(name = "iva_asesoria")
-    private Double ivaAsesoria;
-    @Column(name = "iva_cuota_final")
-    private Double ivaCuotaFinal;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -75,6 +65,12 @@ public class Creditos implements Serializable {
     private Double cuota;
     @Column(name = "forma_pago")
     private Short formaPago;
+    @Column(name = "total_intereses", precision = 22)
+    private Double totalIntereses;
+    @Column(name = "total_iva", precision = 22)
+    private Double totalIva;
+    @Column(name = "desembolso", precision = 22)
+    private Double desembolso;
     @Column(name = "fecha_inicio")
     @Temporal(TemporalType.DATE)
     private Date fechaInicio;
@@ -86,20 +82,16 @@ public class Creditos implements Serializable {
     private Date fechaPrimerPago;
     @Column(name = "asesoria", precision = 22)
     private Double asesoria;
+    @Column(name = "iva_asesoria", precision = 22)
+    private Double ivaAsesoria;
+    @Column(name = "iva_cuota_final", precision = 22)
+    private Double ivaCuotaFinal;
     @Column(name = "cuota_final", precision = 22)
     private Double cuotaFinal;
     @Column(name = "descuento_cf")
     private Boolean descuentoCf;
-    @Column(name = "capital_des", precision = 22)
-    private Double capitalDes;
-    @Column(name = "intereses_des", precision = 22)
-    private Double interesesDes;
-    @Column(name = "mora_des", precision = 22)
-    private Double moraDes;
     @Column(name = "saldo_pagado", precision = 22)
     private Double saldoPagado;
-    @Column(name = "saldo_restante", precision = 22)
-    private Double saldoRestante;
     @Column(name = "interes_pagados", precision = 22)
     private Double interesPagados;
     @Column(name = "iva_pagado", precision = 22)
@@ -169,6 +161,30 @@ public class Creditos implements Serializable {
         this.formaPago = formaPago;
     }
 
+    public Double getTotalIntereses() {
+        return totalIntereses;
+    }
+
+    public void setTotalIntereses(Double totalIntereses) {
+        this.totalIntereses = totalIntereses;
+    }
+
+    public Double getTotalIva() {
+        return totalIva;
+    }
+
+    public void setTotalIva(Double totalIva) {
+        this.totalIva = totalIva;
+    }
+
+    public Double getDesembolso() {
+        return desembolso;
+    }
+
+    public void setDesembolso(Double desembolso) {
+        this.desembolso = desembolso;
+    }
+
     public Date getFechaInicio() {
         return fechaInicio;
     }
@@ -201,6 +217,22 @@ public class Creditos implements Serializable {
         this.asesoria = asesoria;
     }
 
+    public Double getIvaAsesoria() {
+        return ivaAsesoria;
+    }
+
+    public void setIvaAsesoria(Double ivaAsesoria) {
+        this.ivaAsesoria = ivaAsesoria;
+    }
+
+    public Double getIvaCuotaFinal() {
+        return ivaCuotaFinal;
+    }
+
+    public void setIvaCuotaFinal(Double ivaCuotaFinal) {
+        this.ivaCuotaFinal = ivaCuotaFinal;
+    }
+
     public Double getCuotaFinal() {
         return cuotaFinal;
     }
@@ -217,44 +249,12 @@ public class Creditos implements Serializable {
         this.descuentoCf = descuentoCf;
     }
 
-    public Double getCapitalDes() {
-        return capitalDes;
-    }
-
-    public void setCapitalDes(Double capitalDes) {
-        this.capitalDes = capitalDes;
-    }
-
-    public Double getInteresesDes() {
-        return interesesDes;
-    }
-
-    public void setInteresesDes(Double interesesDes) {
-        this.interesesDes = interesesDes;
-    }
-
-    public Double getMoraDes() {
-        return moraDes;
-    }
-
-    public void setMoraDes(Double moraDes) {
-        this.moraDes = moraDes;
-    }
-
     public Double getSaldoPagado() {
         return saldoPagado;
     }
 
     public void setSaldoPagado(Double saldoPagado) {
         this.saldoPagado = saldoPagado;
-    }
-
-    public Double getSaldoRestante() {
-        return saldoRestante;
-    }
-
-    public void setSaldoRestante(Double saldoRestante) {
-        this.saldoRestante = saldoRestante;
     }
 
     public Double getInteresPagados() {
@@ -336,46 +336,6 @@ public class Creditos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Creditos[ creditosPK=" + creditosPK + " ]";
-    }
-
-    public Double getTotalIntereses() {
-        return totalIntereses;
-    }
-
-    public void setTotalIntereses(Double totalIntereses) {
-        this.totalIntereses = totalIntereses;
-    }
-
-    public Double getTotalIva() {
-        return totalIva;
-    }
-
-    public void setTotalIva(Double totalIva) {
-        this.totalIva = totalIva;
-    }
-
-    public Double getDesembolso() {
-        return desembolso;
-    }
-
-    public void setDesembolso(Double desembolso) {
-        this.desembolso = desembolso;
-    }
-
-    public Double getIvaAsesoria() {
-        return ivaAsesoria;
-    }
-
-    public void setIvaAsesoria(Double ivaAsesoria) {
-        this.ivaAsesoria = ivaAsesoria;
-    }
-
-    public Double getIvaCuotaFinal() {
-        return ivaCuotaFinal;
-    }
-
-    public void setIvaCuotaFinal(Double ivaCuotaFinal) {
-        this.ivaCuotaFinal = ivaCuotaFinal;
     }
     
 }

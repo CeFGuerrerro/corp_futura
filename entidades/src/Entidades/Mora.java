@@ -33,15 +33,11 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Mora.findByMoraTotal", query = "SELECT m FROM Mora m WHERE m.moraTotal = :moraTotal")
     , @NamedQuery(name = "Mora.findByMoraCancelada", query = "SELECT m FROM Mora m WHERE m.moraCancelada = :moraCancelada")
     , @NamedQuery(name = "Mora.findByEstado", query = "SELECT m FROM Mora m WHERE m.estado = :estado")
+    , @NamedQuery(name = "Mora.findBySemana", query = "SELECT m FROM Mora m WHERE m.semana = :semana")
+    , @NamedQuery(name = "Mora.findByMontoPendiente", query = "SELECT m FROM Mora m WHERE m.montoPendiente = :montoPendiente")
+    , @NamedQuery(name = "Mora.findByCuotasPendientes", query = "SELECT m FROM Mora m WHERE m.cuotasPendientes = :cuotasPendientes")
     , @NamedQuery(name = "Mora.findByFechaCancelacion", query = "SELECT m FROM Mora m WHERE m.fechaCancelacion = :fechaCancelacion")})
 public class Mora implements Serializable {
-
-    @Column(name = "semana")
-    private Integer semana;
-    @Column(name = "monto_pendiente")
-    private Double montoPendiente;
-    @Column(name = "cuotas_pendientes")
-    private Double cuotasPendientes;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,6 +54,12 @@ public class Mora implements Serializable {
     private Double moraCancelada;
     @Column(name = "estado")
     private Short estado;
+    @Column(name = "semana")
+    private Integer semana;
+    @Column(name = "monto_pendiente", precision = 22)
+    private Double montoPendiente;
+    @Column(name = "cuotas_pendientes", precision = 22)
+    private Double cuotasPendientes;
     @Column(name = "fecha_cancelacion")
     @Temporal(TemporalType.DATE)
     private Date fechaCancelacion;
@@ -114,6 +116,30 @@ public class Mora implements Serializable {
         this.estado = estado;
     }
 
+    public Integer getSemana() {
+        return semana;
+    }
+
+    public void setSemana(Integer semana) {
+        this.semana = semana;
+    }
+
+    public Double getMontoPendiente() {
+        return montoPendiente;
+    }
+
+    public void setMontoPendiente(Double montoPendiente) {
+        this.montoPendiente = montoPendiente;
+    }
+
+    public Double getCuotasPendientes() {
+        return cuotasPendientes;
+    }
+
+    public void setCuotasPendientes(Double cuotasPendientes) {
+        this.cuotasPendientes = cuotasPendientes;
+    }
+
     public Date getFechaCancelacion() {
         return fechaCancelacion;
     }
@@ -153,30 +179,6 @@ public class Mora implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Mora[ idMora=" + idMora + " ]";
-    }
-
-    public Integer getSemana() {
-        return semana;
-    }
-
-    public void setSemana(Integer semana) {
-        this.semana = semana;
-    }
-
-    public Double getMontoPendiente() {
-        return montoPendiente;
-    }
-
-    public void setMontoPendiente(Double montoPendiente) {
-        this.montoPendiente = montoPendiente;
-    }
-
-    public Double getCuotasPendientes() {
-        return cuotasPendientes;
-    }
-
-    public void setCuotasPendientes(Double cuotasPendientes) {
-        this.cuotasPendientes = cuotasPendientes;
     }
     
 }

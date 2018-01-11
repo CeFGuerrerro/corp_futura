@@ -35,12 +35,19 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "SolicitudCredito.findByDui", query = "SELECT s FROM SolicitudCredito s WHERE s.solicitudCreditoPK.dui = :dui")
     , @NamedQuery(name = "SolicitudCredito.findByFechaSolicitud", query = "SELECT s FROM SolicitudCredito s WHERE s.fechaSolicitud = :fechaSolicitud")
     , @NamedQuery(name = "SolicitudCredito.findByTipoCredito", query = "SELECT s FROM SolicitudCredito s WHERE s.tipoCredito = :tipoCredito")
+    , @NamedQuery(name = "SolicitudCredito.findByTasaInteres", query = "SELECT s FROM SolicitudCredito s WHERE s.tasaInteres = :tasaInteres")
     , @NamedQuery(name = "SolicitudCredito.findByMontoRequerido", query = "SELECT s FROM SolicitudCredito s WHERE s.montoRequerido = :montoRequerido")
     , @NamedQuery(name = "SolicitudCredito.findByPlazo", query = "SELECT s FROM SolicitudCredito s WHERE s.plazo = :plazo")
     , @NamedQuery(name = "SolicitudCredito.findByCuota", query = "SELECT s FROM SolicitudCredito s WHERE s.cuota = :cuota")
     , @NamedQuery(name = "SolicitudCredito.findByIvaCuota", query = "SELECT s FROM SolicitudCredito s WHERE s.ivaCuota = :ivaCuota")
     , @NamedQuery(name = "SolicitudCredito.findByFormaPago", query = "SELECT s FROM SolicitudCredito s WHERE s.formaPago = :formaPago")
+    , @NamedQuery(name = "SolicitudCredito.findByCapitalDes", query = "SELECT s FROM SolicitudCredito s WHERE s.capitalDes = :capitalDes")
+    , @NamedQuery(name = "SolicitudCredito.findByInteresesDes", query = "SELECT s FROM SolicitudCredito s WHERE s.interesesDes = :interesesDes")
+    , @NamedQuery(name = "SolicitudCredito.findByIvaDes", query = "SELECT s FROM SolicitudCredito s WHERE s.ivaDes = :ivaDes")
+    , @NamedQuery(name = "SolicitudCredito.findByMoraDes", query = "SELECT s FROM SolicitudCredito s WHERE s.moraDes = :moraDes")
+    , @NamedQuery(name = "SolicitudCredito.findByIdCreditodes", query = "SELECT s FROM SolicitudCredito s WHERE s.idCreditodes = :idCreditodes")
     , @NamedQuery(name = "SolicitudCredito.findByDestinoCredito", query = "SELECT s FROM SolicitudCredito s WHERE s.destinoCredito = :destinoCredito")
+    , @NamedQuery(name = "SolicitudCredito.findByTipo", query = "SELECT s FROM SolicitudCredito s WHERE s.tipo = :tipo")
     , @NamedQuery(name = "SolicitudCredito.findByEstado", query = "SELECT s FROM SolicitudCredito s WHERE s.estado < :estado and s.desembolso = :desembolso")
     , @NamedQuery(name = "SolicitudCredito.findByObservacion", query = "SELECT s FROM SolicitudCredito s WHERE s.observacion = :observacion")
     , @NamedQuery(name = "SolicitudCredito.findByVisita", query = "SELECT s FROM SolicitudCredito s WHERE s.visita = :visita")
@@ -49,23 +56,6 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "SolicitudCredito.findByInfored", query = "SELECT s FROM SolicitudCredito s WHERE s.infored = :infored")
     , @NamedQuery(name = "SolicitudCredito.findByDesembolso", query = "SELECT s FROM SolicitudCredito s WHERE s.desembolso = :desembolso")})
 public class SolicitudCredito implements Serializable {
-
-    @Basic(optional = false)
-    @Column(name = "tasa_interes")
-    private String tasaInteres;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "capital_des")
-    private Double capitalDes;
-    @Column(name = "intereses_des")
-    private Double interesesDes;
-    @Column(name = "iva_des")
-    private Double ivaDes;
-    @Column(name = "mora_des")
-    private Double moraDes;
-    @Column(name = "id_Credito_des")
-    private Integer idCreditodes;
-    @Column(name = "tipo")
-    private Short tipo;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -77,6 +67,9 @@ public class SolicitudCredito implements Serializable {
     @Basic(optional = false)
     @Column(name = "tipo_credito", nullable = false)
     private short tipoCredito;
+    @Basic(optional = false)
+    @Column(name = "tasa_interes", nullable = false, length = 10)
+    private String tasaInteres;
     @Basic(optional = false)
     @Column(name = "monto_requerido", nullable = false)
     private double montoRequerido;
@@ -92,8 +85,21 @@ public class SolicitudCredito implements Serializable {
     @Basic(optional = false)
     @Column(name = "forma_pago", nullable = false)
     private short formaPago;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "capital_des", precision = 22)
+    private Double capitalDes;
+    @Column(name = "intereses_des", precision = 22)
+    private Double interesesDes;
+    @Column(name = "iva_des", precision = 22)
+    private Double ivaDes;
+    @Column(name = "mora_des", precision = 22)
+    private Double moraDes;
+    @Column(name = "id_Credito_des")
+    private Integer idCreditodes;
     @Column(name = "destino_credito", length = 300)
     private String destinoCredito;
+    @Column(name = "tipo")
+    private Short tipo;
     @Basic(optional = false)
     @Column(name = "estado", nullable = false)
     private short estado;
@@ -133,10 +139,11 @@ public class SolicitudCredito implements Serializable {
         this.solicitudCreditoPK = solicitudCreditoPK;
     }
 
-    public SolicitudCredito(SolicitudCreditoPK solicitudCreditoPK, Date fechaSolicitud, short tipoCredito, double montoRequerido, short plazo, double cuota, double ivaCuota, short formaPago, short estado, boolean desembolso) {
+    public SolicitudCredito(SolicitudCreditoPK solicitudCreditoPK, Date fechaSolicitud, short tipoCredito, String tasaInteres, double montoRequerido, short plazo, double cuota, double ivaCuota, short formaPago, short estado, boolean desembolso) {
         this.solicitudCreditoPK = solicitudCreditoPK;
         this.fechaSolicitud = fechaSolicitud;
         this.tipoCredito = tipoCredito;
+        this.tasaInteres = tasaInteres;
         this.montoRequerido = montoRequerido;
         this.plazo = plazo;
         this.cuota = cuota;
@@ -172,6 +179,14 @@ public class SolicitudCredito implements Serializable {
 
     public void setTipoCredito(short tipoCredito) {
         this.tipoCredito = tipoCredito;
+    }
+
+    public String getTasaInteres() {
+        return tasaInteres;
+    }
+
+    public void setTasaInteres(String tasaInteres) {
+        this.tasaInteres = tasaInteres;
     }
 
     public double getMontoRequerido() {
@@ -214,12 +229,60 @@ public class SolicitudCredito implements Serializable {
         this.formaPago = formaPago;
     }
 
+    public Double getCapitalDes() {
+        return capitalDes;
+    }
+
+    public void setCapitalDes(Double capitalDes) {
+        this.capitalDes = capitalDes;
+    }
+
+    public Double getInteresesDes() {
+        return interesesDes;
+    }
+
+    public void setInteresesDes(Double interesesDes) {
+        this.interesesDes = interesesDes;
+    }
+
+    public Double getIvaDes() {
+        return ivaDes;
+    }
+
+    public void setIvaDes(Double ivaDes) {
+        this.ivaDes = ivaDes;
+    }
+
+    public Double getMoraDes() {
+        return moraDes;
+    }
+
+    public void setMoraDes(Double moraDes) {
+        this.moraDes = moraDes;
+    }
+
+    public Integer getIdCreditodes() {
+        return idCreditodes;
+    }
+
+    public void setIdCreditodes(Integer idCreditodes) {
+        this.idCreditodes = idCreditodes;
+    }
+
     public String getDestinoCredito() {
         return destinoCredito;
     }
 
     public void setDestinoCredito(String destinoCredito) {
         this.destinoCredito = destinoCredito;
+    }
+
+    public Short getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Short tipo) {
+        this.tipo = tipo;
     }
 
     public short getEstado() {
@@ -349,62 +412,6 @@ public class SolicitudCredito implements Serializable {
     @Override
     public String toString() {
         return "Entidades.SolicitudCredito[ solicitudCreditoPK=" + solicitudCreditoPK + " ]";
-    }
-
-    public String getTasaInteres() {
-        return tasaInteres;
-    }
-
-    public void setTasaInteres(String tasaInteres) {
-        this.tasaInteres = tasaInteres;
-    }
-
-    public Double getCapitalDes() {
-        return capitalDes;
-    }
-
-    public void setCapitalDes(Double capitalDes) {
-        this.capitalDes = capitalDes;
-    }
-
-    public Double getInteresesDes() {
-        return interesesDes;
-    }
-
-    public void setInteresesDes(Double interesesDes) {
-        this.interesesDes = interesesDes;
-    }
-
-    public Double getIvaDes() {
-        return ivaDes;
-    }
-
-    public void setIvaDes(Double ivaDes) {
-        this.ivaDes = ivaDes;
-    }
-
-    public Double getMoraDes() {
-        return moraDes;
-    }
-
-    public void setMoraDes(Double moraDes) {
-        this.moraDes = moraDes;
-    }
-
-    public Integer getIdCreditodes() {
-        return idCreditodes;
-    }
-
-    public void setIdCreditodes(Integer idCreditodes) {
-        this.idCreditodes = idCreditodes;
-    }
-
-    public Short getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Short tipo) {
-        this.tipo = tipo;
     }
     
 }
