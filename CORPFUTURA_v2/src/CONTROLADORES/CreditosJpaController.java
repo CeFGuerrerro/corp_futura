@@ -231,6 +231,32 @@ public class CreditosJpaController implements Serializable {
         
         return lista;
     }
+    
+      public double obtenerTotalAPagar(Creditos credito){
+        double total = monto.redondear(credito.getMonto()+credito.getTotalIntereses()+credito.getTotalIva(), 2);
+        return total;
+    } 
+   
+    public double obtenerTotalPagado(Creditos credito){
+        double total = monto.redondear(credito.getSaldoPagado()+credito.getInteresPagados()+credito.getIvaPagado(), 2);
+        return total;
+    } 
+     
+    public double interesesVencidos(Creditos credito){
+        double intvencidos=0.0;
+        return intvencidos;
+    }
+    
+    public double ivaVencidos(Creditos credito){
+        double ivavencidos=0.0;
+        return ivavencidos;
+    }
+    
+    public double moraVencida(Creditos credito){
+        double moravencida=0.0;
+        return moravencida;
+    }
+    
      
     public double obtenerSaldoalafecha(Creditos credito, Date fechasistema){
         double saldo = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
