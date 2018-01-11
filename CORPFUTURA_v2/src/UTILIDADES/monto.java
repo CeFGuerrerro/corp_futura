@@ -182,6 +182,15 @@ public class monto {
         return String.valueOf(total);
     }
     
+    public static boolean validarDouble(String cadena){
+    
+        boolean cumple=true;
+        try{
+            double decimal = Double.parseDouble(cadena);
+        }catch(Exception ex){cumple=false;}
+        return cumple;
+    }
+    
     
     
     

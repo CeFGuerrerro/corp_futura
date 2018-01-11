@@ -25,7 +25,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
     public DatosPersonales datospersonales;
     public SolicitudCredito solicitud;
-    public monto monto;
+    public monto mont;
     public SALDOS_PENDIENTES_FORM saldosform;
     public int idCreditoACambiar;
 
@@ -116,6 +116,8 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         txttasa = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
         btnDetalle = new javax.swing.JButton();
+        jLabel31 = new javax.swing.JLabel();
+        cmbtipo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -277,11 +279,17 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(51, 51, 51));
         jLabel21.setText("Mora:");
 
+        txtmorad.setEditable(false);
         txtmorad.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtmorad.setInheritsPopupMenu(true);
 
+        txtinteresesd.setEditable(false);
         txtinteresesd.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtinteresesd.setInheritsPopupMenu(true);
 
+        txtcapitald.setEditable(false);
         txtcapitald.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtcapitald.setInheritsPopupMenu(true);
 
         txtcuotafinal.setEditable(false);
         txtcuotafinal.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
@@ -403,12 +411,19 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         jLabel30.setText("%");
 
         btnDetalle.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        btnDetalle.setText("VER DETALLES");
+        btnDetalle.setText("SALDOS PENDIENTES");
         btnDetalle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDetalleActionPerformed(evt);
             }
         });
+
+        jLabel31.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel31.setText("Crédito:");
+
+        cmbtipo.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        cmbtipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>", "COMERCIAL", "EMPLEADO" }));
 
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
@@ -550,21 +565,25 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(contenidoLayout.createSequentialGroup()
-                            .addGap(28, 28, 28)
-                            .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtDestinoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(fechsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(contenidoLayout.createSequentialGroup()
-                            .addGap(91, 91, 91)
-                            .addComponent(jLabel15)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cmbEstadocredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, contenidoLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDestinoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(contenidoLayout.createSequentialGroup()
+                                .addComponent(fechsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel31)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, contenidoLayout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbEstadocredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnGenerarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(91, 91, 91))
@@ -602,18 +621,14 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                     .addComponent(cmbplazos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contenidoLayout.createSequentialGroup()
-                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel30)
-                            .addComponent(txttasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11)
-                            .addComponent(cmbformapagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()
-                        .addComponent(btnDetalle)
-                        .addGap(18, 18, 18)))
+                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel29)
+                    .addComponent(jLabel30)
+                    .addComponent(txttasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(cmbformapagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDetalle))
+                .addGap(24, 24, 24)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2)
                     .addComponent(jLabel10)
@@ -662,7 +677,9 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(fechsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel27))
+                    .addComponent(jLabel27)
+                    .addComponent(jLabel31)
+                    .addComponent(cmbtipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtDestinoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -678,7 +695,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                     .addComponent(jLabel16)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGenerarsolicitud, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         rbnnombre.setSelected(true);
@@ -723,23 +740,26 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
 
          if(!txtmonto.getText().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0 && !txttasa.getText().trim().isEmpty()){
+            if(monto.validarDouble(txtmonto.getText())){
+                
+                mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
              
-            monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
+                txtTotalIntereses.setText(mont.getTotalIntereses());
+                txtTotalIva.setText(mont.getTotalIva());
+                txtcuota.setText(mont.getCuota());
+                txtInteresCuota.setText(mont.valorXCuota(mont.getTotalIntereses()));
+                txtIvaCuota.setText(mont.valorXCuota(mont.getTotalIva()));
+                txtCapitalCuota.setText(mont.valorXCuota(String.valueOf(mont.getMonto())));
              
-             txtTotalIntereses.setText(monto.getTotalIntereses());
-             txtTotalIva.setText(monto.getTotalIva());
-             txtcuota.setText(monto.getCuota());
-             txtInteresCuota.setText(monto.valorXCuota(monto.getTotalIntereses()));
-             txtIvaCuota.setText(monto.valorXCuota(monto.getTotalIva()));
-             txtCapitalCuota.setText(monto.valorXCuota(String.valueOf(monto.getMonto())));
-             
-             if(chkAsesoria.isSelected()){txtAsesoria.setText(monto.getAsesoria());}
-             if(chkcuotafinal.isSelected()){txtcuotafinal.setText(monto.getCuota());}
-             monto.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
+                if(chkAsesoria.isSelected()){txtAsesoria.setText(mont.getAsesoria());}
+                if(chkcuotafinal.isSelected()){txtcuotafinal.setText(mont.getCuota());}
+                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
 
              
-             txtmontorecibir.setText(monto.getMontoRecibir());
-             txtTotalPago.setText(monto.getTotalPago());      
+                txtmontorecibir.setText(mont.getMontoRecibir());
+                txtTotalPago.setText(mont.getTotalPago());  
+                
+            }else { JOptionPane.showMessageDialog(this, "el valor ingresado del monto no es correcto");}    
         }
 
     }//GEN-LAST:event_btnCalcularActionPerformed
@@ -820,7 +840,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private void btnDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetalleActionPerformed
         
         if(datospersonales!=null && cmbtipocredito.getSelectedIndex()!=0){
-            saldosform = new SALDOS_PENDIENTES_FORM(datospersonales, cmbtipocredito.getSelectedIndex());
+            saldosform = new SALDOS_PENDIENTES_FORM(datospersonales, cmbtipocredito.getSelectedIndex(), this);
             saldosform.setVisible(true);
         
         }
@@ -880,6 +900,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbEstadocredito;
     private javax.swing.JComboBox<String> cmbformapagos;
     private javax.swing.JComboBox<String> cmbplazos;
+    private javax.swing.JComboBox<String> cmbtipo;
     private javax.swing.JComboBox<String> cmbtipocredito;
     private javax.swing.JPanel contenido;
     private javax.swing.JPanel encabezado;
@@ -909,6 +930,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -932,13 +954,13 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private javax.swing.JTextField txtTotalIva;
     private javax.swing.JTextField txtTotalPago;
     private javax.swing.JTextField txtbusqueda;
-    private javax.swing.JTextField txtcapitald;
+    public javax.swing.JTextField txtcapitald;
     private javax.swing.JTextField txtcuota;
     private javax.swing.JTextField txtcuotafinal;
-    private javax.swing.JTextField txtinteresesd;
+    public javax.swing.JTextField txtinteresesd;
     private javax.swing.JTextField txtmonto;
     private javax.swing.JTextField txtmontorecibir;
-    private javax.swing.JTextField txtmorad;
+    public javax.swing.JTextField txtmorad;
     private javax.swing.JTextField txttasa;
     // End of variables declaration//GEN-END:variables
 }
