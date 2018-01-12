@@ -34,21 +34,21 @@ public class monto {
         cuota = Double.valueOf(valorXCuota(getTotalPago()));
     }
     
+    public monto(String monto, int plazo, int formaPago, String totaliva, String totalintereses){
+    
+        this.monto = Double.parseDouble(monto);
+        this.plazo = plazo;
+        this.formaPago = formaPago;
+        totalIntereses = Double.parseDouble(totalintereses);
+        totalIva = Double.parseDouble(totaliva);
+        setAsesoria();
+        setTotalPago();
+        cuota = Double.valueOf(valorXCuota(getTotalPago()));
+        
+    }
+    
     public monto(){}
     
-    public static double redondear(double numero,int digitos){
-        int cifras=(int) Math.pow(10,digitos);
-        return Math.rint(numero*cifras)/cifras;
-    }
-    
-    public static double convertirtasa(String tasa){
-        
-        double tasa1 = Double.parseDouble(tasa);
-        tasa1 = tasa1/100.0;
-        return tasa1;
-    
-    }
-
     public double getMonto() {
         return monto;
     }
@@ -94,11 +94,24 @@ public class monto {
     }
 
     public void setTotalPago() {
-        this.totalPago = monto+totalIntereses+totalIva;
+        this.totalPago = redondear(monto+totalIntereses+totalIva,2);
     }
           
     public String getCuota() {
         return String.valueOf(cuota);
+    }
+    
+    public int numeroCuotas(){
+        int cuotas=0;
+        switch(formaPago){
+               case 1:     cuotas = (4*plazo);
+                           break;
+               case 2:     cuotas = (2*plazo);
+                           break;
+               case 3:     cuotas = plazo;
+                           break;
+        }
+        return cuotas;
     }
 
     public String valorXCuota(String monto1){
@@ -123,36 +136,6 @@ public class monto {
         return cuota;
     }
     
-    public static double valorXCuota(double monto,int plazo,int formaPago){
-       
-           switch(formaPago){
-               case 1:     monto = monto/(4*plazo);
-                           monto = redondear(monto,2);
-                           break;
-               case 2:     monto = monto/(2*plazo);
-                           monto = redondear(monto,2);
-                           break;
-               case 3:     monto = monto/plazo;
-                           monto = redondear(monto,2);
-                           break;
-           }
-           
-        return monto;
-    }
-    
-    public int numeroCuotas(){
-        int cuotas=0;
-        switch(formaPago){
-               case 1:     cuotas = (4*plazo);
-                           break;
-               case 2:     cuotas = (2*plazo);
-                           break;
-               case 3:     cuotas = plazo;
-                           break;
-        }
-        return cuotas;
-    }
-    
     public String getTotalDeducciones() {
         return String.valueOf(totalDeducciones);
     }
@@ -168,6 +151,14 @@ public class monto {
         totalDeducciones=totalDeducciones+intereses1+capital1+mora1;
         totalDeducciones = redondear(totalDeducciones,2);         
     }
+    
+    public void settotalDeducciones(boolean asesoria1, boolean cuota1){
+        
+         totalDeducciones=0.0;
+        if(asesoria1){totalDeducciones+=asesoria;}
+        if(cuota1){totalDeducciones+=cuota;}
+        totalDeducciones = redondear(totalDeducciones,2);         
+    }
 
     public String getMontoRecibir(){
         Double monto=this.monto;
@@ -175,13 +166,7 @@ public class monto {
         monto= redondear(monto,2);
         return String.valueOf(monto);
     }
- 
-    public String getMontoaPagar(){
-        Double total=totalPago;
-        total = redondear(total,2);         
-        return String.valueOf(total);
-    }
-    
+   
     public static boolean validarDouble(String cadena){
     
         boolean cumple=true;
@@ -189,6 +174,36 @@ public class monto {
             double decimal = Double.parseDouble(cadena);
         }catch(Exception ex){cumple=false;}
         return cumple;
+    }
+    
+    public static double redondear(double numero,int digitos){
+        int cifras=(int) Math.pow(10,digitos);
+        return Math.rint(numero*cifras)/cifras;
+    }
+    
+    public static double convertirtasa(String tasa){
+        
+        double tasa1 = Double.parseDouble(tasa);
+        tasa1 = tasa1/100.0;
+        return tasa1;
+    
+    }
+    
+    public static double valorXCuota(double monto,int plazo,int formaPago){
+       
+           switch(formaPago){
+               case 1:     monto = monto/(4*plazo);
+                           monto = redondear(monto,2);
+                           break;
+               case 2:     monto = monto/(2*plazo);
+                           monto = redondear(monto,2);
+                           break;
+               case 3:     monto = monto/plazo;
+                           monto = redondear(monto,2);
+                           break;
+           }
+           
+        return monto;
     }
     
     

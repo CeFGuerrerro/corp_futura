@@ -505,7 +505,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
         txtIvaCuota.setText(monto.valorXCuota(monto.getTotalIva()));
         txtTotalIntereses.setText(monto.getTotalIntereses());
         txtTotalIva.setText(monto.getTotalIva());
-        txtTotalPago.setText(monto.getMontoaPagar());
+        txtTotalPago.setText(monto.getTotalPago());
         
         fechsolicitud.setDate(solicitud.getFechaSolicitud());
         txtDestinoCredito.setText(solicitud.getDestinoCredito());

@@ -739,28 +739,32 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
 
-         if(!txtmonto.getText().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0 && !txttasa.getText().trim().isEmpty()){
+        if(!txtmonto.getText().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0 && !txttasa.getText().trim().isEmpty()){
             if(monto.validarDouble(txtmonto.getText())){
                 
+              if(cmbtipocredito.getSelectedIndex()!=3){
                 mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
-             
+                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
                 txtTotalIntereses.setText(mont.getTotalIntereses());
                 txtTotalIva.setText(mont.getTotalIva());
-                txtcuota.setText(mont.getCuota());
-                txtInteresCuota.setText(mont.valorXCuota(mont.getTotalIntereses()));
-                txtIvaCuota.setText(mont.valorXCuota(mont.getTotalIva()));
-                txtCapitalCuota.setText(mont.valorXCuota(String.valueOf(mont.getMonto())));
-             
-                if(chkAsesoria.isSelected()){txtAsesoria.setText(mont.getAsesoria());}
-                if(chkcuotafinal.isSelected()){txtcuotafinal.setText(mont.getCuota());}
-                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
+              }else{
+                mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txtTotalIva.getText(), txtTotalIntereses.getText());
+                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected());
+              }
 
+              txtcuota.setText(mont.getCuota());
+              txtInteresCuota.setText(mont.valorXCuota(mont.getTotalIntereses()));
+              txtIvaCuota.setText(mont.valorXCuota(mont.getTotalIva()));
+              txtCapitalCuota.setText(mont.valorXCuota(String.valueOf(mont.getMonto())));
              
-                txtmontorecibir.setText(mont.getMontoRecibir());
-                txtTotalPago.setText(mont.getTotalPago());  
+              if(chkAsesoria.isSelected()){txtAsesoria.setText(mont.getAsesoria());}
+              if(chkcuotafinal.isSelected()){txtcuotafinal.setText(mont.getCuota());}
+                
+              txtmontorecibir.setText(mont.getMontoRecibir());
+              txtTotalPago.setText(mont.getTotalPago());  
                 
             }else { JOptionPane.showMessageDialog(this, "el valor ingresado del monto no es correcto");}    
-        }
+        }else{ JOptionPane.showMessageDialog(this, "Hace falta especificar valores"); }
 
     }//GEN-LAST:event_btnCalcularActionPerformed
 
@@ -950,15 +954,15 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private javax.swing.JTextField txtIvaCuota;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextArea txtObservaciones;
-    private javax.swing.JTextField txtTotalIntereses;
-    private javax.swing.JTextField txtTotalIva;
+    public javax.swing.JTextField txtTotalIntereses;
+    public javax.swing.JTextField txtTotalIva;
     private javax.swing.JTextField txtTotalPago;
     private javax.swing.JTextField txtbusqueda;
     public javax.swing.JTextField txtcapitald;
     private javax.swing.JTextField txtcuota;
     private javax.swing.JTextField txtcuotafinal;
     public javax.swing.JTextField txtinteresesd;
-    private javax.swing.JTextField txtmonto;
+    public javax.swing.JTextField txtmonto;
     private javax.swing.JTextField txtmontorecibir;
     public javax.swing.JTextField txtmorad;
     private javax.swing.JTextField txttasa;

@@ -783,7 +783,7 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         monto.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
         txtdeducciones.setText(monto.getTotalDeducciones());
         txtmontorecibir.setText(monto.getMontoRecibir());
-        txtTotalPago.setText(monto.getMontoaPagar());     
+        txtTotalPago.setText(monto.getTotalPago());     
         
     }
     

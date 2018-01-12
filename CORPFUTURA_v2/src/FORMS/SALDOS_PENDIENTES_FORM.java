@@ -16,13 +16,18 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
 
-    public DatosPersonales datospersonales;
+    public DatosPersonales datospersonales; 
     public int tipocredito;
-    public modeloCreditoxCliente modelo = new modeloCreditoxCliente();
     public Creditos credito;
+    
+    public modeloCreditoxCliente modelo = new modeloCreditoxCliente();
     public CreditosJpaController cjc = new CreditosJpaController();
     public NUEVA_SOLICITUD_FORM form;
   
+    public double totalVencido;
+    public double totalIntereses;
+    public double totalIva;
+    
     public SALDOS_PENDIENTES_FORM(DatosPersonales datospersonales1, int tipocredito1, NUEVA_SOLICITUD_FORM form1) {
         
         initComponents();
@@ -51,7 +56,10 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         double porcentaje = (cjc.obtenerTotalPagado(credito)/cjc.obtenerTotalAPagar(credito))*100;
         porcentaje = monto.redondear(porcentaje, 2);
         double capitalpendiente = monto.redondear((credito.getMonto()-credito.getSaldoPagado()), 2);
-        double total = monto.redondear((capitalpendiente+cjc.interesesVencidos(credito)+cjc.ivaVencidos(credito)+cjc.moraVencida(credito)), 2);
+        totalVencido = monto.redondear((capitalpendiente+cjc.interesesVencidos(credito)+cjc.ivaVencidos(credito)+cjc.moraVencida(credito)), 2);
+        totalIntereses = monto.redondear(credito.getTotalIntereses()-credito.getInteresPagados(), 2);
+        totalIva = monto.redondear(credito.getTotalIva()-credito.getIvaPagado(), 2);
+        
         
         txtTotalPago.setText(String.valueOf(cjc.obtenerTotalAPagar(credito)));
         txtTotalPagado.setText(String.valueOf(cjc.obtenerTotalPagado(credito)));
@@ -67,12 +75,16 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         txtTotalCapitalPagado.setText(String.valueOf(credito.getSaldoPagado()));
         txtCuotasPagadas.setText(String.valueOf(credito.getCuotasPagadas()));
         
+        
+        txtivapendiente.setText(String.valueOf(totalIva));
+        txtInteresespendientes.setText(String.valueOf(totalIntereses));
+        
         txtCapitalPendiente.setText(String.valueOf(capitalpendiente));
         txtInteresesVencidos.setText(String.valueOf(cjc.interesesVencidos(credito)));
         txtMoraVencida.setText(String.valueOf(cjc.moraVencida(credito)));
         
         
-        txtTotal.setText(String.valueOf(total));
+        txtTotal.setText(String.valueOf(totalVencido));
         
         
     }
@@ -83,13 +95,23 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         if(monto.validarDouble(txtInteresesVencidos.getText())){ form.txtinteresesd.setText(txtInteresesVencidos.getText());}
         if(monto.validarDouble(txtMoraVencida.getText())){ form.txtmorad.setText(txtMoraVencida.getText());}
     }
+    
+     public void cargarGestionArreglo(){
+    
+        if(monto.validarDouble(txtTotal.getText())){ form.txtmonto.setText(txtTotal.getText());}
+        if(monto.validarDouble(txtInteresespendientes.getText())){ form.txtTotalIntereses.setText(txtInteresespendientes.getText());}
+        if(monto.validarDouble(txtivapendiente.getText())){ form.txtTotalIva.setText(txtivapendiente.getText());}
+    }
 
     public void guardarTotalesPendientes(){
     
         if(credito!=null){
- 
+  
+            if(tipocredito==3){
+                form.idCreditoACambiar=credito.getCreditosPK().getIdSolicitudCredito();
+                cargarGestionArreglo();
             
-            if(tipocredito==3){}
+            }
             else if(tipocredito==4){
                 form.idCreditoACambiar=credito.getCreditosPK().getIdSolicitudCredito();
                 cargarRefinanciamiento();
@@ -147,7 +169,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         txtMoraVencida = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         jLabel34 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
         txtivapendiente = new javax.swing.JTextField();
@@ -329,10 +351,8 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
         jLabel33.setText("Intereses vencidos:");
 
-        txtInteresesVencidos.setEditable(false);
         txtInteresesVencidos.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
-        txtCapitalPendiente.setEditable(false);
         txtCapitalPendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
         jLabel35.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
@@ -343,20 +363,18 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         jLabel36.setForeground(new java.awt.Color(51, 51, 51));
         jLabel36.setText("Mora vencida:");
 
-        txtMoraVencida.setEditable(false);
         txtMoraVencida.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
         jLabel37.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(51, 51, 51));
         jLabel37.setText("TOTAL:");
 
-        txtTotal.setEditable(false);
         txtTotal.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
-        jButton1.setText("GUARDAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setText("GUARDAR");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
 
@@ -368,10 +386,8 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         jLabel38.setForeground(new java.awt.Color(51, 51, 51));
         jLabel38.setText("IVA por pagar:");
 
-        txtivapendiente.setEditable(false);
         txtivapendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
-        txtInteresespendientes.setEditable(false);
         txtInteresespendientes.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -416,7 +432,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(contenidoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(contenidoLayout.createSequentialGroup()
                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(contenidoLayout.createSequentialGroup()
@@ -549,7 +565,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
                     .addComponent(jLabel37)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
-                .addComponent(jButton1)
+                .addComponent(btnGuardar)
                 .addGap(10, 10, 10)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -580,20 +596,20 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_hvCerrarMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         guardarTotalesPendientes();
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgroup;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JPanel contenido;
     private javax.swing.JPanel encabezado;
     private Label.HoverIcon hvCerrar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
