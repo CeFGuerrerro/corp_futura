@@ -96,29 +96,31 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         if(monto.validarDouble(txtMoraVencida.getText())){ form.txtmorad.setText(txtMoraVencida.getText());}
     }
     
-     public void cargarGestionArreglo(){
+    public void cargarGestionArreglo(){
     
         if(monto.validarDouble(txtTotal.getText())){ form.txtmonto.setText(txtTotal.getText());}
-        if(monto.validarDouble(txtInteresespendientes.getText())){ form.txtTotalIntereses.setText(txtInteresespendientes.getText());}
-        if(monto.validarDouble(txtivapendiente.getText())){ form.txtTotalIva.setText(txtivapendiente.getText());}
+        if(monto.validarDouble(txtInteresespendientes.getText())){ form.txtTotalIntereses.setText(txtInteresespendientes.getText()); }
+        if(monto.validarDouble(txtivapendiente.getText())){ form.txtTotalIva.setText(txtivapendiente.getText()); }
     }
 
     public void guardarTotalesPendientes(){
     
         if(credito!=null){
-  
+            form.idCreditoACambiar=credito.getCreditosPK().getIdSolicitudCredito();
+            form.capitalRef=txtCapitalPendiente.getText();
+            form.interesRef=txtInteresesVencidos.getText();
+            form.moraRef=txtMoraVencida.getText();
+            form.interesesGC= txtInteresespendientes.getText();
+            form.ivaGC = txtivapendiente.getText();
+            form.tasa = credito.getSolicitudCredito().getTasaInteres();
             if(tipocredito==3){
-                form.idCreditoACambiar=credito.getCreditosPK().getIdSolicitudCredito();
                 cargarGestionArreglo();
-            
             }
             else if(tipocredito==4){
-                form.idCreditoACambiar=credito.getCreditosPK().getIdSolicitudCredito();
                 cargarRefinanciamiento();
             }
         }
-         
-    
+           
     }
     
    

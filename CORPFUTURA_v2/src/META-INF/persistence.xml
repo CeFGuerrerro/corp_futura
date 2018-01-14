@@ -16,11 +16,11 @@
     <class>Entidades.Referencias</class>
     <class>Entidades.SolicitudCredito</class>
     <class>Entidades.Usuarios</class>
-    <properties> 
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.3:3306/corpfutura?zeroDateTimeBehavior=convertToNull"/>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/corpfutura?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="corpFuturaPass"/>
+      <property name="javax.persistence.jdbc.password" value="corpfutura"/>
     </properties>
   </persistence-unit>
 </persistence>

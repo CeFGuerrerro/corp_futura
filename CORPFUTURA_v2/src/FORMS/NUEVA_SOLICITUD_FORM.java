@@ -27,7 +27,15 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     public SolicitudCredito solicitud;
     public monto mont;
     public SALDOS_PENDIENTES_FORM saldosform;
-    public int idCreditoACambiar;
+    
+    public int idCreditoACambiar=0;
+    public String interesesGC;
+    public String ivaGC;
+    public String interesRef;
+    public String moraRef;
+    public String capitalRef;
+    public String tasa="";
+    
 
     public LISTA_SOLICITUDES_PNL listasolicitud;
     
@@ -118,6 +126,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         btnDetalle = new javax.swing.JButton();
         jLabel31 = new javax.swing.JLabel();
         cmbtipo = new javax.swing.JComboBox<>();
+        hvreload = new Label.HoverIcon();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -147,14 +156,14 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, encabezadoLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(361, 361, 361)
+                .addGap(342, 342, 342)
                 .addComponent(hvCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         encabezadoLayout.setVerticalGroup(
             encabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(encabezadoLayout.createSequentialGroup()
-                .addGroup(encabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(encabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(hvCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(0, 6, Short.MAX_VALUE))
@@ -425,6 +434,13 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         cmbtipo.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         cmbtipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>", "COMERCIAL", "EMPLEADO" }));
 
+        hvreload.setText("hoverIcon1");
+        hvreload.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hvreloadMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
         contenidoLayout.setHorizontalGroup(
@@ -530,7 +546,10 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                                                         .addComponent(jLabel9)))
                                                 .addGap(45, 45, 45)
                                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(contenidoLayout.createSequentialGroup()
+                                                        .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(hvreload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                     .addGroup(contenidoLayout.createSequentialGroup()
                                                         .addComponent(jLabel22)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -619,7 +638,8 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                     .addComponent(jLabel13)
                     .addComponent(jLabel9)
                     .addComponent(cmbplazos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hvreload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel29)
@@ -695,10 +715,11 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                     .addComponent(jLabel16)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGenerarsolicitud, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         rbnnombre.setSelected(true);
+        hvreload.setImages("/IMAGES/ICONS/reload1.png","/IMAGES/ICONS/reload.png");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -738,34 +759,51 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     }//GEN-LAST:event_txtmontoKeyTyped
 
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
-
-        if(!txtmonto.getText().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0 && !txttasa.getText().trim().isEmpty()){
+      
+        if(!txtmonto.getText().trim().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0){
             if(monto.validarDouble(txtmonto.getText())){
-                
-              if(cmbtipocredito.getSelectedIndex()!=3){
-                mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
-                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
-                txtTotalIntereses.setText(mont.getTotalIntereses());
-                txtTotalIva.setText(mont.getTotalIva());
-              }else{
-                mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txtTotalIva.getText(), txtTotalIntereses.getText());
-                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected());
-              }
+                limpiarCampos();
+                    //CLIENTE NUEVO, RECURRENTE Y EXPRESS
+                    if(cmbtipocredito.getSelectedIndex()<3 || cmbtipocredito.getSelectedIndex()>4){
+                       
+                        if(!txttasa.getText().trim().isEmpty()){  
+                            mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
+                            mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
+                            txtTotalIntereses.setText(mont.getTotalIntereses());
+                            txtTotalIva.setText(mont.getTotalIva());
+                            cargarCamposMontos(mont);
+                        }else{JOptionPane.showMessageDialog(this, "Es necesario Especificar la tasa de Interes");}
+                    
+                    }else if(idCreditoACambiar!=0){
+                        //REFINANCIAMIENTO
+                        if(cmbtipocredito.getSelectedIndex()!=3){
+                            
+                            if(!txttasa.getText().trim().isEmpty()){
+                                txtinteresesd.setText(interesRef);
+                                txtmorad.setText(moraRef);
+                                txtcapitald.setText(capitalRef);
+                                mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
+                                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
+                                txtTotalIntereses.setText(mont.getTotalIntereses());
+                                txtTotalIva.setText(mont.getTotalIva());
+                                cargarCamposMontos(mont);
+                            }else{JOptionPane.showMessageDialog(this, "Es necesario Especificar la tasa de Interes");}
+                            
+                        //GESTION DE ARREGLO
+                        }else{
+                            txtTotalIntereses.setText(interesesGC);
+                            txtTotalIva.setText(ivaGC);
+                            mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txtTotalIva.getText(), txtTotalIntereses.getText());
+                            mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected());
+                            cargarCamposMontos(mont);
+                        }
 
-              txtcuota.setText(mont.getCuota());
-              txtInteresCuota.setText(mont.valorXCuota(mont.getTotalIntereses()));
-              txtIvaCuota.setText(mont.valorXCuota(mont.getTotalIva()));
-              txtCapitalCuota.setText(mont.valorXCuota(String.valueOf(mont.getMonto())));
-             
-              if(chkAsesoria.isSelected()){txtAsesoria.setText(mont.getAsesoria());}
-              if(chkcuotafinal.isSelected()){txtcuotafinal.setText(mont.getCuota());}
-                
-              txtmontorecibir.setText(mont.getMontoRecibir());
-              txtTotalPago.setText(mont.getTotalPago());  
-                
-            }else { JOptionPane.showMessageDialog(this, "el valor ingresado del monto no es correcto");}    
+                    }else{JOptionPane.showMessageDialog(this, "No se a escogido el crédito a refinanciar o reestructurar");}
+              
+                }else { JOptionPane.showMessageDialog(this, "el valor ingresado del monto no es correcto");}    
         }else{ JOptionPane.showMessageDialog(this, "Hace falta especificar valores"); }
-
+      
+      
     }//GEN-LAST:event_btnCalcularActionPerformed
 
     private void btnGenerarsolicitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarsolicitudActionPerformed
@@ -851,18 +889,71 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     
     }//GEN-LAST:event_btnDetalleActionPerformed
 
+    private void hvreloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvreloadMouseClicked
+        
+        limpiarCampos();
+        
+        
+    }//GEN-LAST:event_hvreloadMouseClicked
+
     public void cargarCliente(){
         txtNombre.setText(datospersonales.getNombre());
         txtDui.setText(datospersonales.getDui());
     }
     
+    public void limpiarCampos(){
+    
+        txtAsesoria.setText("");
+        txtcuotafinal.setText("");
+        txtcapitald.setText("");
+        txtinteresesd.setText("");
+        txtmorad.setText("");
+        
+        txtcuota.setText("");
+        txtInteresCuota.setText("");
+        txtIvaCuota.setText("");
+        txtCapitalCuota.setText("");
+        
+        txtTotalPago.setText("");
+        txtTotalIva.setText("");
+        txtTotalIntereses.setText("");
+        
+        txtmontorecibir.setText("");
+    
+    
+    }
+    
     private boolean validarcampos(){
         boolean validacion =true;
-            if(datospersonales==null || txtmonto.getText().isEmpty() || cmbplazos.getSelectedIndex()==0
+            if(datospersonales==null || txtmonto.getText().trim().isEmpty() || cmbplazos.getSelectedIndex()==0
                || cmbformapagos.getSelectedIndex()==0 || cmbtipocredito.getSelectedIndex()==0
                || cmbEstadocredito.getSelectedIndex()==0 || fechsolicitud.getDate().toString().isEmpty()
-               || txtDestinoCredito.getText().isEmpty() || txttasa.getText().trim().isEmpty()){validacion=false;}
+               || txtDestinoCredito.getText().isEmpty() || cmbtipo.getSelectedIndex()==0 ){validacion=false;}
+            
+            if(cmbtipocredito.getSelectedIndex()!=3){
+                if(txttasa.getText().trim().isEmpty()){validacion=false;}
+            }
+            
+            if(cmbtipocredito.getSelectedIndex()==3 || cmbtipocredito.getSelectedIndex()==4){ 
+                if(idCreditoACambiar!=0){validacion=false;}
+            }
+                
         return validacion;
+    }
+    
+    private void cargarCamposMontos(monto monto1){
+    
+        txtcuota.setText(monto1.getCuota());
+        txtInteresCuota.setText(monto1.valorXCuota(mont.getTotalIntereses()));
+        txtIvaCuota.setText(monto1.valorXCuota(mont.getTotalIva()));
+        txtCapitalCuota.setText(monto1.valorXCuota(String.valueOf(mont.getMonto())));
+             
+        if(chkAsesoria.isSelected()){txtAsesoria.setText(monto1.getAsesoria());}
+        if(chkcuotafinal.isSelected()){txtcuotafinal.setText(monto1.getCuota());}
+                
+        txtmontorecibir.setText(monto1.getMontoRecibir());
+        txtTotalPago.setText(monto1.getTotalPago());  
+  
     }
     
     private void cargarDatosSolicitud(SolicitudCredito solicitud){
@@ -870,23 +961,41 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         SolicitudCreditoPK pk =new SolicitudCreditoPK(scjc.obtenerID(),datospersonales.getDui());
         solicitud.setSolicitudCreditoPK(pk);
         solicitud.setDatosPersonales(datospersonales);
-        solicitud.setTasaInteres(txttasa.getText());
         solicitud.setFechaSolicitud(fechsolicitud.getDate());
         solicitud.setTipoCredito(Short.valueOf(String.valueOf(cmbtipocredito.getSelectedIndex())));
         solicitud.setMontoRequerido(Double.valueOf(txtmonto.getText()));
         solicitud.setPlazo(Short.valueOf(String.valueOf(cmbplazos.getSelectedIndex())));
         solicitud.setFormaPago(Short.valueOf(String.valueOf(cmbformapagos.getSelectedIndex())));
         solicitud.setCuota(Double.valueOf(txtcuota.getText()));
+        solicitud.setTipo((short)cmbtipo.getSelectedIndex());
         solicitud.setEstado((short)cmbEstadocredito.getSelectedIndex());
         solicitud.setDesembolso(false);
+        solicitud.setIdCreditodes(idCreditoACambiar);
         if(txtDestinoCredito.getText().isEmpty()){solicitud.setDestinoCredito("");}else{solicitud.setDestinoCredito(txtDestinoCredito.getText());}
         if(txtObservaciones.getText().isEmpty()){solicitud.setObservacion("");}else{solicitud.setObservacion(txtObservaciones.getText());}
+        
+        if(cmbtipocredito.getSelectedIndex()!=3){
+            solicitud.setTasaInteres(txttasa.getText());
+        }else{
+            solicitud.setTasaInteres(tasa);
+            solicitud.setIvaGa(Double.valueOf(ivaGC));
+            solicitud.setInteresesGa(Double.valueOf(interesesGC));
+        }
+       
+        if(cmbtipocredito.getSelectedIndex()==4){
+            solicitud.setInteresesDes(Double.valueOf(interesRef));
+            solicitud.setMoraDes(Double.valueOf(moraRef));
+            solicitud.setCapitalDes(Double.valueOf(capitalRef));
+        }else{
+            solicitud.setInteresesDes(0.0);
+            solicitud.setMoraDes(0.0);
+            solicitud.setCapitalDes(0.0);
+        }
         
         //pendiente
         Usuarios usuario = new Usuarios(1);
         solicitud.setIdUsuario(usuario);
-        
-        
+    
     }
     
 
@@ -910,6 +1019,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private javax.swing.JPanel encabezado;
     private com.toedter.calendar.JDateChooser fechsolicitud;
     private Label.HoverIcon hvCerrar;
+    private Label.HoverIcon hvreload;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
