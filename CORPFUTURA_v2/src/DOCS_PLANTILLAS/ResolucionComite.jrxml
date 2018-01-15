@@ -49,10 +49,10 @@
 	<field name="ivaase" class="java.lang.Double"/>
 	<field name="ivacuota" class="java.lang.Double"/>
 	<variable name="desembolso" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{cantidadaprobada}-($F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$F{capital}+$F{intereses}+$F{mora})]]></variableExpression>
+		<variableExpression><![CDATA[$F{cantidadaprobada}-$V{totaldescuentos}]]></variableExpression>
 	</variable>
 	<variable name="totaldescuentos" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$F{capital}+$F{intereses}+$F{mora}]]></variableExpression>
+		<variableExpression><![CDATA[$F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$V{saldodescontado}]]></variableExpression>
 	</variable>
 	<variable name="saldodescontado" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{capital}+$F{intereses}+$F{mora}]]></variableExpression>
@@ -61,8 +61,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="40" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		<band height="61" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="-1" width="513" height="30" uuid="8270058e-07b3-4dcb-a7fb-6c20437ca533"/>
 				<textElement textAlignment="Center">
@@ -298,7 +297,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				</textElement>
 				<text><![CDATA[Destino:]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
+			<textField>
 				<reportElement x="310" y="185" width="203" height="15" uuid="5137bda0-b9f3-42f6-8ae0-addb56b4ef4e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -768,23 +767,11 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<box>
-					<bottomPen lineWidth="1.0"/>
-				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{saldodescontado}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="331" y="635" width="35" height="18" uuid="c88751e8-7e61-4d54-bb65-b096232d7a80">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[US $]]></text>
-			</staticText>
 		</band>
 	</detail>
 </jasperReport>
