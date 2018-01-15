@@ -18,7 +18,7 @@ import static UTILIDADES.monto.valorXCuota;
  *
  * @author o-a19
  */
-public class DS_ResolucionComite implements JRDataSource {
+public class DS_HojaDesembolso implements JRDataSource {
 
     private List<SolicitudCredito> listaSolicitudes = new ArrayList<SolicitudCredito>();
     private int indice = -1;
@@ -36,35 +36,6 @@ public class DS_ResolucionComite implements JRDataSource {
     public Object getFieldValue(JRField jrf) throws JRException {
         Object valor = null;
         switch (jrf.getName()) {
-            case "clinuevo":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 1) {
-                    valor = "X";
-
-                }
-                return valor;
-            case "recu":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 2) {
-                    valor = "X";
-
-                }
-            case "restru":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 3) {
-                    valor = "X";
-
-                }
-                return valor;
-            case "refi":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 4) {
-                    valor = "X";
-
-                }
-                return valor;
-            case "exp":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 5) {
-                    valor = "X";
-
-                }
-                return valor;
             case "nombrecliente":
                 valor = listaSolicitudes.get(indice).getDatosPersonales().getNombre();
                 return valor;
@@ -87,9 +58,9 @@ public class DS_ResolucionComite implements JRDataSource {
             case "monto":
                 valor = listaSolicitudes.get(indice).getCreditos().getMonto();
                 return valor;
-//            case "interesCuota":
-//                valor = valorXCuota(listaSolicitudes.get(indice).getCreditos().getTotalIntereses(),listaSolicitudes.get(indice).getCreditos().getPlazo(), listaSolicitudes.get(indice).getCreditos().getFormaPago());
-//                return valor;
+            case "interesCuota":
+                valor = String.valueOf(valorXCuota(listaSolicitudes.get(indice).getCreditos().getTotalIntereses(),listaSolicitudes.get(indice).getCreditos().getPlazo(), listaSolicitudes.get(indice).getCreditos().getFormaPago()));
+                return valor;
             case "fechaInicio":
                 valor = formatearFecha(listaSolicitudes.get(indice).getCreditos().getFechaPrimerPago());
                 return valor;
@@ -185,43 +156,43 @@ public class DS_ResolucionComite implements JRDataSource {
                 valor = listaSolicitudes.get(indice).getCreditos().getAsesoria();
                 return valor;
             case "ivaase":
-                if (listaSolicitudes.get(indice).getCreditos().getIvaAsesoria() != null) {
-                    valor = listaSolicitudes.get(indice).getCreditos().getIvaAsesoria();
-                } else {
+                if(listaSolicitudes.get(indice).getCreditos().getIvaAsesoria() != null){
+                valor = listaSolicitudes.get(indice).getCreditos().getIvaAsesoria();
+                } else{
                     valor = 0.0;
                 }
                 return valor;
             case "cuotafinal":
-                if (listaSolicitudes.get(indice).getCreditos().getCuotaFinal() != null) {
-                    valor = listaSolicitudes.get(indice).getCreditos().getCuotaFinal();
+                if(listaSolicitudes.get(indice).getCreditos().getCuotaFinal() != null){
+                valor = listaSolicitudes.get(indice).getCreditos().getCuotaFinal();
                 } else {
                     valor = 0.0;
                 }
                 return valor;
             case "ivacuota":
-                if (listaSolicitudes.get(indice).getCreditos().getIvaCuotaFinal() != null) {
-                    valor = listaSolicitudes.get(indice).getCreditos().getIvaCuotaFinal();
+                if(listaSolicitudes.get(indice).getCreditos().getIvaCuotaFinal() != null){
+                valor = listaSolicitudes.get(indice).getCreditos().getIvaCuotaFinal();
                 } else {
                     valor = 0.0;
                 }
                 return valor;
             case "capital":
-                if (listaSolicitudes.get(indice).getCapitalDes() != null) {
-                    valor = listaSolicitudes.get(indice).getCapitalDes();
+                if(listaSolicitudes.get(indice).getCapitalDes() != null){
+                valor = listaSolicitudes.get(indice).getCapitalDes();
                 } else {
                     valor = 0.0;
                 }
                 return valor;
             case "intereses":
-                if (listaSolicitudes.get(indice).getInteresesDes() != null) {
-                    valor = listaSolicitudes.get(indice).getInteresesDes();
+                if(listaSolicitudes.get(indice).getInteresesDes() != null){
+                valor = listaSolicitudes.get(indice).getInteresesDes();
                 } else {
                     valor = 0.0;
                 }
                 return valor;
             case "mora":
-                if (listaSolicitudes.get(indice).getMoraDes() != null) {
-                    valor = listaSolicitudes.get(indice).getMoraDes();
+                if(listaSolicitudes.get(indice).getMoraDes() != null){
+                valor = listaSolicitudes.get(indice).getMoraDes();
                 } else {
                     valor = 0.0;
                 }
