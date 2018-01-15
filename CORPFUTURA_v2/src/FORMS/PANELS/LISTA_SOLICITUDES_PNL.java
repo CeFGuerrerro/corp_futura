@@ -103,7 +103,7 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
         jLabel22.setText("Evaliación de INFORED:");
 
         cmbinfored.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        cmbinfored.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>", "CATEGORIA 1", "CATEGORIA 2 ", "CATEGORIA 3", "CATEGORIA 4" }));
+        cmbinfored.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>", "VERDE ", "AMARILLO ", "ROJO" }));
 
         chkestados.setBackground(new java.awt.Color(240, 236, 236));
         chkestados.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N

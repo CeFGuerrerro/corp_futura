@@ -28,6 +28,8 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     public monto mont;
     public SALDOS_PENDIENTES_FORM saldosform;
     
+    public boolean desCargados=false;
+    public boolean sinCreditos=false;
     public int idCreditoACambiar=0;
     public String interesesGC;
     public String ivaGC;
@@ -774,7 +776,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                             cargarCamposMontos(mont);
                         }else{JOptionPane.showMessageDialog(this, "Es necesario Especificar la tasa de Interes");}
                     
-                    }else if(idCreditoACambiar!=0){
+                    }else if(desCargados==true){
                         //REFINANCIAMIENTO
                         if(cmbtipocredito.getSelectedIndex()!=3){
                             
@@ -825,15 +827,16 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                     if(valido){
                         listasolicitud.cargarModelo();
                         listasolicitud.tblSolicitudes.clearSelection();
+                        listasolicitud.tblSolicitudes.updateUI();
                         try {archivos.crearCarpetaPerfil(datospersonales.getNombre());} 
                         catch (IOException ex) {System.out.println(ex);}
                         this.dispose(); 
                     }else{
-                        JOptionPane.showMessageDialog(null,"Error al registrar la transaccion en la base de datos");
+                        JOptionPane.showMessageDialog(this,"Error al registrar la transaccion en la base de datos");
                     }     
        
                 }else{
-                    JOptionPane.showMessageDialog(null,"Hace falta especificar algunos campos.");
+                    JOptionPane.showMessageDialog(this,"Hace falta especificar algunos campos.");
                 }
             }else{
                 JOptionPane.showMessageDialog(this,"La Solicitud no puede ser registrada.\nEl Cliente "+datospersonales.getNombre()
@@ -869,9 +872,10 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                     }catch(Exception ex){JOptionPane.showMessageDialog(this, "Error al conectarse con la base de datos.");}
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "ingrese el nombre o dui del cliente");
+                JOptionPane.showMessageDialog(this, "ingrese el nombre o dui del cliente");
             }
-        } 
+        }
+        
     }//GEN-LAST:event_txtbusquedaKeyReleased
 
     private void txttasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttasaKeyTyped
@@ -932,6 +936,10 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
             
             if(cmbtipocredito.getSelectedIndex()!=3){
                 if(txttasa.getText().trim().isEmpty()){validacion=false;}
+            }else{
+                if(sinCreditos==true){
+                    if(txttasa.getText().trim().isEmpty()){validacion=false;}
+                }
             }
             
             if(cmbtipocredito.getSelectedIndex()==3 || cmbtipocredito.getSelectedIndex()==4){ 
@@ -976,8 +984,11 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         
         if(cmbtipocredito.getSelectedIndex()!=3){
             solicitud.setTasaInteres(txttasa.getText());
+            solicitud.setIvaGa(0.0);
+            solicitud.setInteresesGa(0.0);
         }else{
-            solicitud.setTasaInteres(tasa);
+            if(sinCreditos==false){solicitud.setTasaInteres(tasa);}
+            else{solicitud.setTasaInteres(txttasa.getText());}
             solicitud.setIvaGa(Double.valueOf(ivaGC));
             solicitud.setInteresesGa(Double.valueOf(interesesGC));
         }

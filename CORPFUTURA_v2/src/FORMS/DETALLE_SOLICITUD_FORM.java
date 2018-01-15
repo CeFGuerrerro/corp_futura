@@ -146,6 +146,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
 
         cmbtipocredito.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         cmbtipocredito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>", "CLIENTE NUEVO", "RECURRENTE", "GESTION DE ARREGLO", "REFINANCIAMIENTO", "EXPRESS" }));
+        cmbtipocredito.setEnabled(false);
 
         jLabel8.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(51, 51, 51));
@@ -164,6 +165,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
 
         cmbplazos.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         cmbplazos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>", "1 mes / 4 semanas", "2 meses / 8 semanas", "3 meses / 12 semanas", "4 meses / 16 semanas", "5 meses / 20 semanas", "6 meses / 24 semanas", "7 meses / 28 semanas", "8 meses / 32 semanas", "9 meses / 36 semanas", "10 meses / 40 semanas", "11 meses / 44 semanas", "12 meses / 48 semanas" }));
+        cmbplazos.setEnabled(false);
 
         jLabel11.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(51, 51, 51));
@@ -171,6 +173,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
 
         cmbformapagos.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         cmbformapagos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>", "SEMANAL", "CATORCENAL", "MENSUAL" }));
+        cmbformapagos.setEnabled(false);
 
         jLabel10.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(51, 51, 51));
@@ -232,6 +235,8 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
         jLabel27.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
         jLabel27.setText("Fecha de Solicitud:");
+
+        fechsolicitud.setEnabled(false);
 
         jLabel6.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));

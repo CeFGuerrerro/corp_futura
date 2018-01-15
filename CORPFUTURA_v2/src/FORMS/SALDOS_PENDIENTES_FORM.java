@@ -8,6 +8,7 @@ import Entidades.DatosPersonales;
 import Entidades.SolicitudCredito;
 import MODELOSTBL.modeloCreditoxCliente;
 import UTILIDADES.monto;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -28,6 +29,9 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
     public double totalIntereses;
     public double totalIva;
     
+    private final String cadena = "-Intereses por pagar\n-Iva por pagar\n-Intereses vencidos\n-Mora vencida\n-Capital pendiente\n-TOTAL";
+    
+    
     public SALDOS_PENDIENTES_FORM(DatosPersonales datospersonales1, int tipocredito1, NUEVA_SOLICITUD_FORM form1) {
         
         initComponents();
@@ -37,6 +41,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         tipocredito = tipocredito1;
         form = form1;
         cargarModelo();
+         
     }
     
     public void cargarModelo(){
@@ -89,41 +94,51 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         
     }
     
+    public boolean guardarTotalesPendientes(){
+    
+        boolean valoresValidos = true;
+        boolean cargar =true;
+        
+        if(monto.validarDouble(txtCapitalPendiente.getText())){form.capitalRef=txtCapitalPendiente.getText();}else{valoresValidos=false;}
+        if(monto.validarDouble(txtInteresesVencidos.getText())){ form.interesRef=txtInteresesVencidos.getText();}else{valoresValidos=false;}
+        if(monto.validarDouble(txtMoraVencida.getText())){form.moraRef=txtMoraVencida.getText();}else{valoresValidos=false;}
+        if(monto.validarDouble(txtInteresespendientes.getText())){form.interesesGC= txtInteresespendientes.getText();}else{valoresValidos=false;}
+        if(monto.validarDouble(txtivapendiente.getText())){form.ivaGC = txtivapendiente.getText();}else{valoresValidos=false;}
+        if(!monto.validarDouble(txtTotal.getText())){valoresValidos=false;}
+        
+        if(!chkSinCreditos.isSelected()){
+            if(credito!=null){
+                if(valoresValidos == true){
+                        if(tipocredito==3){cargarGestionArreglo();}
+                        else if(tipocredito==4){cargarRefinanciamiento();}
+                         form.idCreditoACambiar=credito.getCreditosPK().getIdSolicitudCredito();
+                         form.tasa = credito.getSolicitudCredito().getTasaInteres();
+                }else{JOptionPane.showMessageDialog(this, "Es necesario especificar de forma correcta el valor de los campos:\n"+cadena); cargar =false;}
+            }else{JOptionPane.showMessageDialog(this, "Es necesario especificar el Credito a Refinanciar o reestructurar."); cargar = false; }      
+        }else{
+            if(valoresValidos == true){
+                        if(tipocredito==3){cargarGestionArreglo();}
+                        else if(tipocredito==4){cargarRefinanciamiento();}
+                        form.sinCreditos=true;
+                        form.idCreditoACambiar=0;
+            }else{JOptionPane.showMessageDialog(this, "Es necesario especificar de forma correcta el valor de los campos:\n"+cadena); cargar = false;}
+        }
+        return cargar;
+    }
+    
     public void cargarRefinanciamiento(){
     
-        if(monto.validarDouble(txtCapitalPendiente.getText())){ form.txtcapitald.setText(txtCapitalPendiente.getText());}
-        if(monto.validarDouble(txtInteresesVencidos.getText())){ form.txtinteresesd.setText(txtInteresesVencidos.getText());}
-        if(monto.validarDouble(txtMoraVencida.getText())){ form.txtmorad.setText(txtMoraVencida.getText());}
+         form.txtcapitald.setText(txtCapitalPendiente.getText());
+         form.txtinteresesd.setText(txtInteresesVencidos.getText());
+         form.txtmorad.setText(txtMoraVencida.getText());
     }
     
     public void cargarGestionArreglo(){
     
-        if(monto.validarDouble(txtTotal.getText())){ form.txtmonto.setText(txtTotal.getText());}
-        if(monto.validarDouble(txtInteresespendientes.getText())){ form.txtTotalIntereses.setText(txtInteresespendientes.getText()); }
-        if(monto.validarDouble(txtivapendiente.getText())){ form.txtTotalIva.setText(txtivapendiente.getText()); }
+         form.txtmonto.setText(txtTotal.getText());
+         form.txtTotalIntereses.setText(txtInteresespendientes.getText()); 
+         form.txtTotalIva.setText(txtivapendiente.getText()); 
     }
-
-    public void guardarTotalesPendientes(){
-    
-        if(credito!=null){
-            form.idCreditoACambiar=credito.getCreditosPK().getIdSolicitudCredito();
-            form.capitalRef=txtCapitalPendiente.getText();
-            form.interesRef=txtInteresesVencidos.getText();
-            form.moraRef=txtMoraVencida.getText();
-            form.interesesGC= txtInteresespendientes.getText();
-            form.ivaGC = txtivapendiente.getText();
-            form.tasa = credito.getSolicitudCredito().getTasaInteres();
-            if(tipocredito==3){
-                cargarGestionArreglo();
-            }
-            else if(tipocredito==4){
-                cargarRefinanciamiento();
-            }
-        }
-           
-    }
-    
-   
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -177,6 +192,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         txtivapendiente = new javax.swing.JTextField();
         txtInteresespendientes = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
+        chkSinCreditos = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -394,6 +410,11 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        chkSinCreditos.setBackground(new java.awt.Color(240, 236, 236));
+        chkSinCreditos.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        chkSinCreditos.setForeground(new java.awt.Color(51, 51, 51));
+        chkSinCreditos.setText("Crédito no registrado");
+
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
         contenidoLayout.setHorizontalGroup(
@@ -452,7 +473,8 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
                                             .addComponent(txtTotalIntereses, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtTotalIva, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtTotalCapital, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtNumeroCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(txtNumeroCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(chkSinCreditos))
                                 .addGap(20, 20, 20)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel31)
@@ -527,6 +549,8 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chkSinCreditos)
+                .addGap(18, 18, 18)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
@@ -566,11 +590,11 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
                     .addComponent(jLabel32)
                     .addComponent(jLabel37)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addComponent(btnGuardar)
-                .addGap(10, 10, 10)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGuardar)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -586,8 +610,8 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(encabezado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(contenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -599,8 +623,11 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
     }//GEN-LAST:event_hvCerrarMouseClicked
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        guardarTotalesPendientes();
-        this.dispose();
+        if(guardarTotalesPendientes()){
+            form.desCargados=true;
+            this.dispose();
+        }
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     
@@ -609,6 +636,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgroup;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBox chkSinCreditos;
     private javax.swing.JPanel contenido;
     private javax.swing.JPanel encabezado;
     private Label.HoverIcon hvCerrar;
