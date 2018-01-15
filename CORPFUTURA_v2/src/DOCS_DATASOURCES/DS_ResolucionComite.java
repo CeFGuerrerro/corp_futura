@@ -46,6 +46,11 @@ public class DS_ResolucionComite implements JRDataSource {
                     valor = "X";
 
                 }
+            case "restru":
+                if (listaSolicitudes.get(indice).getTipoCredito() == 3) {
+                    valor = "X";
+
+                }
                 return valor;
             case "refi":
                 if (listaSolicitudes.get(indice).getTipoCredito() == 4) {
