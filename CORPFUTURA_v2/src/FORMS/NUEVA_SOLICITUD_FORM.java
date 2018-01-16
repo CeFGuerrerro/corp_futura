@@ -10,11 +10,14 @@ import FORMS.PANELS.LISTA_SOLICITUDES_PNL;
 import UTILIDADES.monto;
 import CONTROLADORES.DatosPersonalesJpaController;
 import CONTROLADORES.SolicitudCreditoJpaController;
+import CONTROLADORES.UsuariosJpaController;
 import UTILIDADES.archivos;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,6 +30,9 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     public SolicitudCredito solicitud;
     public monto mont;
     public SALDOS_PENDIENTES_FORM saldosform;
+    
+    public DefaultComboBoxModel modeloCarteras = new DefaultComboBoxModel();
+    private ArrayList<Usuarios> usuarios = new ArrayList();
     
     public boolean desCargados=false;
     public boolean sinCreditos=false;
@@ -43,6 +49,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     
     private DatosPersonalesJpaController dtjc = new DatosPersonalesJpaController();
     private SolicitudCreditoJpaController scjc = new SolicitudCreditoJpaController();
+    private UsuariosJpaController ujc = new UsuariosJpaController();
     
     
     public NUEVA_SOLICITUD_FORM(LISTA_SOLICITUDES_PNL lista) {
@@ -50,6 +57,8 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         listasolicitud = lista;
+        cargarCarteras();
+        
     }
 
    
@@ -130,7 +139,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         cmbtipo = new javax.swing.JComboBox<>();
         hvreload = new Label.HoverIcon();
         jLabel32 = new javax.swing.JLabel();
-        cmbtipocredito1 = new javax.swing.JComboBox<>();
+        cmbCarteras = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -449,8 +458,8 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         jLabel32.setForeground(new java.awt.Color(51, 51, 51));
         jLabel32.setText("Cartera:");
 
-        cmbtipocredito1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        cmbtipocredito1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>" }));
+        cmbCarteras.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        cmbCarteras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<SELECCIONAR>" }));
 
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
@@ -480,7 +489,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(cmbtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtDestinoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbtipocredito1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cmbCarteras, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(29, 29, 29)
                                 .addComponent(btnGenerarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(contenidoLayout.createSequentialGroup()
@@ -714,7 +723,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel32)
-                    .addComponent(cmbtipocredito1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbCarteras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
@@ -729,6 +738,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
         rbnnombre.setSelected(true);
         hvreload.setImages("/IMAGES/ICONS/reload1.png","/IMAGES/ICONS/reload.png");
+        cmbCarteras.setModel(modeloCarteras);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -939,7 +949,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
             if(datospersonales==null || txtmonto.getText().trim().isEmpty() || cmbplazos.getSelectedIndex()==0
                || cmbformapagos.getSelectedIndex()==0 || cmbtipocredito.getSelectedIndex()==0
                || cmbEstadocredito.getSelectedIndex()==0 || fechsolicitud.getDate().toString().isEmpty()
-               || txtDestinoCredito.getText().isEmpty() || cmbtipo.getSelectedIndex()==0 ){validacion=false;}
+               || txtDestinoCredito.getText().isEmpty() || cmbtipo.getSelectedIndex()==0 || cmbCarteras.getSelectedIndex()==0 ){validacion=false;}
             
             if(cmbtipocredito.getSelectedIndex()!=3){
                 if(txttasa.getText().trim().isEmpty()){validacion=false;}
@@ -1010,9 +1020,21 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
             solicitud.setCapitalDes(0.0);
         }
         
-        //pendiente
-        Usuarios usuario = new Usuarios(1);
-        solicitud.setIdUsuario(usuario);
+        solicitud.setIdUsuario(usuarios.get(cmbCarteras.getSelectedIndex()-1));
+    
+    }
+    
+    private void cargarCarteras(){
+        modeloCarteras.addElement("<SELECCIONAR>");
+        for(Usuarios usuario: ujc.findUsuariosEntities())
+        {
+            if(usuario.getChkCartera()){
+                String cartera = usuario.getCartera()+" - "+usuario.getNombre();
+                modeloCarteras.addElement(cartera);
+                usuarios.add(usuario);
+            }
+        }
+        cmbCarteras.updateUI();
     
     }
     
@@ -1028,12 +1050,12 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private javax.swing.JButton btnGenerarsolicitud;
     private javax.swing.JCheckBox chkAsesoria;
     private javax.swing.JCheckBox chkcuotafinal;
+    private javax.swing.JComboBox<String> cmbCarteras;
     private javax.swing.JComboBox<String> cmbEstadocredito;
     private javax.swing.JComboBox<String> cmbformapagos;
     private javax.swing.JComboBox<String> cmbplazos;
     private javax.swing.JComboBox<String> cmbtipo;
     private javax.swing.JComboBox<String> cmbtipocredito;
-    private javax.swing.JComboBox<String> cmbtipocredito1;
     private javax.swing.JPanel contenido;
     private javax.swing.JPanel encabezado;
     private com.toedter.calendar.JDateChooser fechsolicitud;

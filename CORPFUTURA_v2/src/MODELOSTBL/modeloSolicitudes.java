@@ -162,8 +162,19 @@ public class modeloSolicitudes implements TableModel {
     }
     
     public String getCartera(SolicitudCredito solicitud){
-        String stado="Cartera-0"+solicitud.getIdUsuario().getCartera();
-        return stado;
+     
+        String cadena="";
+        String[] nombre = solicitud.getIdUsuario().getNombre().split(" ");
+        
+            if(solicitud.getIdUsuario().getCartera()<10){
+                cadena = "0"+solicitud.getIdUsuario().getCartera();
+            }else{
+                cadena = String.valueOf(solicitud.getIdUsuario().getCartera());
+            }
+        
+        cadena = cadena+" - "+nombre[0]+" "+nombre[1];
+           
+        return cadena;
     
     }
     
