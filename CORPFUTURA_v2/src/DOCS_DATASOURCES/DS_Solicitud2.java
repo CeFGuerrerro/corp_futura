@@ -134,7 +134,7 @@ public class DS_Solicitud2 implements JRDataSource {
                 }
             case "montocom":
                 if (listaSolicitudes.get(indice).getCreditos() != null) {
-                    valor = listaSolicitudes.get(indice).getEvaluacionCredito().getMonto();
+                    valor = listaSolicitudes.get(indice).getCreditos().getMonto();
                     return valor;
                 }
             case "plazocom":

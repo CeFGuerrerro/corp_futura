@@ -66,14 +66,14 @@
 				<text><![CDATA[IV. REFERENCIAS ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="44" width="120" height="14" uuid="463e88ec-47d3-43c8-b9af-fb2cc7fe4f2f"/>
+				<reportElement x="170" y="44" width="160" height="14" uuid="463e88ec-47d3-43c8-b9af-fb2cc7fe4f2f"/>
 				<textElement textAlignment="Left">
 					<font fontName="Calibri" size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[REFERENCIAS FAMILIARES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="165" y="175" width="130" height="14" uuid="64e24a5c-382f-41a4-beb6-fd8fe98134d7"/>
+				<reportElement x="165" y="175" width="165" height="14" uuid="64e24a5c-382f-41a4-beb6-fd8fe98134d7"/>
 				<textElement textAlignment="Left">
 					<font fontName="Calibri" size="10" isBold="true" isItalic="false"/>
 				</textElement>
@@ -94,7 +94,7 @@
 				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="411" width="129" height="14" uuid="a6e3137e-487c-46ef-9305-52e26d6ae29b"/>
+				<reportElement x="0" y="411" width="190" height="14" uuid="a6e3137e-487c-46ef-9305-52e26d6ae29b"/>
 				<textElement textAlignment="Left">
 					<font fontName="Calibri" size="10" isBold="true" isItalic="true"/>
 				</textElement>

@@ -12,12 +12,13 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import static UTILIDADES.fechas.formatearFecha;
+import static UTILIDADES.monto.valorXCuota;
 
 /**
  *
  * @author o-a19
  */
-public class DS_ResolucionComite implements JRDataSource {
+public class DS_HojaDesembolso implements JRDataSource {
 
     private List<SolicitudCredito> listaSolicitudes = new ArrayList<SolicitudCredito>();
     private int indice = -1;
@@ -35,40 +36,23 @@ public class DS_ResolucionComite implements JRDataSource {
     public Object getFieldValue(JRField jrf) throws JRException {
         Object valor = null;
         switch (jrf.getName()) {
-            case "clinuevo":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 1) {
-                    valor = "X";
-
-                }
-                return valor;
-            case "recu":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 2) {
-                    valor = "X";
-
-                }
-            case "restru":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 3) {
-                    valor = "X";
-
-                }
-                return valor;
-            case "refi":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 4) {
-                    valor = "X";
-
-                }
-                return valor;
-            case "exp":
-                if (listaSolicitudes.get(indice).getTipoCredito() == 5) {
-                    valor = "X";
-
-                }
-                return valor;
             case "nombrecliente":
                 valor = listaSolicitudes.get(indice).getDatosPersonales().getNombre();
                 return valor;
+            case "dui":
+                valor = listaSolicitudes.get(indice).getDatosPersonales().getDui();
+                return valor;
+            case "nit":
+                valor = listaSolicitudes.get(indice).getDatosPersonales().getNit();
+                return valor;
             case "fecha":
                 valor = formatearFecha(listaSolicitudes.get(indice).getCreditos().getFechaInicio());
+                return valor;
+            case "fechaInicio":
+                valor = formatearFecha(listaSolicitudes.get(indice).getCreditos().getFechaPrimerPago());
+                return valor;
+            case "fechaVencimiento":
+                valor = formatearFecha(listaSolicitudes.get(indice).getCreditos().getFechaVencimiento());
                 return valor;
             case "resolucion":
                 if (listaSolicitudes.get(indice).getEstado() == 4) {
@@ -147,6 +131,9 @@ public class DS_ResolucionComite implements JRDataSource {
                 return valor;
             case "cuota":
                 valor = listaSolicitudes.get(indice).getCreditos().getCuota();
+                return valor;
+            case "interesCuota":
+                valor = valorXCuota(listaSolicitudes.get(indice).getCreditos().getTotalIntereses(),listaSolicitudes.get(indice).getCreditos().getPlazo(),listaSolicitudes.get(indice).getCreditos().getFormaPago());
                 return valor;
             case "formapago":
                 if (listaSolicitudes.get(indice).getCreditos().getFormaPago() == 1) {
