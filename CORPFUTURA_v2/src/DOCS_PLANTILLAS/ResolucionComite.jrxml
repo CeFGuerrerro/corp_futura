@@ -127,7 +127,9 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[AMPLIACION DE PLAZO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="54" width="53" height="15" uuid="32d2614e-af64-4fa4-acd9-3647a32885fe"/>
+				<reportElement x="405" y="54" width="57" height="15" uuid="32d2614e-af64-4fa4-acd9-3647a32885fe">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
