@@ -94,7 +94,7 @@
 				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="411" width="129" height="14" uuid="a6e3137e-487c-46ef-9305-52e26d6ae29b"/>
+				<reportElement x="0" y="411" width="190" height="14" uuid="a6e3137e-487c-46ef-9305-52e26d6ae29b"/>
 				<textElement textAlignment="Left">
 					<font fontName="Calibri" size="10" isBold="true" isItalic="true"/>
 				</textElement>

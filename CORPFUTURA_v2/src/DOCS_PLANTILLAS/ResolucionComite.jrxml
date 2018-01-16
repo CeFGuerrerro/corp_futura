@@ -49,10 +49,10 @@
 	<field name="ivaase" class="java.lang.Double"/>
 	<field name="ivacuota" class="java.lang.Double"/>
 	<variable name="desembolso" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{cantidadaprobada}-$V{totaldescuentos}]]></variableExpression>
+		<variableExpression><![CDATA[$F{cantidadaprobada}-($F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$F{mora}+$F{intereses}+$F{capital})]]></variableExpression>
 	</variable>
 	<variable name="totaldescuentos" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$V{saldodescontado}]]></variableExpression>
+		<variableExpression><![CDATA[$F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$F{mora}+$F{intereses}+$F{capital}]]></variableExpression>
 	</variable>
 	<variable name="saldodescontado" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{capital}+$F{intereses}+$F{mora}]]></variableExpression>
@@ -61,7 +61,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="61" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="-1" width="513" height="30" uuid="8270058e-07b3-4dcb-a7fb-6c20437ca533"/>
 				<textElement textAlignment="Center">
@@ -76,7 +76,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 		</band>
 	</title>
 	<detail>
-		<band height="693" splitType="Stretch">
+		<band height="678" splitType="Stretch">
 			<staticText>
 				<reportElement x="170" y="0" width="170" height="15" uuid="573f15bd-ed57-4e25-8775-77aa2f27f41c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -104,7 +104,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[REESTRUCTURACION:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="357" y="30" width="100" height="15" uuid="f138206e-69f4-4fd3-ae32-881b2cf86632"/>
+				<reportElement x="344" y="30" width="113" height="15" uuid="f138206e-69f4-4fd3-ae32-881b2cf86632"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
@@ -118,7 +118,9 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[RECURRENTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="197" y="54" width="153" height="15" uuid="d84f7086-8710-42c0-bfce-329567b1c58b"/>
+				<reportElement x="187" y="54" width="150" height="15" uuid="d84f7086-8710-42c0-bfce-329567b1c58b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
@@ -172,7 +174,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{restru}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="350" y="54" width="50" height="15" uuid="8cb2034c-d028-4301-9948-c5f35c1089a1"/>
+				<reportElement x="344" y="54" width="50" height="15" uuid="8cb2034c-d028-4301-9948-c5f35c1089a1"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -297,7 +299,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				</textElement>
 				<text><![CDATA[Destino:]]></text>
 			</staticText>
-			<textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="310" y="185" width="203" height="15" uuid="5137bda0-b9f3-42f6-8ae0-addb56b4ef4e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -466,7 +468,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{otrascondiciones}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="110" y="368" width="260" height="20" uuid="7dd87831-2f35-43bd-add4-7873631a4d8b">
+				<reportElement x="110" y="366" width="260" height="20" uuid="7dd87831-2f35-43bd-add4-7873631a4d8b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -481,7 +483,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[RESPONSABLES DEL COMITÉ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-10" y="425" width="160" height="18" uuid="e59768b1-d6b2-4359-8fe0-3b6885267fcc"/>
+				<reportElement x="-10" y="412" width="160" height="18" uuid="e59768b1-d6b2-4359-8fe0-3b6885267fcc"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
@@ -491,7 +493,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Ejecutivo de Créditos:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="425" width="160" height="18" uuid="b7992596-91a4-46aa-b479-a4e758aecfef"/>
+				<reportElement x="170" y="412" width="160" height="18" uuid="b7992596-91a4-46aa-b479-a4e758aecfef"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
@@ -501,7 +503,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Christopher Argueta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="425" width="160" height="18" uuid="7c0bf340-c327-4e0b-9b2c-7641bb33074d"/>
+				<reportElement x="350" y="412" width="160" height="18" uuid="7c0bf340-c327-4e0b-9b2c-7641bb33074d"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
@@ -511,7 +513,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Delmi de Ramos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="460" width="130" height="18" uuid="b1da30c1-538f-4623-ae8e-79b05bf30d39">
+				<reportElement x="0" y="447" width="130" height="18" uuid="b1da30c1-538f-4623-ae8e-79b05bf30d39">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -520,7 +522,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Cantidad aprobada:		$]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="478" width="130" height="18" uuid="e5016d96-35a3-40e2-b442-12897f6b229d">
+				<reportElement x="0" y="465" width="130" height="18" uuid="e5016d96-35a3-40e2-b442-12897f6b229d">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -529,42 +531,42 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Saldo a descontar:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="496" width="130" height="18" uuid="9e793780-4eb1-4c8d-bdf5-96ecd4ca04d0"/>
+				<reportElement x="0" y="483" width="130" height="18" uuid="9e793780-4eb1-4c8d-bdf5-96ecd4ca04d0"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[Capital:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="514" width="130" height="18" uuid="001842b8-b45e-41f6-918f-b19e6d6a2189"/>
+				<reportElement x="0" y="501" width="130" height="18" uuid="001842b8-b45e-41f6-918f-b19e6d6a2189"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[Intereses:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="532" width="130" height="18" uuid="1e0ca8d3-6fd6-43f9-8ed0-e9f9f9eb6bf7"/>
+				<reportElement x="0" y="519" width="130" height="18" uuid="1e0ca8d3-6fd6-43f9-8ed0-e9f9f9eb6bf7"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[Mora:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="550" width="130" height="18" uuid="922a0325-d665-4093-a903-685eea253228"/>
+				<reportElement x="0" y="537" width="130" height="18" uuid="922a0325-d665-4093-a903-685eea253228"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[Asesoría:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="586" width="130" height="18" uuid="7b779748-91f6-46f5-ba4a-e93595cc8ff3"/>
+				<reportElement x="0" y="573" width="130" height="18" uuid="7b779748-91f6-46f5-ba4a-e93595cc8ff3"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[Cuota Final:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="635" width="230" height="18" uuid="e44036b4-312a-4a77-861c-3532752d5192">
+				<reportElement x="0" y="622" width="230" height="18" uuid="e44036b4-312a-4a77-861c-3532752d5192">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -573,14 +575,14 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[TOTAL A DESEMBOLSAR:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="676" width="130" height="15" uuid="6a9ea399-7633-4c0d-a630-55df8b331d47"/>
+				<reportElement x="1" y="663" width="130" height="15" uuid="6a9ea399-7633-4c0d-a630-55df8b331d47"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[Nombre del Ejecutivo:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="216" y="675" width="206" height="15" uuid="b7eb49af-31de-4a50-a3c4-e953cd7b85af"/>
+				<reportElement x="216" y="662" width="206" height="15" uuid="b7eb49af-31de-4a50-a3c4-e953cd7b85af"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -590,7 +592,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="460" width="124" height="18" uuid="c265a81e-4c1d-47c0-9fd0-d2404f7b9a53">
+				<reportElement x="143" y="447" width="124" height="18" uuid="c265a81e-4c1d-47c0-9fd0-d2404f7b9a53">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -602,7 +604,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{cantidadaprobada}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="496" width="124" height="18" uuid="a64f286f-12de-4f9f-9d52-c255e5c316e6">
+				<reportElement x="143" y="483" width="124" height="18" uuid="a64f286f-12de-4f9f-9d52-c255e5c316e6">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -615,7 +617,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{capital}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="514" width="124" height="18" uuid="c747ed0c-bea7-4b20-842e-48ea6bfd1eae">
+				<reportElement x="143" y="501" width="124" height="18" uuid="c747ed0c-bea7-4b20-842e-48ea6bfd1eae">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -628,7 +630,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{intereses}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="532" width="124" height="18" uuid="959bcdd1-1145-436b-bcdc-0594a7977008">
+				<reportElement x="143" y="519" width="124" height="18" uuid="959bcdd1-1145-436b-bcdc-0594a7977008">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -641,7 +643,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{mora}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="550" width="124" height="18" uuid="0acca8cb-916d-4873-8c91-cd91505237c4">
+				<reportElement x="143" y="537" width="124" height="18" uuid="0acca8cb-916d-4873-8c91-cd91505237c4">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -654,7 +656,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{asesoria}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="586" width="124" height="18" uuid="a4a5f115-ff54-4e79-8341-ce3d16342edc">
+				<reportElement x="143" y="573" width="124" height="18" uuid="a4a5f115-ff54-4e79-8341-ce3d16342edc">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -667,7 +669,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{cuotafinal}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="366" y="635" width="124" height="18" uuid="812c5259-20ae-4985-b1db-90f1c94f59e2">
+				<reportElement x="366" y="622" width="124" height="18" uuid="812c5259-20ae-4985-b1db-90f1c94f59e2">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -680,21 +682,21 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$V{desembolso}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="568" width="130" height="18" uuid="33cb737e-03f7-4d5f-9d74-b755de171884"/>
+				<reportElement x="0" y="555" width="130" height="18" uuid="33cb737e-03f7-4d5f-9d74-b755de171884"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[IVA Asesoria]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="604" width="130" height="18" uuid="8bdab81a-fda0-49ab-8d1a-27c6acb36e3a"/>
+				<reportElement x="0" y="591" width="130" height="18" uuid="8bdab81a-fda0-49ab-8d1a-27c6acb36e3a"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[IVA Cuota Final:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="143" y="568" width="124" height="18" uuid="659fdee4-0b6b-4f5f-8a99-7f297ed1fe15">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="143" y="555" width="124" height="18" uuid="659fdee4-0b6b-4f5f-8a99-7f297ed1fe15">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -706,8 +708,8 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ivaase}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="143" y="604" width="124" height="18" uuid="e09daba9-6c76-4a24-902e-711cd14194c3">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="143" y="591" width="124" height="18" uuid="e09daba9-6c76-4a24-902e-711cd14194c3">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -720,7 +722,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{ivacuota}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="331" y="460" width="35" height="18" uuid="08dec801-24c6-4c6b-99a3-923bd1793521">
+				<reportElement x="331" y="447" width="35" height="18" uuid="08dec801-24c6-4c6b-99a3-923bd1793521">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -729,7 +731,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[US $]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="331" y="478" width="35" height="18" uuid="7f0e9c3a-4129-460b-abfe-f3f8d9e9af46">
+				<reportElement x="331" y="465" width="35" height="18" uuid="7f0e9c3a-4129-460b-abfe-f3f8d9e9af46">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -738,7 +740,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[US $]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="366" y="460" width="124" height="18" uuid="bf8b463e-82fb-43a9-848d-60209d4d968d">
+				<reportElement x="366" y="447" width="124" height="18" uuid="bf8b463e-82fb-43a9-848d-60209d4d968d">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -750,7 +752,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{cantidadaprobada}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="366" y="478" width="124" height="18" uuid="608617cf-a30e-47b3-bbb6-e5b9240bf056">
+				<reportElement x="366" y="465" width="124" height="18" uuid="608617cf-a30e-47b3-bbb6-e5b9240bf056">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -763,10 +765,13 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$V{totaldescuentos}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="143" y="478" width="124" height="18" uuid="6e90232e-7b77-4ae8-8a1b-ba9a8b0b829d">
+				<reportElement x="143" y="465" width="124" height="18" uuid="6e90232e-7b77-4ae8-8a1b-ba9a8b0b829d">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>

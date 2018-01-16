@@ -3,6 +3,7 @@ package FORMS;
 import CONTROLADORES.DatosPersonalesJpaController;
 import DOCS_DATASOURCES.DS_Autorizacion;
 import DOCS_DATASOURCES.DS_DeclaracionBienes;
+import DOCS_DATASOURCES.DS_HojaDesembolso;
 import DOCS_DATASOURCES.DS_PerfilCliente;
 import DOCS_DATASOURCES.DS_ResolucionComite;
 import DOCS_DATASOURCES.DS_Solicitud1;
@@ -42,6 +43,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
     private DS_PerfilCliente perf = new DS_PerfilCliente();
     private DS_ResolucionComite resc = new DS_ResolucionComite();
     private DS_DeclaracionBienes decl = new DS_DeclaracionBienes();
+    private DS_HojaDesembolso hoja = new DS_HojaDesembolso();
 
     public CREAR_DOCS(SolicitudCredito sol) {
 
@@ -367,6 +369,15 @@ public class CREAR_DOCS extends javax.swing.JFrame {
             }
 
         }
+        if (chkhojadesembolso.isSelected()) {
+            String doc = "HojaDesembolso";
+            try {
+                jasper.crearReporte(doc, solicitud.getDatosPersonales().getNombre(), hoja);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+
+            }
+        }
         if (chkdeclaracionbienes.isSelected()) {
             String doc = "DeclaracionJuradaBienes";
 
@@ -395,6 +406,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         perf.addSolicitud(solicitud);
         resc.addResolucion(solicitud);
         decl.addSolicitud(solicitud);
+        hoja.addResolucion(solicitud);
 
         for (Referencias r : solicitud.getDatosPersonales().getReferenciasList()) {
             if (r.getTipoReferencia() == false) {

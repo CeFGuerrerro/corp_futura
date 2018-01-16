@@ -16,7 +16,7 @@
 	</queryString>
 	<field name="nombrecliente" class="java.lang.String"/>
 	<field name="fecha" class="java.lang.String"/>
-	<field name="monto" class="java.lang.String">
+	<field name="monto" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="tipocredito" class="java.lang.String"/>
@@ -24,20 +24,32 @@
 	<field name="tasa" class="java.lang.String"/>
 	<field name="tipogarantia" class="java.lang.String"/>
 	<field name="descripciongarantia" class="java.lang.String"/>
-	<field name="cuota" class="java.lang.String"/>
+	<field name="cuota" class="java.lang.Double"/>
 	<field name="formapago" class="java.lang.String"/>
 	<field name="dui" class="java.lang.String"/>
 	<field name="nit" class="java.lang.String"/>
 	<field name="ncredito" class="java.lang.String"/>
-	<field name="interesCuota" class="java.lang.String"/>
+	<field name="interesCuota" class="java.lang.Double"/>
 	<field name="saldoDescontar" class="java.lang.String"/>
-	<field name="capital" class="java.lang.String"/>
-	<field name="intereses" class="java.lang.String"/>
-	<field name="mora" class="java.lang.String"/>
-	<field name="asesoria" class="java.lang.String"/>
-	<field name="cuotafinal" class="java.lang.String"/>
-	<field name="totalDesembolso" class="java.lang.String"/>
-	<field name="totaldescuento" class="java.lang.String"/>
+	<field name="capital" class="java.lang.Double"/>
+	<field name="intereses" class="java.lang.Double"/>
+	<field name="mora" class="java.lang.Double"/>
+	<field name="asesoria" class="java.lang.Double"/>
+	<field name="cuotafinal" class="java.lang.Double"/>
+	<field name="cantidadaprobada" class="java.lang.Double"/>
+	<field name="ivaase" class="java.lang.Double"/>
+	<field name="ivacuota" class="java.lang.Double"/>
+	<field name="fechaInicio" class="java.lang.String"/>
+	<field name="fechaVencimiento" class="java.lang.String"/>
+	<variable name="desembolso" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{cantidadaprobada}-($F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$F{mora}+$F{intereses}+$F{capital})]]></variableExpression>
+	</variable>
+	<variable name="totaldescuentos" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{ivacuota}+$F{ivaase}+$F{cuotafinal}+$F{asesoria}+$F{mora}+$F{intereses}+$F{capital}]]></variableExpression>
+	</variable>
+	<variable name="saldodescontado" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{capital}+$F{intereses}+$F{mora}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -57,7 +69,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 		</band>
 	</title>
 	<detail>
-		<band height="656" splitType="Stretch">
+		<band height="630" splitType="Stretch">
 			<staticText>
 				<reportElement x="170" y="0" width="170" height="15" uuid="573f15bd-ed57-4e25-8775-77aa2f27f41c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -88,7 +100,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{nombrecliente}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="369" y="33" width="40" height="15" uuid="fc82420c-a381-4b11-926e-e90af2ebf2cd"/>
+				<reportElement x="364" y="33" width="45" height="15" uuid="fc82420c-a381-4b11-926e-e90af2ebf2cd"/>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
@@ -135,14 +147,16 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="116" width="80" height="15" uuid="dd4b3367-f481-42fe-97b8-1befb200c652"/>
+				<reportElement x="1" y="116" width="90" height="15" uuid="dd4b3367-f481-42fe-97b8-1befb200c652">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[Tipo de Crédito:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="81" y="113" width="111" height="20" uuid="6bf7a709-2da2-476d-a170-ad8e09a644ec">
+				<reportElement x="91" y="113" width="111" height="20" uuid="6bf7a709-2da2-476d-a170-ad8e09a644ec">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -154,8 +168,9 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{tipocredito}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="217" y="89" width="30" height="15" uuid="1d6eb745-1c0f-4fae-8ffd-a948ad52b61c">
+				<reportElement x="212" y="89" width="35" height="15" uuid="1d6eb745-1c0f-4fae-8ffd-a948ad52b61c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
@@ -168,7 +183,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Calibri" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plazo}]]></textFieldExpression>
 			</textField>
@@ -194,7 +209,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{tasa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="170" width="89" height="15" uuid="75ac8458-8951-459d-8b8a-08bcfa772569">
+				<reportElement x="1" y="170" width="101" height="15" uuid="75ac8458-8951-459d-8b8a-08bcfa772569">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -203,7 +218,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Tipo de garantía:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="240" width="140" height="18" uuid="42f4567d-76ff-48c3-af9e-145f481b21dc"/>
+				<reportElement x="0" y="257" width="180" height="18" uuid="42f4567d-76ff-48c3-af9e-145f481b21dc"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
@@ -220,7 +235,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{cuota}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="143" width="80" height="15" uuid="b92f95ff-a058-4890-98ed-646753b82967">
+				<reportElement x="1" y="143" width="95" height="15" uuid="b92f95ff-a058-4890-98ed-646753b82967">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -229,12 +244,14 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Forma de Pago:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="81" y="140" width="111" height="20" uuid="3e024555-bf85-4f4b-83f1-3b2a49799366"/>
+				<reportElement x="96" y="140" width="100" height="20" uuid="3e024555-bf85-4f4b-83f1-3b2a49799366">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Calibri" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{formapago}]]></textFieldExpression>
 			</textField>
@@ -263,20 +280,23 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="calibri" size="12" isBold="true"/>
+					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="330" y="60" width="68" height="15" uuid="0a94dbd7-433f-4638-a81a-0b57334645d1"/>
+				<reportElement x="325" y="60" width="80" height="15" uuid="0a94dbd7-433f-4638-a81a-0b57334645d1">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<text><![CDATA[Nº CREDITO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="398" y="57" width="114" height="20" uuid="16868c48-74ef-43f8-8237-2a0de0344c46">
+				<reportElement x="405" y="57" width="90" height="20" uuid="16868c48-74ef-43f8-8237-2a0de0344c46">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
@@ -297,8 +317,9 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Cuota:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="338" y="143" width="92" height="15" uuid="b5904760-b856-43ec-874b-428a92d0d64d">
+				<reportElement x="337" y="143" width="100" height="15" uuid="b5904760-b856-43ec-874b-428a92d0d64d">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement>
 					<font fontName="Calibri" size="12"/>
@@ -306,8 +327,9 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Interés por Cuota:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="430" y="140" width="83" height="20" uuid="d211b288-7e8c-40c7-ada1-ce7f8956f5bd">
+				<reportElement x="437" y="140" width="75" height="20" uuid="d211b288-7e8c-40c7-ada1-ce7f8956f5bd">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
@@ -318,289 +340,33 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<textFieldExpression><![CDATA[$F{interesCuota}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="90" y="167" width="423" height="20" uuid="a080dbf6-5f26-4f04-8a32-d486fe0147e7">
+				<reportElement x="140" y="165" width="370" height="20" uuid="a080dbf6-5f26-4f04-8a32-d486fe0147e7">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tipogarantia}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="91" y="195" width="422" height="20" uuid="95753a7c-6510-4c28-ab0c-84ac5b75b0f4">
+				<reportElement x="143" y="195" width="370" height="20" uuid="95753a7c-6510-4c28-ab0c-84ac5b75b0f4">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Calibri" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripciongarantia}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="11" y="270" width="99" height="15" uuid="22cbcce3-1b8c-46a0-9a65-5863a42d4d08">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[Cantidad Aprobada:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="11" y="291" width="91" height="15" uuid="ddbbe00a-1221-49c6-b8cd-0a8b14a65fa4"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[Saldo a descontar:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="11" y="334" width="51" height="15" uuid="cb54622b-1ff2-473e-90cc-de7529ac35f2"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[Intereses:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="11" y="312" width="39" height="15" uuid="e9edec7a-ddea-4a87-9d22-0209036dc4cb"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[Capital:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="11" y="355" width="28" height="15" uuid="3179c7f1-7444-4813-b7f1-3c0b659b226f"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[Mora:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="11" y="376" width="48" height="15" uuid="0f63a7e9-305e-4523-9f29-a51a16076982">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[Asesoria:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="11" y="397" width="60" height="15" uuid="6d2f0481-db84-4180-a949-33210e65b34c"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[Cuota Final:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="269" width="100" height="17" uuid="22c853fa-4b2f-4f03-9620-b09f5bbd4b13">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="290" width="100" height="17" uuid="5df09dc2-2c8c-436e-a9bf-e0a0e0af7530">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{saldoDescontar}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="311" width="100" height="17" uuid="bf8eb27d-b60e-484e-9560-3e4f6a272ab5"/>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{capital}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="333" width="100" height="17" uuid="f7271457-0aa7-4668-9e40-39eed279b31e"/>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{intereses}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="354" width="100" height="17" uuid="5a8f634d-8ae8-4daa-8cce-da153a5488fe"/>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{mora}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="375" width="100" height="17" uuid="0c6520f8-4fcc-4ed7-8a48-095830517c9a"/>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{asesoria}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="396" width="100" height="17" uuid="8afc2c67-5b1e-43b8-bfbe-e8632d116bc0"/>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cuotafinal}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="120" y="270" width="10" height="15" uuid="644e212e-79d9-488b-938b-58a4246e3b8d">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="291" width="10" height="15" uuid="8cb08898-ccd8-4e28-ba33-15f08b909dce">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="312" width="10" height="15" uuid="75130d01-4c6f-4939-87b8-1d9bf316f298">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="334" width="10" height="15" uuid="a1335376-51c9-4bc9-a9e9-3899c8200fb8">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="355" width="10" height="15" uuid="f708144a-083f-40b7-bd9d-51f127f137f5">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="376" width="10" height="15" uuid="7a324c87-3424-4443-9c48-64189b32353a">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="397" width="10" height="15" uuid="fa61fc40-613e-4dc1-be1c-4d49fbe19aa0">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="11" y="430" width="128" height="15" uuid="8e2298f8-07fb-4cf3-920d-c8855289ad54"/>
-				<textElement>
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[TOTAL A DESEMBOLSAR:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="400" y="430" width="10" height="15" uuid="1cd4c7da-7cf8-4ebb-8b2f-7959edc94a56">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="429" width="100" height="17" uuid="eae9dafc-ffa3-45ea-983f-28826da58581"/>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{totalDesembolso}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="379" y="270" width="31" height="15" uuid="d0f632fb-bb04-4424-b586-28d9e69884a2">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[US   $]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="269" width="100" height="17" uuid="a4306e8a-1c54-4c91-93be-2f88f512435b">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="290" width="100" height="17" uuid="f7be6edd-f5d6-4843-b458-3c3fdfb30a85">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{totaldescuento}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="379" y="291" width="31" height="15" uuid="c6521050-155d-43ec-907e-87a89120bc2f">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[US   $]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="1" y="490" width="512" height="30" uuid="60c15b96-20c1-4215-87b2-736496068225"/>
+				<reportElement x="1" y="507" width="512" height="30" uuid="60c15b96-20c1-4215-87b2-736496068225"/>
 				<textElement>
 					<font fontName="Calibri" size="11" isBold="true"/>
 				</textElement>
@@ -647,6 +413,314 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<font fontName="Calibri" size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[F)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="283" width="130" height="18" uuid="4db735d7-19bd-44b1-8f1e-78c7c3901a46">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Cantidad aprobada:		$]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="301" width="130" height="18" uuid="1b8bdd3e-8348-4bff-9f99-cea1c91c1338">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Saldo a descontar:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="319" width="130" height="18" uuid="97bf8322-3e05-4d74-b6a5-03db51921bfc"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Capital:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="337" width="130" height="18" uuid="ebbca77e-1b17-46a3-b472-7542ce741b26"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Intereses:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="355" width="130" height="18" uuid="a5c35f92-4355-4168-8e1c-d857f8588811"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Mora:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="373" width="130" height="18" uuid="6c86171a-0d80-46f7-a174-6a817fad0697"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Asesoría:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="409" width="130" height="18" uuid="5ab84973-6a99-42d6-9bc4-01ed5cefc1ba"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Cuota Final:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="458" width="230" height="18" uuid="08df1115-a980-483c-914a-de0271f8694c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL A DESEMBOLSAR:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="283" width="124" height="18" uuid="7b702ebe-7c9d-44a4-85bb-361d001cc6d3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidadaprobada}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="319" width="124" height="18" uuid="68a45ed3-c28a-4d38-9d2c-c64558b7154b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{capital}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="337" width="124" height="18" uuid="2afea5d0-316d-41c1-95a0-f8ccc74441d0">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{intereses}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="355" width="124" height="18" uuid="cbfa0664-e7a4-4c99-8052-efccd07924ea">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mora}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="373" width="124" height="18" uuid="dee226fa-0de7-484a-a95d-e4fff84cf986">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{asesoria}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="143" y="409" width="124" height="18" uuid="a4969a77-7a42-46bc-89e5-3bfc110c055d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuotafinal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="366" y="458" width="124" height="18" uuid="9077fc62-d37e-4a75-928a-8e12180527c2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{desembolso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="391" width="130" height="18" uuid="19999515-6555-4bd7-b10f-ae6c498330c3"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[IVA Asesoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="427" width="130" height="18" uuid="a10e92f3-72f9-4bb3-baf8-1bdedae3dd88"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[IVA Cuota Final:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="143" y="391" width="124" height="18" uuid="a30b6b53-689c-4dbe-b29a-b860816e83a3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ivaase}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="427" width="124" height="18" uuid="ae5d70a6-2816-4241-9134-c3fc28ea51bd">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ivacuota}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="331" y="283" width="35" height="18" uuid="19d7ce31-f56f-4795-bfbc-80163041346d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[US $]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="301" width="35" height="18" uuid="b5406255-46cd-417f-a8ae-f3871dd0f165">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[US $]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="366" y="283" width="124" height="18" uuid="eccadbd0-44ff-41f0-afa4-3b57baba9bfc">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidadaprobada}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="366" y="301" width="124" height="18" uuid="e4862b57-5491-451b-8d63-35172e1b47eb">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totaldescuentos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="301" width="124" height="18" uuid="785981fa-00d4-456a-9d36-a60bf7c9eb32">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldodescontado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="197" width="143" height="18" uuid="371ac457-eb77-484f-a092-e47c17352901">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Descripción de la garantía:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="223" width="90" height="18" uuid="684ab4b1-dda6-43b9-983d-e6eacd8cd709">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha de Inicio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="222" width="100" height="20" uuid="ca00c4ad-95c1-478b-9010-d15c386ff98d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaInicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="219" y="223" width="131" height="18" uuid="019783b5-92da-4b11-9e9e-f4bd6877c0f6">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha de Vencimiento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="350" y="222" width="100" height="20" uuid="36cfe6d8-b784-4a51-a032-4b78f1c36380">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaVencimiento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="331" y="458" width="35" height="18" uuid="1604bd69-31ee-499d-b1a2-f39cb20346eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[US $]]></text>
 			</staticText>
 		</band>
 	</detail>
