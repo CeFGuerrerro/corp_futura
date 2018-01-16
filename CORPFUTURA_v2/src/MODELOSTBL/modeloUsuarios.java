@@ -26,7 +26,6 @@ public class modeloUsuarios implements TableModel{
         java.lang.String.class,
         java.lang.String.class,
         java.lang.String.class,
-        java.lang.String.class,
     };
     
     public LinkedList<Usuarios> getDatos() {
@@ -44,7 +43,7 @@ public class modeloUsuarios implements TableModel{
 
     @Override
     public int getColumnCount() {
-      return 5;
+      return 4;
     }
 
     @Override
@@ -54,13 +53,12 @@ public class modeloUsuarios implements TableModel{
         switch(i){
             case 0:      columna="ID"; 
                          break;
-            case 1:      columna="Usuario"; 
+            case 1:      columna="Nombre"; 
                          break;
-            case 2:      columna="Nombre"; 
+            case 2:      columna="Rol"; 
                          break;
-            case 3:      columna="Rol";
+            case 3:      columna="Nº de Cartera";
                          break;
-            case 4:      columna="Nº de Cartera";
         }
         return columna;
     }
@@ -86,13 +84,11 @@ public class modeloUsuarios implements TableModel{
         {
             case 0: 
                 return aux.getIdUsuario();
-            case 1: 
-                return aux.getUsuario();
-            case 2:
+            case 1:
                 return aux.getNombre();
-            case 3:
+            case 2:
                 return obtenerrol(aux);
-            case 4:
+            case 3:
                 return obtenercartera(aux);
             
       
