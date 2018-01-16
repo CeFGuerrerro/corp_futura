@@ -81,6 +81,14 @@ public class monto {
         
     }
     
+    public double getIvaAsesoria(){
+        double iva=0.0;
+        if(monto<350){ iva=0.65;}
+        else if(monto<550){iva=1.30;}
+        else{iva=1.95;}
+        return iva;
+    }
+    
     public void setAsesoria(){    
         asesoria=0.0;
         if(monto<350){ asesoria=5.65;}
