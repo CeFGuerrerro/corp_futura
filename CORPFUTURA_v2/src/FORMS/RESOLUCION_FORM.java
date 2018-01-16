@@ -910,20 +910,49 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         credito.setFechaPrimerPago(fechprimerpago.getDate());
         credito.setFechaVencimiento(fechvencimiento.getDate());
         
-        monto monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), solicitud.getTasaInteres());
-        credito.setCuota(Double.parseDouble(monto.getCuota()));
+        if(solicitud.getTipoCredito()!=3){
+                mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(),solicitud.getTasaInteres()); 
+                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),
+                                         txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
 
-        if(chkAsesoria.isSelected()){credito.setAsesoria(Double.parseDouble(monto.getAsesoria()));}
-        if(chkcuotafinal.isSelected()){credito.setCuotaFinal(Double.parseDouble(monto.getCuota()));}
+        }else{
+                mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), 
+                                 txtTotalIva.getText(), txtTotalIntereses.getText());
+                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected());
+        }
+        
+        credito.setCuota(Double.parseDouble(mont.getCuota()));
+        credito.setTotalIntereses(Double.valueOf(mont.getTotalIntereses()));
+        credito.setTotalIva(Double.valueOf(mont.getTotalIva()));
+        credito.setDesembolso(Double.valueOf(mont.getMontoRecibir()));
+
+        if(chkAsesoria.isSelected()){
+            double ivaasesoria = mont.getIvaAsesoria();
+            double asesoriasiniva = Double.parseDouble(mont.getAsesoria()) - mont.getIvaAsesoria();
+            credito.setAsesoria(asesoriasiniva);
+            credito.setIvaAsesoria(ivaasesoria);     
+        }else{
+            credito.setAsesoria(0.0);
+            credito.setIvaAsesoria(0.0);
+        }
+       
+        if(chkcuotafinal.isSelected()){
+            double ivacuotafinal = Double.valueOf(mont.valorXCuota(mont.getTotalIva()));
+            double cuotasiniva = Double.parseDouble(mont.getCuota())-ivacuotafinal;
+            credito.setCuotaFinal(cuotasiniva);
+            credito.setIvaCuotaFinal(ivacuotafinal);
+        }else{
+            credito.setCuotaFinal(0.0);
+            credito.setIvaCuotaFinal(0.0);
+        }
+        
         credito.setDescuentoCf(chkcuotafinal.isSelected());
-        credito.setCuotasPorPagar(monto.numeroCuotas());
+        credito.setCuotasPorPagar(mont.numeroCuotas());
         credito.setCuotasPagadas(0);
         credito.setInteresPagados(0.0);
         credito.setIvaPagado(0.0);
         credito.setSaldoPagado(0.0);
         credito.setMoraPagada(0.0);
-       
-       
         
         credito.setEstado((short)1); 
           
