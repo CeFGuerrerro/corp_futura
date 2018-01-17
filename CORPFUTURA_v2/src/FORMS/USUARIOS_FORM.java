@@ -3,8 +3,10 @@ package FORMS;
 import CONTROLADORES.UsuariosJpaController;
 import Entidades.Usuarios;
 import MODELOSTBL.modeloUsuarios;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
-
 
 /**
  *
@@ -13,25 +15,68 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class USUARIOS_FORM extends javax.swing.JFrame {
 
     public modeloUsuarios modelo = new modeloUsuarios();
+    public Usuarios usuario = new Usuarios();
     public UsuariosJpaController ujc = new UsuariosJpaController();
-    
 
-    public USUARIOS_FORM() {      
+    public USUARIOS_FORM() {
         initComponents();
         this.setLocationRelativeTo(null);
         cargarModelo();
+        txtCartera.setEnabled(false);
 
     }
-    
-    public void cargarModelo(){
-    
-        for(Usuarios usuario: ujc.findUsuariosEntities()){
+
+    public void cargarModelo() {
+
+        for (Usuarios usuario : ujc.findUsuariosEntities()) {
             modelo.agregarCodeudor(usuario);
         }
         tblUsuarios.clearSelection();
         tblUsuarios.updateUI();
     }
-    
+
+    public boolean GuardarUsuario(Usuarios usuario) {
+        boolean estado = true;
+        usuario.setIdUsuario(ujc.getUsuariosCount() + 1);
+        usuario.setNombre(txtNombre.getText());
+        usuario.setRol((short) cmbRol.getSelectedIndex());
+        if (chkCartera.isSelected()) {
+            usuario.setChkCartera(true);
+            usuario.setCartera(Short.parseShort(txtCartera.getText()));
+        } else {
+            usuario.setChkCartera(false);
+        }
+        try {
+            ujc.create(usuario);
+        } catch (Exception ex) {
+            estado = false;
+        }
+        return estado;
+    }
+
+    public void limpiarUsuario() {
+        txtNombre.setText("");
+        txtCartera.setText("");
+        chkCartera.setSelected(false);
+        cmbRol.setSelectedIndex(0);
+    }
+
+    public boolean validarUsuario() {
+        boolean validacion = true;
+        if (txtNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Falta rellenar el nombre");
+            validacion = false;
+        }
+        if (chkCartera.isSelected() && txtCartera.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Falta rellenar el campo de la Cartera");
+            validacion = false;
+        }
+        if (cmbRol.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Falta seleccionar un rol");
+            validacion = false;
+        }
+        return validacion;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -48,11 +93,11 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         chkCartera = new javax.swing.JCheckBox();
         btnGenerar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        txtNumeroCartera = new javax.swing.JPasswordField();
         jLabel9 = new javax.swing.JLabel();
         cmbRol = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
+        txtCartera = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(240, 236, 236));
@@ -113,6 +158,11 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         chkCartera.setForeground(new java.awt.Color(51, 51, 51));
         chkCartera.setText("Crear cartera");
         chkCartera.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        chkCartera.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkCarteraItemStateChanged(evt);
+            }
+        });
 
         btnGenerar.setText("Guardar Usuario");
         btnGenerar.addActionListener(new java.awt.event.ActionListener() {
@@ -152,6 +202,13 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         tblUsuarios.getColumnModel().getColumn(0).setPreferredWidth(25);
         tblUsuarios.getColumnModel().getColumn(2).setPreferredWidth(150);
 
+        txtCartera.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        txtCartera.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCarteraKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
         contenidoLayout.setHorizontalGroup(
@@ -166,7 +223,7 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(chkCartera))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNumeroCartera, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCartera, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
@@ -206,8 +263,8 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
                         .addGap(35, 35, 35)
                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(txtNumeroCartera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCartera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(contenidoLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(chkCartera)))
@@ -242,11 +299,31 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
     }//GEN-LAST:event_hvCerrarMouseClicked
 
     private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
-
-  
+        if (validarUsuario()) {
+            if (GuardarUsuario(usuario)) {
+                JOptionPane.showMessageDialog(null, "Usuario registrado con éxito");
+                limpiarUsuario();
+                cargarModelo();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al regstrar el usuario");
+            }
+        }
     }//GEN-LAST:event_btnGenerarActionPerformed
 
-   
+    private void txtCarteraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCarteraKeyTyped
+        char c = evt.getKeyChar();
+        if ((c < '0' || c > '9')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCarteraKeyTyped
+
+    private void chkCarteraItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkCarteraItemStateChanged
+        if (chkCartera.isSelected()) {
+            txtCartera.setEnabled(true);
+        } else {
+            txtCartera.setEnabled(false);
+        }
+    }//GEN-LAST:event_chkCarteraItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -264,7 +341,7 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tblUsuarios;
+    private javax.swing.JTextField txtCartera;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JPasswordField txtNumeroCartera;
     // End of variables declaration//GEN-END:variables
 }
