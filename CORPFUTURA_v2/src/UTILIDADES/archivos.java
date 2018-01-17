@@ -18,13 +18,23 @@ import java.util.logging.Logger;
  */
 public class archivos {
     
-    private static final String ruta="C:\\Users\\dvid1\\Desktop\\CORP_FUTURA\\PERFILES_SOLICITUDES\\";
-    private static final String rutaAnalisisCredito = "src/DOCS_PLANTILLAS/Analisis_de_Credito.xlsx";
+   
+    
+    private static final String ruta = System.getProperty("user.home") + "\\Desktop\\CORP_FUTURA\\PERFILES_SOLICITUDES\\";
+    private static final String rutaAnalisisCredito = "src/DOCS_PLANTILLAS/Analisis_de_Credito.xlsx"; 
     
     private static void crearCarpeta(String nombre){
         
-        File directorio=new File(ruta+nombre); 
-        directorio.mkdir();
+        File directorioP=new File(ruta);
+        if(!directorioP.exists()){
+           directorioP.mkdirs();
+        }
+        
+        File directorio = new File(ruta+nombre);
+        if(!directorio.exists()){
+           directorio.mkdir();
+        }
+        
     }
     
     private static void copiarPlantilla(String nombre) throws FileNotFoundException, IOException{
@@ -32,18 +42,29 @@ public class archivos {
         File origen = new File(rutaAnalisisCredito);
         File destino = new File(ruta+nombre+"\\Analisis_de_Credito.xlsx");
         
-        InputStream in = new FileInputStream(origen);
-        OutputStream out = new FileOutputStream(destino);
+        if(!destino.exists()){
         
-        byte[] buf = new byte[1024];
-        int len;
+            InputStream in = new FileInputStream(origen);
+            OutputStream out = new FileOutputStream(destino);
+        
+            byte[] buf = new byte[1024];
+            int len;
      
-        while ((len = in.read(buf)) > 0) {
-           out.write(buf, 0, len);
-        }
+            while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+            }
     
-        in.close();
-        out.close();
+            in.close();
+            out.close();
+        }
+        
+    }
+    
+    public static void crearCarpetaPerfil(String nombre) throws IOException{
+        
+            crearCarpeta(nombre);
+            copiarPlantilla(nombre);
+
     }
     
     public static void copiarArchivo(File file, String nombre) throws FileNotFoundException, IOException{
@@ -64,14 +85,7 @@ public class archivos {
         in.close();
         out.close();
     }
-    
-    public static void crearCarpetaPerfil(String nombre) throws IOException{
-        
-            crearCarpeta(nombre);
-            copiarPlantilla(nombre);
-
-    }
-    
+   
     public static void ejecutarDocExcel(String nombre){
         
         String cadena = "cmd /c start "+ruta+"\""+nombre+"\"\\Analisis_de_Credito.xlsx";

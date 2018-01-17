@@ -33,7 +33,7 @@ public class JasperGenerator {
     File fichero;
 
     public void crearReporte(String nombreDoc, String nombreCli, JRDataSource dataSource) throws JRException {
-        path = System.getProperty("user.home") + "\\Desktop\\" + nombreCli;
+        path = System.getProperty("user.home") + "\\Desktop\\CORP_FUTURA\\PERFILES_SOLICITUDES\\" + nombreCli;
         crearDirectorio(path);
         JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
@@ -52,7 +52,7 @@ public class JasperGenerator {
     }
 
     public void crearReporteConParam(String nombreDoc, String nombreCli, Map parametros, JRDataSource dataSource) throws JRException {
-        path = System.getProperty("user.home") + "\\Desktop\\" + nombreCli;
+        path =System.getProperty("user.home") + "\\Desktop\\CORP_FUTURA\\PERFILES_SOLICITUDES\\"+ nombreCli;
         crearDirectorio(path);
         JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
