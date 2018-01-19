@@ -91,6 +91,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         lblnombre.setText("Nombre:");
 
         txtnombre.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtnombre.setPreferredSize(new java.awt.Dimension(400, 19));
         txtnombre.setSelectionColor(new java.awt.Color(51, 255, 204));
         txtnombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -145,6 +146,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         lblocupacion1.setText("Ocupación:");
 
         txtocupacion.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtocupacion.setPreferredSize(new java.awt.Dimension(400, 19));
         txtocupacion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtocupacionKeyTyped(evt);
@@ -152,6 +154,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         });
 
         txtprofesion.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtprofesion.setPreferredSize(new java.awt.Dimension(400, 19));
         txtprofesion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtprofesionKeyTyped(evt);
@@ -200,6 +203,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         txtanios.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
         txtllegar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtllegar.setPreferredSize(new java.awt.Dimension(674, 19));
         txtllegar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtllegarKeyTyped(evt);
@@ -207,6 +211,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         });
 
         txtreferencia.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtreferencia.setPreferredSize(new java.awt.Dimension(674, 19));
         txtreferencia.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtreferenciaKeyTyped(evt);
@@ -214,6 +219,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         });
 
         txtdireccion.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtdireccion.setPreferredSize(new java.awt.Dimension(400, 19));
         txtdireccion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtdireccionKeyTyped(evt);
@@ -299,14 +305,12 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                             .addComponent(cmbestudio, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbcivil, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dtexpedicion, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtreferencia)
-                            .addComponent(txtllegar)
                             .addComponent(txtanios, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtocupacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-                                    .addComponent(txtprofesion, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtnombre, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(txtocupacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtprofesion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtnombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -314,7 +318,9 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtdependen, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtnumhijos, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtnumhijos, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtreferencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtllegar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblconyugue1)
                     .addComponent(lbldatospersonales)
                     .addGroup(layout.createSequentialGroup()
@@ -390,11 +396,11 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                             .addComponent(jLabel18))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtreferencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtreferencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel13))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtllegar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtllegar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -406,7 +412,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                         .addComponent(jLabel16)))
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(212, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

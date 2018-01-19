@@ -104,6 +104,10 @@ public class modeloUsuarios implements TableModel{
         
     }
     
+    public Usuarios obtenerUsuario(int index){
+        return (Usuarios)datos.get(index);
+    }
+    
      private void avisaSuscriptores (TableModelEvent evento)
     {
         int i;
@@ -111,7 +115,7 @@ public class modeloUsuarios implements TableModel{
             ((TableModelListener)listeners.get(i)).tableChanged(evento);
     }
      
-     public void agregarCodeudor (Usuarios dp)
+     public void agregarUsuario (Usuarios dp)
     {
         // Añade la persona al modelo 
         datos.add (dp);
@@ -124,7 +128,7 @@ public class modeloUsuarios implements TableModel{
         avisaSuscriptores (evento);
     }
      
-    public void borraCodeudor(int fila)
+    public void borraUsuario(int fila)
     {
         // Se borra la fila 
         datos.remove(fila);
@@ -173,5 +177,8 @@ public class modeloUsuarios implements TableModel{
         }
         return cadena;
     } 
+    
+    
+    
     
 }

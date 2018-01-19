@@ -135,6 +135,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
 
         txtNombre.setEditable(false);
         txtNombre.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtNombre.setPreferredSize(new java.awt.Dimension(330, 19));
 
         jLabel3.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
@@ -258,6 +259,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
 
         txtdireccion.setEditable(false);
         txtdireccion.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtdireccion.setPreferredSize(new java.awt.Dimension(500, 19));
 
         jLabel18.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(51, 51, 51));
@@ -269,6 +271,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
 
         txtreferencia.setEditable(false);
         txtreferencia.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtreferencia.setPreferredSize(new java.awt.Dimension(500, 19));
 
         jLabel21.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(51, 51, 51));
@@ -276,6 +279,7 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
 
         txtllegar.setEditable(false);
         txtllegar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtllegar.setPreferredSize(new java.awt.Dimension(500, 19));
 
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
@@ -358,8 +362,8 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(contenidoLayout.createSequentialGroup()
-                                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(10, 10, 10)
+                                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(lblcel))
                                     .addGroup(contenidoLayout.createSequentialGroup()
                                         .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -376,8 +380,8 @@ public class DETALLE_SOLICITUD_FORM extends javax.swing.JFrame {
                                         .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtreferencia)
-                                        .addComponent(txtllegar)
+                                        .addComponent(txtreferencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtllegar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtdireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()

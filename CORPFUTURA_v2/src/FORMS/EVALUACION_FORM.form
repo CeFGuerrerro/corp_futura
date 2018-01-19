@@ -362,7 +362,6 @@
                       <Component id="jLabel5" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="txtDui" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="2" attributes="0">
@@ -395,7 +394,6 @@
                                       <Component id="jLabel10" alignment="2" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel12" alignment="2" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="2" attributes="0">
@@ -428,7 +426,7 @@
                                                   <Component id="txtcapitald" alignment="2" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <EmptySpace pref="8" max="32767" attributes="0"/>
+                                          <EmptySpace pref="16" max="32767" attributes="0"/>
                                           <Group type="103" groupAlignment="2" attributes="0">
                                               <Component id="jLabel20" alignment="2" min="-2" max="-2" attributes="0"/>
                                               <Component id="txtinteresesd" alignment="2" min="-2" max="-2" attributes="0"/>
@@ -516,7 +514,7 @@
                       </Group>
                       <Component id="btnGuardar" alignment="1" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace pref="29" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -1195,7 +1193,9 @@
             <Component class="javax.swing.JTextArea" name="txtjustificacion">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
+                <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="autoscrolls" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

@@ -388,7 +388,9 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         jLabel31.setText("Justificación:");
 
         txtjustificacion.setColumns(20);
+        txtjustificacion.setLineWrap(true);
         txtjustificacion.setRows(5);
+        txtjustificacion.setAutoscrolls(false);
         jScrollPane1.setViewportView(txtjustificacion);
 
         jLabel32.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
@@ -616,7 +618,6 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel5)
                     .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(contenidoLayout.createSequentialGroup()
                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -646,7 +647,6 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel12))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(contenidoLayout.createSequentialGroup()
                                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -674,7 +674,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
                                             .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                                 .addComponent(jLabel18)
                                                 .addComponent(txtcapitald, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                             .addComponent(jLabel20)
                                             .addComponent(txtinteresesd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -739,7 +739,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel31)))
                     .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

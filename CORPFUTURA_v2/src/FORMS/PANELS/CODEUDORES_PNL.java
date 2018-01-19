@@ -120,6 +120,7 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
 
         txtbusqueda.setEditable(false);
         txtbusqueda.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtbusqueda.setPreferredSize(new java.awt.Dimension(350, 19));
         txtbusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtbusquedaKeyReleased(evt);
@@ -142,6 +143,7 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
 
         txtNombre.setEditable(false);
         txtNombre.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        txtNombre.setPreferredSize(new java.awt.Dimension(350, 19));
 
         jLabel4.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
@@ -215,7 +217,7 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
                                         .addGap(10, 10, 10)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(btnregistrocodeudor, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtbusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(txtbusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(18, 18, 18)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(13, 13, 13)
@@ -223,7 +225,7 @@ public class CODEUDORES_PNL extends javax.swing.JPanel {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addGap(4, 4, 4)
-                                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel5)
                                         .addGap(3, 3, 3)
