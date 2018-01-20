@@ -83,14 +83,14 @@
 				<text><![CDATA[SUGERENCIA DEL EJECUTIVO DE NEGOCIOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="15" width="130" height="15" uuid="cb0bb8c8-72a1-4302-9d2d-30bb324a9de8"/>
+				<reportElement x="0" y="15" width="119" height="15" uuid="cb0bb8c8-72a1-4302-9d2d-30bb324a9de8"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Nombre del Cliente:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="131" y="15" width="289" height="15" uuid="a6b20b8d-785f-468f-aad1-2d65e7b7ff14"/>
+				<reportElement x="119" y="15" width="289" height="15" uuid="a6b20b8d-785f-468f-aad1-2d65e7b7ff14"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
