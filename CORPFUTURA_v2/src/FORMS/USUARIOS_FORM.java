@@ -1,6 +1,8 @@
 package FORMS;
 
 import CONTROLADORES.UsuariosJpaController;
+import CONTROLADORES.exceptions.IllegalOrphanException;
+import CONTROLADORES.exceptions.NonexistentEntityException;
 import Entidades.Usuarios;
 import MODELOSTBL.modeloUsuarios;
 import java.util.logging.Level;
@@ -37,20 +39,21 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
 
     public boolean GuardarUsuario(Usuarios usuario) {
         boolean estado = true;
-        usuario.setIdUsuario(ujc.getUsuariosCount() + 1);
-        usuario.setNombre(txtNombre.getText());
-        usuario.setRol((short) cmbRol.getSelectedIndex());
-        if (chkCartera.isSelected()) {
-            usuario.setChkCartera(true);
-            usuario.setCartera(Short.parseShort(txtCartera.getText()));
-        } else {
-            usuario.setChkCartera(false);
-        }
-        try {
-            ujc.create(usuario);
-        } catch (Exception ex) {
-            estado = false;
-        }
+       
+            usuario.setIdUsuario(ujc.getUsuariosCount() + 1);
+            usuario.setNombre(txtNombre.getText());
+            usuario.setRol((short) cmbRol.getSelectedIndex());
+            if (chkCartera.isSelected()) {
+                usuario.setChkCartera(true);
+                usuario.setCartera(Short.parseShort(txtCartera.getText()));
+            } else {
+                usuario.setChkCartera(false);
+            }
+            try {
+                ujc.create(usuario);
+            } catch (Exception ex) {
+                estado = false;
+            }
         return estado;
     }
 
@@ -77,15 +80,18 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         }
         return validacion;
     }
-    
-    public void cargarUsuario(int indice){
-    
-            usuario = modelo.obtenerUsuario(indice);
-            cmbRol.setSelectedIndex(usuario.getRol());
-            txtNombre.setText(usuario.getNombre());
-            chkCartera.setSelected(usuario.getChkCartera());
+
+    public void cargarUsuario(int indice) {
+        limpiarUsuario();
+        usuario = modelo.obtenerUsuario(indice);
+        cmbRol.setSelectedIndex(usuario.getRol());
+        txtNombre.setText(usuario.getNombre());
+        chkCartera.setSelected(usuario.getChkCartera());
+
+        if (usuario.getChkCartera()) {
             txtCartera.setText(usuario.getCartera().toString());
-    
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -227,6 +233,11 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         });
 
         jButton1.setText("Eliminar Usuario");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
@@ -347,6 +358,26 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
             txtCartera.setEnabled(false);
         }
     }//GEN-LAST:event_chkCarteraItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Desea eliminar el usuario seleccionado?", "Advertencia", dialogButton);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            if (usuario.getSolicitudCreditoList().isEmpty()) {
+                try {
+                    ujc.destroy(usuario.getIdUsuario());
+                    cargarModelo();
+                    JOptionPane.showMessageDialog(null, "Usuario Eliminado con éxito!");
+                } catch (IllegalOrphanException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar al usuario: " + ex);
+                } catch (NonexistentEntityException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar al usuario: " + ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se puede eliminar el usuario: Solicitudes activas");
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
