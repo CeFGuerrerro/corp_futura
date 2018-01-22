@@ -1,6 +1,8 @@
 package UTILIDADES;
 
+import Entidades.Creditos;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -57,40 +59,43 @@ public class fechas {
         return pagos + 1;
 
     }
-
-    public static int numeroSemanas(Date actual, Date inicio) {
-
-        int semanas = 0;
-
-        Date nuevaActual = normalizarFecha(actual);
-        Date nuevainicio = normalizarFecha(inicio);
-
-        int dias = (int) ((nuevaActual.getTime() - nuevainicio.getTime()) / 86400000);
-        semanas = (dias / 7) + 1;
-
-        return semanas;
-    }
-
-    public static boolean mismaSemana(Date actual, Date cancelacion) {
-
-        boolean misma = true;
-
-        Date nuevaActual = normalizarFecha(actual);
-        Date nuevacancelacion = normalizarFecha(cancelacion);
-
-        Calendar factual = Calendar.getInstance();
-        Calendar fcancelacion = Calendar.getInstance();
-
-        factual.setTime(nuevaActual);
-        fcancelacion.setTime(nuevacancelacion);
-
-        if (factual.get(Calendar.WEEK_OF_YEAR) != fcancelacion.get(Calendar.WEEK_OF_YEAR)) {
-            misma = false;
+    
+    public static ArrayList<String> fechasdeCuotas(Creditos credito){
+    
+        ArrayList cuotas = new ArrayList();
+        int contador =1;
+        Date fecha = normalizarFecha(credito.getFechaPrimerPago());
+        
+        while(contador<=credito.getCuotasPorPagar()){
+        
+            String cadena = "Cuota "+contador;
+            if(contador==1){
+                cadena = cadena+" \t"+formatearFecha2(fecha);
+                cuotas.add(cadena);
+            }else{
+            
+                switch (credito.getFormaPago()) {
+                    case 1:
+                        fecha.setTime(fecha.getTime()+(86400000*7));
+                        break;
+                    case 2:
+                        fecha.setTime(fecha.getTime()+(86400000*14));
+                        break;
+                    case 3:
+                        fecha.setTime(fecha.getTime()+(86400000*28));
+                        break;
+                }
+                
+                cadena = cadena+" \t"+formatearFecha2(fecha);
+                cuotas.add(cadena);
+            
+            }
+            contador++;  
         }
-
-        return misma;
+        
+        return cuotas;
     }
-
+    
     public static Date normalizarFecha(Date fecha) {
 
         SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
@@ -136,6 +141,11 @@ public class fechas {
 
     public static String formatearFecha(Date fecha) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        return sdf.format(fecha);
+    }
+    
+    public static String formatearFecha2(Date fecha) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
         return sdf.format(fecha);
     }
 

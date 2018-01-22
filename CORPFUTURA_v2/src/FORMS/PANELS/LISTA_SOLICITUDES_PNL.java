@@ -57,7 +57,7 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
         btndenegarsolicitud = new javax.swing.JButton();
         chkdesembolso = new javax.swing.JCheckBox();
         habrir = new Label.HoverIcon();
-        habrir1 = new Label.HoverIcon();
+        btnAbrirCarpeta = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(240, 236, 236));
 
@@ -133,6 +133,7 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
         jLabel25.setText("Observaciones:");
 
         txtobservaciones.setColumns(20);
+        txtobservaciones.setLineWrap(true);
         txtobservaciones.setRows(5);
         jScrollPane2.setViewportView(txtobservaciones);
 
@@ -155,10 +156,10 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
             }
         });
 
-        habrir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/ICONS/abrir2.png"))); // NOI18N
-        habrir1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                habrir1MouseClicked(evt);
+        btnAbrirCarpeta.setText("Abrir carpeta del Cliente");
+        btnAbrirCarpeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbrirCarpetaActionPerformed(evt);
             }
         });
 
@@ -168,39 +169,36 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1040, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
                         .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnActualizarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel22)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbinfored, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(habrir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel24)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fechavisita, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(chkvisita)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel22)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmbinfored, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(habrir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel24)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(fechavisita, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(chkvisita)
                                     .addComponent(chkestados, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(chkdesembolso))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(habrir1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel25)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btndenegarsolicitud))
-                        .addGap(182, 182, 182))))
+                                    .addComponent(chkdesembolso)
+                                    .addComponent(btnActualizarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnAbrirCarpeta)
+                                    .addComponent(jLabel25)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btndenegarsolicitud)))
+                            .addComponent(jLabel1))
+                        .addContainerGap(212, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,36 +209,34 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel25)
                     .addComponent(habrir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbinfored, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22))
+                    .addComponent(jLabel22)
+                    .addComponent(btnAbrirCarpeta, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel24)
                             .addComponent(fechavisita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(chkvisita)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(chkestados)
-                            .addComponent(habrir1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7)
+                        .addComponent(chkestados)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkdesembolso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnActualizarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(128, Short.MAX_VALUE))
+                        .addComponent(chkdesembolso))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btndenegarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jLabel25)
+                        .addGap(0, 0, 0)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btndenegarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         habrir.setImages("/IMAGES/ICONS/abrir3.png","/IMAGES/ICONS/abrir2.png");
-        habrir1.setImages("/IMAGES/ICONS/abrir3.png","/IMAGES/ICONS/abrir2.png");
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActualizarsolicitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarsolicitudActionPerformed
@@ -342,26 +338,14 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
         
     }//GEN-LAST:event_habrirMouseClicked
 
-    private void habrir1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_habrir1MouseClicked
+    private void btnAbrirCarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirCarpetaActionPerformed
         
-        if(tblSolicitudes.getSelectedRow()!= -1){
-            DatosPersonales datos = modelo.obtenersolicitud(tblSolicitudes.getSelectedRow()).getDatosPersonales();
-            JFileChooser fc = new JFileChooser();
-            fc.setDialogTitle("ABRIR EL DOCUMENTO DE ESTADOS FINANCIEROS");
-            fc.setCurrentDirectory(archivos.getRootPath(datos.getNombre()));
-            
-            int result = fc.showOpenDialog(null);
-            if(result == JFileChooser.APPROVE_OPTION){
-                File file = fc.getSelectedFile();
-                
-                if(file.getName().equals("Analisis_de_Credito.xlsx")){
-                    System.out.println("entra");
-                    archivos.ejecutarDocExcel(datos.getNombre());
-                }   
-            }
+         if(tblSolicitudes.getSelectedRow()!= -1){
+            archivos.abrirCarpetaCliente(modelo.obtenersolicitud(tblSolicitudes.getSelectedRow()).getDatosPersonales().getNombre());
         }
-    
-    }//GEN-LAST:event_habrir1MouseClicked
+        
+        
+    }//GEN-LAST:event_btnAbrirCarpetaActionPerformed
 
     public void cargarModelo(){
         short estado =5;
@@ -407,6 +391,7 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbrirCarpeta;
     private javax.swing.JButton btnActualizarsolicitud;
     private javax.swing.JButton btndenegarsolicitud;
     private javax.swing.JCheckBox chkdesembolso;
@@ -415,7 +400,6 @@ public class LISTA_SOLICITUDES_PNL extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cmbinfored;
     private com.toedter.calendar.JDateChooser fechavisita;
     private Label.HoverIcon habrir;
-    private Label.HoverIcon habrir1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel24;

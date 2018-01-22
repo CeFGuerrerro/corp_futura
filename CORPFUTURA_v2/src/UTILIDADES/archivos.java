@@ -21,7 +21,6 @@ public class archivos {
    
     
     private static final String ruta = System.getProperty("user.home") + "\\Desktop\\CORP_FUTURA\\PERFILES_SOLICITUDES\\";
-    private static final String rutaAnalisisCredito = "src/DOCS_PLANTILLAS/Analisis_de_Credito.xlsx"; 
     
     private static void crearCarpeta(String nombre){
         
@@ -37,14 +36,13 @@ public class archivos {
         
     }
     
-    private static void copiarPlantilla(String nombre) throws FileNotFoundException, IOException{
-    
-        File origen = new File(rutaAnalisisCredito);
-        File destino = new File(ruta+nombre+"\\Analisis_de_Credito.xlsx");
+    private  void copiarPlantilla(String nombre) throws FileNotFoundException, IOException{
+        
+        File destino = new File(ruta+nombre+"\\AnalisisCredito1.xlsx");
         
         if(!destino.exists()){
         
-            InputStream in = new FileInputStream(origen);
+            InputStream in = getClass().getResourceAsStream("AnalisisCreditos.xlsx");
             OutputStream out = new FileOutputStream(destino);
         
             byte[] buf = new byte[1024];
@@ -60,7 +58,7 @@ public class archivos {
         
     }
     
-    public static void crearCarpetaPerfil(String nombre) throws IOException{
+    public void crearCarpetaPerfil(String nombre) throws IOException{
         
             crearCarpeta(nombre);
             copiarPlantilla(nombre);
@@ -86,9 +84,9 @@ public class archivos {
         out.close();
     }
    
-    public static void ejecutarDocExcel(String nombre){
+    public static void abrirCarpetaCliente(String nombre){
         
-        String cadena = "cmd /c start "+ruta+"\""+nombre+"\"\\Analisis_de_Credito.xlsx";
+        String cadena = "cmd /c explorer "+ruta+"\""+nombre+"\"";
        
         try {
             Runtime.getRuntime().exec(cadena);
@@ -98,10 +96,6 @@ public class archivos {
     
     }
     
-    public static File getRootPath(String nombre){
-        File file = new File(ruta+nombre);
-        return file;
-    }
     
     
 }

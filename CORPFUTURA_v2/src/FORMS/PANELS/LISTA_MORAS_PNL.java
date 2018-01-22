@@ -210,26 +210,11 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                         
                         if(mora.getEstado()==0){
                
-                            int semanas = fechas.numeroSemanas(panel.fechadesistema, mora.getFechaInicio());
-                            
-                            if(mora.getSemana()<semanas){
-                               mora.setSemana(semanas);
-                               mora.setMoraTotal(monto.redondear(5.65*semanas,2));
-                            }
                             
                             
                         }else if(mora.getEstado()==1){
                             
-                            if(!fechas.mismaSemana(panel.fechadesistema, mora.getFechaCancelacion())){
-                                mora.setEstado((short)2); 
-                                Mora nuevaMora = obtenerMoraconDatos(credito);
-                                try {
-                                    mjc.create(nuevaMora);
-                                } catch (Exception ex) {
-                                    Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);
-                                }  
-                            }
-
+                          
                         }
                         
                         

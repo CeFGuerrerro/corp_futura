@@ -845,7 +845,8 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
                         listasolicitud.cargarModelo();
                         listasolicitud.tblSolicitudes.clearSelection();
                         listasolicitud.tblSolicitudes.updateUI();
-                        try {archivos.crearCarpetaPerfil(datospersonales.getNombre());} 
+                        archivos arch = new archivos();
+                        try {arch.crearCarpetaPerfil(datospersonales.getNombre());} 
                         catch (IOException ex) {System.out.println(ex);}
                         this.dispose(); 
                     }else{
