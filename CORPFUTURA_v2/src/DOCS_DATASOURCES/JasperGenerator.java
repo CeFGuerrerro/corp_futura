@@ -5,10 +5,14 @@
  */
 package DOCS_DATASOURCES;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -39,7 +43,14 @@ public class JasperGenerator {
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
         JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + nombreDoc + ".pdf");
-        JasperViewer.viewReport(jasperPrint, false);
+        //JasperViewer.viewReport(jasperPrint, false);
+        
+        File pdf = new File(path + "\\" + nombreDoc + ".pdf");
+        try {
+            Desktop.getDesktop().open(pdf);
+        } catch (IOException ex) {
+            Logger.getLogger(JasperGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -58,7 +69,14 @@ public class JasperGenerator {
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
         JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + nombreDoc + ".pdf");
-        JasperViewer.viewReport(jasperPrint, false);
+        //JasperViewer.viewReport(jasperPrint, false);
+        
+        File pdf = new File(path + "\\" + nombreDoc + ".pdf");
+        try {
+            Desktop.getDesktop().open(pdf);
+        } catch (IOException ex) {
+            Logger.getLogger(JasperGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 }
