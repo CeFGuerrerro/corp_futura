@@ -173,6 +173,9 @@ public class DS_HojaDesembolso implements JRDataSource {
             case "mora":
                 valor = listaSolicitudes.get(indice).getMoraDes();
                 return valor;
+            case "ncredito":
+                valor = listaSolicitudes.get(indice).getSolicitudCreditoPK().getIdSolicitudCredito();
+                return valor;
         }
 
         return valor;

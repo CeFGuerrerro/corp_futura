@@ -22,14 +22,21 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="89" splitType="Stretch">
+		<band height="114" splitType="Stretch">
 			<staticText>
-				<reportElement x="40" y="50" width="480" height="30" uuid="ae81abed-8528-4ba0-8dd7-156f983738ae"/>
+				<reportElement x="40" y="64" width="480" height="30" uuid="ae81abed-8528-4ba0-8dd7-156f983738ae"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[AUTORIZACIÓN PARA CONSULTAR Y COMPARTIR INFORMACIÓN]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="128" height="57" uuid="844bc8f4-32c6-4a2f-92db-413ba852df73">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/IMAGES/LOGO/logo.png")]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<detail>

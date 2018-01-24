@@ -59,7 +59,7 @@ public class DS_PerfilCliente implements JRDataSource {
                         valor = "1 MES / 4 SEMANAS";
                     } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 2) {
                         valor = "2 MESES / 8 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo()== 3) {
+                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 3) {
                         valor = "3 MESES / 12 SEMANAS";
                     } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 4) {
                         valor = "4 MESES / 16 SEMANAS";
@@ -67,7 +67,7 @@ public class DS_PerfilCliente implements JRDataSource {
                         valor = "5 MESES / 20 SEMANAS";
                     } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 6) {
                         valor = "6 MESES / 24 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo()== 7) {
+                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 7) {
                         valor = "7 MESES / 28 SEMANAS";
                     } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 8) {
                         valor = "8 MESES / 32 SEMANAS";
@@ -79,31 +79,46 @@ public class DS_PerfilCliente implements JRDataSource {
                         valor = "11 MESES / 44 SEMANAS";
                     } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 12) {
                         valor = "12 MESES / 48 SEMANAS";
-                    } return valor;
+                    }
+                    return valor;
                 case "tasa":
-                    valor = listaSolicitudes.get(indice).getTasaInteres()+" %";
+                    valor = listaSolicitudes.get(indice).getTasaInteres() + " %";
                     return valor;
                 case "destino":
-                    if(listaSolicitudes.get(indice).getEvaluacionCredito().getSolicitudCredito().getDestinoCredito() != null){
+                    if (listaSolicitudes.get(indice).getEvaluacionCredito().getSolicitudCredito().getDestinoCredito() != null) {
                         valor = listaSolicitudes.get(indice).getEvaluacionCredito().getSolicitudCredito().getDestinoCredito();
-                    }return valor;
+                    }
+                    return valor;
                 case "fondo":
-                    if(listaSolicitudes.get(indice).getEvaluacionCredito().getFuentesFondos()==1){
+                    if (listaSolicitudes.get(indice).getEvaluacionCredito().getFuentesFondos() == 1) {
                         valor = "PROPIOS";
-                    }else if(listaSolicitudes.get(indice).getEvaluacionCredito().getFuentesFondos()==2){
+                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFuentesFondos() == 2) {
                         valor = "SALARIO";
-                    }return valor;
+                    }
+                    return valor;
                 case "justificacion":
-                    if(listaSolicitudes.get(indice).getEvaluacionCredito().getJustificacion() != null){
+                    if (listaSolicitudes.get(indice).getEvaluacionCredito().getJustificacion() != null) {
                         valor = listaSolicitudes.get(indice).getEvaluacionCredito().getJustificacion();
-                    }return valor;
+                    }
+                    return valor;
                 case "garantia":
-                    if((listaSolicitudes.get(indice).getEvaluacionCredito().getTipoGarantia()==1) || 
-                       (listaSolicitudes.get(indice).getEvaluacionCredito().getTipoGarantia()==3)) {
+                    if ((listaSolicitudes.get(indice).getEvaluacionCredito().getTipoGarantia() == 1)
+                            || (listaSolicitudes.get(indice).getEvaluacionCredito().getTipoGarantia() == 3)) {
                         valor = "DECALARACION JURADA DE BIENES MUEBLES";
-                    } return valor;
+                    }
+                    return valor;
                 case "fecha":
-                    valor =formatearFecha(listaSolicitudes.get(indice).getEvaluacionCredito().getFechaEvaluacion());
+                    valor = formatearFecha(listaSolicitudes.get(indice).getEvaluacionCredito().getFechaEvaluacion());
+                    return valor;
+                case "cantidadcre":
+                    int cuenta = 0;
+                    for (SolicitudCredito sc : listaSolicitudes.get(indice).getDatosPersonales().getSolicitudCreditoList()) {
+                        if (sc.getCreditos() != null) {
+                            cuenta++;
+                        }
+                    }
+                    valor = cuenta;
+                    return valor;
             }
         }
         return valor;
