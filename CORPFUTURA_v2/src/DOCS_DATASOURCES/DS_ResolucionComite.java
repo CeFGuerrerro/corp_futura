@@ -158,7 +158,7 @@ public class DS_ResolucionComite implements JRDataSource {
                 }
                 return valor;
             case "otrascondiciones":
-                if (listaSolicitudes.get(indice).getCreditos().getCuotaFinal() != null) {
+                if (listaSolicitudes.get(indice).getCreditos().getCuotaFinal() > 0.0) {
                     valor = "DESCUENTO DE LA ULTIMA CUOTA";
                 }
                 return valor;
@@ -185,6 +185,9 @@ public class DS_ResolucionComite implements JRDataSource {
                 return valor;
             case "mora":
                 valor = listaSolicitudes.get(indice).getMoraDes();
+                return valor;
+            case "ejecutivo":
+                valor = listaSolicitudes.get(indice).getIdUsuario().getNombre();
                 return valor;
         }
 
