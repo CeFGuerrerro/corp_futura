@@ -200,6 +200,8 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                                 try { mjc.create(mora);} catch (Exception ex) 
                                 {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
                             
+                            }else{
+                            
                             }
                            
                         }
@@ -218,6 +220,10 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                                 try { mjc.create(mora);} catch (Exception ex) 
                                 {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
                             
+                            }else{
+                               
+                                
+                                
                             }
                           
                         }
