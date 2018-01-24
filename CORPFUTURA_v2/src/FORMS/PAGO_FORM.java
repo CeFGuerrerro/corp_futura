@@ -605,21 +605,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
     private void cargarCredito(){
     
-        txtNombre.setText(credito.getSolicitudCredito().getDatosPersonales().getNombre());
-        txtDui.setText(credito.getCreditosPK().getDui());
-        txtCuota.setText(credito.getCuota().toString());
-        cmbplazos.setSelectedIndex(credito.getPlazo());
-        cmbformapagos.setSelectedIndex(credito.getFormaPago());
         
-        if (mora!=null){
-           txtMoraPendiente.setText(String.valueOf(mora.getMoraTotal()-mora.getMoraCancelada()));
-           txtMontoPendiente.setText(mora.getMontoPendiente().toString());
-           txtCuotasPendientes.setText(mora.getCuotasPendientes().toString());
-        
-           totalpendiente =(mora.getMoraTotal()-mora.getMoraCancelada())+mora.getMontoPendiente();
-           totalpendiente = monto.redondear(totalpendiente, 2);
-           txtTotalPendiente.setText(String.valueOf(totalpendiente));
-        }
         
     
     }
@@ -673,12 +659,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
     }
     
     private void actualizarMora(){
-        
-        mora.setCuotasPendientes(0.0);
-        mora.setEstado((short)2);
-        mora.setFechaCancelacion(fechpago.getDate());
-        mora.setMoraCancelada(5.65);
-        
+    
     }
     
 

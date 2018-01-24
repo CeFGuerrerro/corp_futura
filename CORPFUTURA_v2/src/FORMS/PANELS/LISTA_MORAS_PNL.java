@@ -4,6 +4,7 @@ package FORMS.PANELS;
 import CONTROLADORES.CreditosJpaController;
 import CONTROLADORES.MoraJpaController;
 import Entidades.Creditos;
+import Entidades.DatosPersonales;
 import Entidades.Mora;
 import MODELOSTBL.modeloCreditos;
 import MODELOSTBL.modeloMoras;
@@ -183,55 +184,52 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
             
             if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), panel.fechadesistema)){
                 
-                double saldoalafecha = cjc.obtenerSaldoalafecha(credito,panel.fechadesistema);
-                if(saldoalafecha>credito.getSaldoPagado()){
-                    
-                    Mora mora = cjc.obtenerMoraActual(credito);
-                    
-                    if(mora==null){
-                        
-                        mora = obtenerMoraconDatos(credito);
-                        
-                        try {
-                            mjc.create(mora);
-                        } catch (Exception ex) {
-                            Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                    }else{
-                        System.out.println(mora.getFechaInicio());
-                        double pendiente = cjc.obtenerTotalPendiente(credito,panel.fechadesistema);
-                        if(mora.getMontoPendiente()!= pendiente){
-                            
-                            mora.setMontoPendiente(monto.redondear(pendiente,2));
-                            mora.setCuotasPendientes(monto.redondear(pendiente/credito.getCuota(),2));
+               int cuotas = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), panel.fechadesistema);
+                
+               if(credito.getDescuentoCf()){
+                   if(!fechas.esLunes_miercoles(panel.fechadesistema)){
                        
-                        }
+                        int cuotasPagadas = cjc.getCuotasPagadascf(credito);
+                        if(cuotasPagadas<cuotas){
+                           
+                            Mora mora = cjc.obtenerMoraActual(credito);
+                            if(mora==null){
                         
-                        if(mora.getEstado()==0){
-               
+                                mora = obtenerMoraconDatos(credito);
+                        
+                                try { mjc.create(mora);} catch (Exception ex) 
+                                {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
                             
+                            }
+                           
+                        }
+                       
+                   }
+               }else{
+                   if(!fechas.esLunes(panel.fechadesistema)){
+                       
+                        if(credito.getCuotasPagadas()<cuotas){
+                      
+                            Mora mora = cjc.obtenerMoraActual(credito);
+                            if(mora==null){
+                        
+                                mora = obtenerMoraconDatos(credito);
+                        
+                                try { mjc.create(mora);} catch (Exception ex) 
+                                {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
                             
-                        }else if(mora.getEstado()==1){
-                            
+                            }
                           
                         }
                         
-                        
-                        try {
-                            mjc.edit(mora);
-                        } catch (Exception ex) {
-                            Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                    }
+                   }
+               }
+
                     
-                }  
+            }  
                 
-            }
-    
         }
-        
+    
         cargarModelo();
         listaCreditos = cjc.getCreditosActivos((short)2);
         panel.cp.cargarModelo();
@@ -240,28 +238,22 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
     }//GEN-LAST:event_calcularMoraActionPerformed
 
     public void cargarDatosMora(int indice){
-        
-        Mora mora = modelo.obtenerMora(indice);
-        txtmontopendiente.setText(mora.getMontoPendiente().toString());
-        txtcuotaspendientes.setText(mora.getCuotasPendientes().toString());
-    
-        
+            
     
     }
     
     public Mora obtenerMoraconDatos(Creditos credito){
-        System.out.println("se creara mora");
+    
+        
         Mora mora = new Mora();
         mora.setIdMora(mjc.getMoraCount()+1);
         mora.setEstado((short)0);
         mora.setFechaInicio(panel.fechadesistema);
         mora.setMoraTotal(5.65);
         mora.setMoraCancelada(0.0);
-        mora.setSemana(1);
-        double pendiente = cjc.obtenerTotalPendiente(credito,panel.fechadesistema);
-        mora.setMontoPendiente(pendiente);
-        mora.setCuotasPendientes(pendiente/credito.getCuota());
+        mora.setCuotasPendientes(1);
         mora.setSolicitudCredito(credito.getSolicitudCredito());
+        
        
         return mora;
     }

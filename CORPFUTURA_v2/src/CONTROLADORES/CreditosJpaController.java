@@ -257,21 +257,23 @@ public class CreditosJpaController implements Serializable {
         return moravencida;
     }
     
+    public int getCuotasPagadascf(Creditos credito){
+    
+       int cuotas=0;
+        
+            if(credito.getCuotasPagadas()==credito.getCuotasPorPagar()-1){
+                cuotas = credito.getCuotasPorPagar();
+            }else{
+                cuotas = credito.getCuotasPagadas()-1;
+            }
+
+       return cuotas; 
+    }
      
     public double obtenerSaldoalafecha(Creditos credito, Date fechasistema){
         double saldo = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
-        int numeropagos=fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), credito.getDescuentoCf(), fechasistema);
+        int numeropagos=fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), fechasistema);
         saldo=saldo*numeropagos;
-        return saldo;
-    }
-    
-    public double obtenerTotalPagadoalafecha(Creditos credito){
-        double saldo = 0.0;
-           if(credito.getSolicitudCredito().getPagosList().size()>0){
-               for(Pagos pago:credito.getSolicitudCredito().getPagosList()){
-                   saldo=saldo+pago.getCapitalAbonado()+pago.getInteres()+pago.getIvaIntereses();
-               }
-           }
         return saldo;
     }
     
@@ -289,13 +291,6 @@ public class CreditosJpaController implements Serializable {
         return mora;
     }
     
-    public double obtenerTotalPendiente(Creditos credito, Date fechasistema){
-        double saldoapagar=0.0;
-        int numeropagos=fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), credito.getDescuentoCf(),fechasistema);
-        saldoapagar = credito.getCuota()*numeropagos;
-        saldoapagar = saldoapagar-obtenerTotalPagadoalafecha(credito);
-        return saldoapagar;
-    }
     
       
 }

@@ -35,7 +35,7 @@ public class fechas {
 
     }
 
-    public static int numerodepagos(int formaPago, Date fechaInicio, boolean primercuota, Date fechasistema) {
+    public static int numerodepagos(int formaPago, Date fechaInicio, Date fechasistema) {
 
         int pagos = 0;
 
@@ -112,12 +112,12 @@ public class fechas {
 
     }
 
-    public static boolean esLunes() {
+    public static boolean esLunes(Date fecha) {
 
         boolean verificar = false;
-
+        Date nfecha = normalizarFecha(fecha);
         Calendar cal = Calendar.getInstance();
-        cal.setTime(fechaActual());
+        cal.setTime(nfecha);
         if (cal.get(Calendar.DAY_OF_WEEK) == 2) {
             verificar = true;
         }
@@ -125,13 +125,13 @@ public class fechas {
         return verificar;
     }
 
-    public static boolean esLunes_Jueves() {
+    public static boolean esLunes_miercoles(Date fecha) {
 
         boolean verificar = false;
-
+        Date nfecha = normalizarFecha(fecha);
         Calendar cal = Calendar.getInstance();
-        cal.setTime(fechaActual());
-        if (cal.get(Calendar.DAY_OF_WEEK) > 1 && cal.get(Calendar.DAY_OF_WEEK) < 6) {
+        cal.setTime(nfecha);
+        if (cal.get(Calendar.DAY_OF_WEEK) > 1 && cal.get(Calendar.DAY_OF_WEEK) < 5) {
             verificar = true;
         }
 
