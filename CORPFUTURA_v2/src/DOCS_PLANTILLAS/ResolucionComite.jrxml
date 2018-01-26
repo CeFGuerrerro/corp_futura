@@ -314,7 +314,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Calibri" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{destino}]]></textFieldExpression>
 			</textField>
@@ -394,7 +394,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="10" isBold="true"/>
+					<font fontName="Calibri" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripciongarantia}]]></textFieldExpression>
 			</textField>

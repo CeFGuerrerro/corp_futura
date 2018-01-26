@@ -82,107 +82,32 @@ public class DS_Solicitud2 implements JRDataSource {
                     valor = "MENSUAL";
                 }
                 return valor;
-            case "montoase":
-                if (listaSolicitudes.get(indice).getEvaluacionCredito() != null) {
-                    valor = listaSolicitudes.get(indice).getEvaluacionCredito().getMonto();
-                    return valor;
+            case "conyugue":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getNombre();
                 }
-            case "plazoase":
-                if (listaSolicitudes.get(indice).getEvaluacionCredito() != null) {
-                    if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 1) {
-                        valor = "1 MES / 4 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 2) {
-                        valor = "2 MESES / 8 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 3) {
-                        valor = "3 MESES / 12 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 4) {
-                        valor = "4 MESES / 16 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 5) {
-                        valor = "5 MESES / 20 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 6) {
-                        valor = "6 MESES / 24 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 7) {
-                        valor = "7 MESES / 28 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 8) {
-                        valor = "8 MESES / 32 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 9) {
-                        valor = "9 MESES / 36 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 10) {
-                        valor = "10 MESES / 40 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 11) {
-                        valor = "11 MESES / 44 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getPlazo() == 12) {
-                        valor = "12 MESES / 48 SEMANAS";
-                    }
-                    return valor;
+                return valor;
+            case "dirconyugue":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getDireccion();
                 }
-            case "cuotaase":
-                if (listaSolicitudes.get(indice).getEvaluacionCredito() != null) {
-                    valor = listaSolicitudes.get(indice).getEvaluacionCredito().getCuota();
-                    return valor;
+                return valor;
+            case "trabconyugue":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getLugarTrabajo();
                 }
-            case "formaase":
-                if (listaSolicitudes.get(indice).getEvaluacionCredito() != null) {
-                    if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 1) {
-                        valor = "SEMANAL";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 2) {
-                        valor = "CATORCENAL";
-                    } else if (listaSolicitudes.get(indice).getEvaluacionCredito().getFormaPago() == 3) {
-                        valor = "MENSUAL";
-                    }
-                    return valor;
+                return valor;
+            case "cargoconyugue":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getCargo();
                 }
-            case "montocom":
-                if (listaSolicitudes.get(indice).getCreditos() != null) {
-                    valor = listaSolicitudes.get(indice).getCreditos().getMonto();
-                    return valor;
+                return valor;
+            case "telconyugue":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getTelefono();
                 }
-            case "plazocom":
-                if (listaSolicitudes.get(indice).getCreditos() != null) {
-                    if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 1) {
-                        valor = "1 MES / 4 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 2) {
-                        valor = "2 MESES / 8 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 3) {
-                        valor = "3 MESES / 12 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 4) {
-                        valor = "4 MESES / 16 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 5) {
-                        valor = "5 MESES / 20 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 6) {
-                        valor = "6 MESES / 24 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 7) {
-                        valor = "7 MESES / 28 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 8) {
-                        valor = "8 MESES / 32 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 9) {
-                        valor = "9 MESES / 36 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 10) {
-                        valor = "10 MESES / 40 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 11) {
-                        valor = "11 MESES / 44 SEMANAS";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getPlazo() == 12) {
-                        valor = "12 MESES / 48 SEMANAS";
-                    }
-                    return valor;
-                }
-            case "cuotacom":
-                if (listaSolicitudes.get(indice).getCreditos() != null) {
-                    valor = listaSolicitudes.get(indice).getCreditos().getCuota();
-                    return valor;
-                }
+                return valor;
 
-            case "formacom":
-                if (listaSolicitudes.get(indice).getCreditos() != null) {
-                    if (listaSolicitudes.get(indice).getCreditos().getFormaPago() == 1) {
-                        valor = "SEMANAL";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getFormaPago() == 2) {
-                        valor = "CATORCENAL";
-                    } else if (listaSolicitudes.get(indice).getCreditos().getFormaPago() == 3) {
-                        valor = "MENSUAL";
-                    }
-                    return valor;
-                }
         }
         return valor;
 

@@ -162,7 +162,7 @@
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plazo}]]></textFieldExpression>
@@ -179,25 +179,25 @@
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tasa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="111" width="66" height="15" uuid="da4e64ba-1650-4d21-b0f5-00aba3c5d603"/>
+				<reportElement x="0" y="111" width="50" height="15" uuid="da4e64ba-1650-4d21-b0f5-00aba3c5d603"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Destino:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="67" y="110" width="420" height="17" uuid="16e9dd95-9a6e-4a04-9fa3-3d8e876dafbf"/>
+				<reportElement x="50" y="110" width="459" height="17" uuid="16e9dd95-9a6e-4a04-9fa3-3d8e876dafbf"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{destino}]]></textFieldExpression>
 			</textField>
