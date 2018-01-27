@@ -61,7 +61,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         double porcentaje = (cjc.obtenerTotalPagado(credito)/cjc.obtenerTotalAPagar(credito))*100;
         porcentaje = monto.redondear(porcentaje, 2);
         double capitalpendiente = monto.redondear((credito.getMonto()-credito.getSaldoPagado()), 2);
-        totalVencido = monto.redondear((capitalpendiente+cjc.interesesVencidos(credito)+cjc.ivaVencidos(credito)+cjc.moraVencida(credito)), 2);
+        //totalVencido = monto.redondear((capitalpendiente+cjc.interesesVencidos(credito)+cjc.ivaVencidos(credito)+cjc.moraVencida(credito)), 2);
         totalIntereses = monto.redondear(credito.getTotalIntereses()-credito.getInteresPagados(), 2);
         totalIva = monto.redondear(credito.getTotalIva()-credito.getIvaPagado(), 2);
         
@@ -85,7 +85,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         txtInteresespendientes.setText(String.valueOf(totalIntereses));
         
         txtCapitalPendiente.setText(String.valueOf(capitalpendiente));
-        txtInteresesVencidos.setText(String.valueOf(cjc.interesesVencidos(credito)));
+        //txtInteresesVencidos.setText(String.valueOf(cjc.interesesVencidos(credito)));
         txtMoraVencida.setText(String.valueOf(cjc.moraVencida(credito)));
         
         

@@ -232,7 +232,7 @@ public class CreditosJpaController implements Serializable {
         return lista;
     }
     
-      public double obtenerTotalAPagar(Creditos credito){
+    public double obtenerTotalAPagar(Creditos credito){
         double total = monto.redondear(credito.getMonto()+credito.getTotalIntereses()+credito.getTotalIva(), 2);
         return total;
     } 
@@ -242,14 +242,40 @@ public class CreditosJpaController implements Serializable {
         return total;
     } 
      
-    public double interesesVencidos(Creditos credito){
+    public double interesesVencidos(Creditos credito, int cuotas){
+        
         double intvencidos=0.0;
+        
+        intvencidos = monto.valorXCuota(credito.getTotalIntereses(), credito.getPlazo(), credito.getFormaPago());
+        intvencidos = intvencidos*cuotas;
+        intvencidos = intvencidos-credito.getInteresPagados();
+        intvencidos = monto.redondear(intvencidos, 2);
+        
         return intvencidos;
     }
     
-    public double ivaVencidos(Creditos credito){
-        double ivavencidos=0.0;
-        return ivavencidos;
+    public double ivaVencidos(Creditos credito, int cuotas){
+        
+        double ivaVencido=0.0;
+        
+        ivaVencido = monto.valorXCuota(credito.getTotalIva(), credito.getPlazo(), credito.getFormaPago());
+        ivaVencido = ivaVencido*cuotas;
+        ivaVencido = ivaVencido-credito.getIvaPagado();
+        ivaVencido = monto.redondear(ivaVencido, 2);
+        
+        return ivaVencido;
+    }
+    
+    public double capitalVencido(Creditos credito, int cuotas){
+        
+        double capV=0.0;
+        
+        capV = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
+        capV = capV*cuotas;
+        capV = capV-credito.getSaldoPagado();
+        capV = monto.redondear(capV, 2);
+        
+        return capV;
     }
     
     public double moraVencida(Creditos credito){
@@ -270,13 +296,6 @@ public class CreditosJpaController implements Serializable {
        return cuotas; 
     }
      
-    public double obtenerSaldoalafecha(Creditos credito, Date fechasistema){
-        double saldo = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
-        int numeropagos=fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), fechasistema);
-        saldo=saldo*numeropagos;
-        return saldo;
-    }
-    
     public Mora obtenerMoraActual(Creditos credito){
         
         Mora mora=null;
@@ -290,7 +309,6 @@ public class CreditosJpaController implements Serializable {
         }
         return mora;
     }
-    
-    
+       
       
 }

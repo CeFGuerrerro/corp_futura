@@ -201,7 +201,9 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                                 {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
                             
                             }else{
-                            
+                               
+                                actualizarTotalMora(cuotas,cuotasPagadas,mora);
+                                    
                             }
                            
                         }
@@ -222,8 +224,8 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                             
                             }else{
                                
-                                
-                                
+                               actualizarTotalMora(cuotas,credito.getCuotasPagadas(),mora);
+                                   
                             }
                           
                         }
@@ -257,14 +259,40 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
         mora.setFechaInicio(panel.fechadesistema);
         mora.setMoraTotal(5.65);
         mora.setMoraCancelada(0.0);
-        mora.setCuotasPendientes(1);
+        mora.setCuotasPagadas(0);
+        mora.setCuotasEnMora(1);
         mora.setSolicitudCredito(credito.getSolicitudCredito());
         
        
         return mora;
     }
     
+    public void actualizarTotalMora(int cuotas, int cuotaspagadas, Mora mora){
     
+         int cuotasPendientes = cuotas-cuotaspagadas;
+         int cuotasMoraPendPago=0;
+         
+         if(cuotasPendientes>mora.getCuotasEnMora()){
+             mora.setCuotasEnMora(mora.getCuotasEnMora()+1);
+             cuotasMoraPendPago = mora.getCuotasEnMora()-mora.getCuotasPagadas();
+             
+             
+             
+         }
+         
+         
+         
+         if(cuotasMoraPendPago>4){
+                
+                //mora.setCuotasPendientes(cuotasMoraPendPago);
+                double moraTotal = monto.redondear((mora.getMoraTotal()+5.65), 2);
+                mora.setMoraTotal(moraTotal);
+
+                try { mjc.edit(mora);} catch (Exception ex) 
+                {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
+         }
+    
+    }
     
     
     

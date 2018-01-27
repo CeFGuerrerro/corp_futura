@@ -947,16 +947,16 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         }
         
         credito.setDescuentoCf(chkcuotafinal.isSelected());
-        credito.setCuotasPorPagar(mont.numeroCuotas());
+        credito.setCuotasPorPagar((short)mont.numeroCuotas());
         credito.setMoraPagada(0.0);
         if(chkcuotafinal.isSelected()){
-            credito.setCuotasPagadas(1);
+            credito.setCuotasPagadas((short)1);
             credito.setInteresPagados(Double.valueOf(mont.valorXCuota(mont.getTotalIntereses())));
             credito.setIvaPagado(Double.valueOf(mont.valorXCuota(mont.getTotalIva())));
             credito.setSaldoPagado(Double.valueOf(mont.valorXCuota(String.valueOf(mont.getMonto()))));
         }
         else{
-            credito.setCuotasPagadas(0);
+            credito.setCuotasPagadas((short)0);
             credito.setInteresPagados(0.0);
             credito.setIvaPagado(0.0);
             credito.setSaldoPagado(0.0);

@@ -55,7 +55,7 @@ public class fechas {
                 pagos = dias / (28);
                 break;
         }
-
+        
         return pagos + 1;
 
     }
@@ -70,7 +70,7 @@ public class fechas {
         
             String cadena = "Cuota "+contador;
             if(contador==1){
-                cadena = cadena+" \t"+formatearFecha2(fecha);
+                cadena = cadena+" \t"+formatearFecha(fecha);
                 cuotas.add(cadena);
             }else{
             
@@ -86,7 +86,7 @@ public class fechas {
                         break;
                 }
                 
-                cadena = cadena+" \t"+formatearFecha2(fecha);
+                cadena = cadena+" \t"+formatearFecha(fecha);
                 cuotas.add(cadena);
             
             }
@@ -141,11 +141,6 @@ public class fechas {
 
     public static String formatearFecha(Date fecha) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        return sdf.format(fecha);
-    }
-    
-    public static String formatearFecha2(Date fecha) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
         return sdf.format(fecha);
     }
 
