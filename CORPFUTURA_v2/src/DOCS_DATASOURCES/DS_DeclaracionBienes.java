@@ -39,10 +39,6 @@ public class DS_DeclaracionBienes implements JRDataSource {
             case "nombre":
                 valor = listaSolicitudes.get(indice).getDatosPersonales().getNombre();
                 return valor;
-                
-            //case "edad":
-               
-                
             case "profesion":
                 valor = listaSolicitudes.get(indice).getDatosPersonales().getProfesion();
                 return valor;
