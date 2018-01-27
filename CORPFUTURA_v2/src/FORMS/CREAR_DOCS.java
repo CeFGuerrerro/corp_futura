@@ -1,7 +1,7 @@
 package FORMS;
 
-import CONTROLADORES.DatosPersonalesJpaController;
 import DOCS_DATASOURCES.DS_Autorizacion;
+import DOCS_DATASOURCES.DS_CheckList;
 import DOCS_DATASOURCES.DS_DeclaracionBienes;
 import DOCS_DATASOURCES.DS_HojaDesembolso;
 import DOCS_DATASOURCES.DS_PerfilCliente;
@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 
@@ -44,6 +42,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
     private DS_ResolucionComite resc = new DS_ResolucionComite();
     private DS_DeclaracionBienes decl = new DS_DeclaracionBienes();
     private DS_HojaDesembolso hoja = new DS_HojaDesembolso();
+    private DS_CheckList check = new DS_CheckList();
 
     public CREAR_DOCS(SolicitudCredito sol) {
 
@@ -84,6 +83,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         chkperfil = new javax.swing.JCheckBox();
         btnGenerar = new javax.swing.JButton();
         chkhojadesembolso = new javax.swing.JCheckBox();
+        chkList = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(240, 236, 236));
@@ -200,6 +200,10 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         chkhojadesembolso.setText("Hoja de desembolso:");
         chkhojadesembolso.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
+        chkList.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        chkList.setText("CheckList");
+        chkList.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
         contenidoLayout.setHorizontalGroup(
@@ -240,7 +244,8 @@ public class CREAR_DOCS extends javax.swing.JFrame {
                                     .addComponent(chkformAutorizaciones)
                                     .addComponent(chksolicitud)
                                     .addComponent(jLabel16)
-                                    .addComponent(chkhojadesembolso))))
+                                    .addComponent(chkhojadesembolso)
+                                    .addComponent(chkList))))
                         .addGap(0, 10, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -291,7 +296,9 @@ public class CREAR_DOCS extends javax.swing.JFrame {
                 .addComponent(chkresolucion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkhojadesembolso)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkList)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -390,6 +397,16 @@ public class CREAR_DOCS extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());;
             }
         }
+        if (chkList.isSelected()) {
+            String doc = "DetalleRequisitos";
+            try {
+                jasper.crearReporte(doc, solicitud.getDatosPersonales().getNombre(), check);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+
+            }
+        }
+        this.dispose();
 
     }//GEN-LAST:event_btnGenerarActionPerformed
 
@@ -407,6 +424,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         resc.addResolucion(solicitud);
         decl.addSolicitud(solicitud);
         hoja.addResolucion(solicitud);
+        check.addSolicitud(solicitud);
 
         for (Referencias r : solicitud.getDatosPersonales().getReferenciasList()) {
             if (r.getTipoReferencia() == false) {
@@ -446,6 +464,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         }
         if(solicitud.getEvaluacionCredito() == null){
             chkperfil.setEnabled(false);
+            chkList.setEnabled(false);
         }
         if(solicitud.getCreditos() == null){
             chkresolucion.setEnabled(false);
@@ -457,6 +476,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgroup;
     private javax.swing.JButton btnGenerar;
+    public javax.swing.JCheckBox chkList;
     public javax.swing.JCheckBox chkdeclaracionbienes;
     public javax.swing.JCheckBox chkformAutorizaciones;
     public javax.swing.JCheckBox chkhojadesembolso;

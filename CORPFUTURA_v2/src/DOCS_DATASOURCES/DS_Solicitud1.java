@@ -121,31 +121,6 @@ public class DS_Solicitud1 implements JRDataSource {
                 case "ocupacion":
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getOcupacion();
                     return valor;
-                case "conyugue":
-                    if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                        valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getNombre();
-                    }
-                    return valor;
-                case "dirconyugue":
-                    if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                        valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getDireccion();
-                    }
-                    return valor;
-                case "trabconyugue":
-                    if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                        valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getLugarTrabajo();
-                    }
-                    return valor;
-                case "cargoconyugue":
-                    if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                        valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getCargo();
-                    }
-                    return valor;
-                case "telconyugue":
-                    if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                        valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getTelefono();
-                    }
-                    return valor;
                 case "propia":
                     if (listaSolicitudes.get(indice).getDatosPersonales().getDomicilio().getSituacionVivienta() == 1) {
                         valor = "X";

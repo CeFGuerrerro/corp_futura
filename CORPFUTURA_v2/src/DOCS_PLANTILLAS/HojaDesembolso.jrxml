@@ -130,8 +130,9 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[NIT:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="89" width="101" height="15" uuid="a121d5bb-a42f-48d4-bf90-db2a8e983f23">
+				<reportElement x="0" y="89" width="105" height="15" uuid="a121d5bb-a42f-48d4-bf90-db2a8e983f23">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement>
 					<font fontName="Calibri" size="12" isBold="false"/>
@@ -139,7 +140,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 				<text><![CDATA[Monto Aprobado: $]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="102" y="86" width="90" height="20" uuid="e4f9bb3a-3a4e-45c3-b709-aa4c6765162a">
+				<reportElement x="105" y="86" width="90" height="20" uuid="e4f9bb3a-3a4e-45c3-b709-aa4c6765162a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -353,7 +354,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Calibri" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tipogarantia}]]></textFieldExpression>
 			</textField>
@@ -366,7 +367,7 @@ FINANCIANDO A NUESTRA COMUNIDAD]]></text>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="Calibri" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripciongarantia}]]></textFieldExpression>
 			</textField>
