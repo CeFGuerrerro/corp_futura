@@ -338,32 +338,34 @@ public class CREAR_DOCS extends javax.swing.JFrame {
 
             }
         }
-        if (chksolicitud.isSelected() && solicitud.getTipoCredito() == 5) {
-            String doc = "SolicitudExpress";
-            try {
-                jasper.crearReporteDocx(doc, solicitud.getDatosPersonales().getNombre(),express);
-            } catch (JRException ex) {
-                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+        if (chksolicitud.isSelected()) {
+            if (solicitud.getTipoCredito() == 5) {
+                String doc = "SolicitudExpress";
+                try {
+                    jasper.crearReporteDocx(doc, solicitud.getDatosPersonales().getNombre(), express);
+                } catch (JRException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
 
-            }
-        }else {
-            String doc1 = "Solicitud1";
-            String doc2 = "Solicitud2";
-            parametros.put("Familiares", solicitud.getDatosPersonales().getFamiliaresList());
-            try {
-                jasper.crearReporteConParam(doc1, solicitud.getDatosPersonales().getNombre(), parametros, sol1);
-            } catch (JRException ex) {
-                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+                }
+            } else {
+                String doc1 = "Solicitud1";
+                String doc2 = "Solicitud2";
+                parametros.put("Familiares", solicitud.getDatosPersonales().getFamiliaresList());
+                try {
+                    jasper.crearReporteConParam(doc1, solicitud.getDatosPersonales().getNombre(), parametros, sol1);
+                } catch (JRException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
 
-            }
-            parametros.clear();
-            parametros.put("RefFamiliares", listaRefFam);
-            parametros.put("RefPersonales", listaRefPer);
-            try {
-                jasper.crearReporteConParam(doc2, solicitud.getDatosPersonales().getNombre(), parametros, sol2);
-            } catch (JRException ex) {
-                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+                }
+                parametros.clear();
+                parametros.put("RefFamiliares", listaRefFam);
+                parametros.put("RefPersonales", listaRefPer);
+                try {
+                    jasper.crearReporteConParam(doc2, solicitud.getDatosPersonales().getNombre(), parametros, sol2);
+                } catch (JRException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
 
+                }
             }
         }
         if (chkperfil.isSelected()) {
@@ -468,16 +470,16 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         }
         return listaCod;
     }
-    
-    public void validarDocumentos(){
-        if(solicitud.getDatosPersonales().getDeclaracionBienesList().isEmpty() == true){
+
+    public void validarDocumentos() {
+        if (solicitud.getDatosPersonales().getDeclaracionBienesList().isEmpty() == true) {
             chkdeclaracionbienes.setEnabled(false);
         }
-        if(solicitud.getEvaluacionCredito() == null){
+        if (solicitud.getEvaluacionCredito() == null) {
             chkperfil.setEnabled(false);
             chkList.setEnabled(false);
         }
-        if(solicitud.getCreditos() == null){
+        if (solicitud.getCreditos() == null) {
             chkresolucion.setEnabled(false);
             chkhojadesembolso.setEnabled(false);
         }
