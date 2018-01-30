@@ -22,7 +22,11 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.export.SimpleDocxExporterConfiguration;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
@@ -74,6 +78,32 @@ public class JasperGenerator {
         File pdf = new File(path + "\\" + nombreDoc + ".pdf");
         try {
             Desktop.getDesktop().open(pdf);
+        } catch (IOException ex) {
+            Logger.getLogger(JasperGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void crearReporteDocx(String nombreDoc, String nombreCli, JRDataSource dataSource) throws JRException {
+        path = System.getProperty("user.home") + "\\Desktop\\CORP_FUTURA\\PERFILES_SOLICITUDES\\" + nombreCli;
+        crearDirectorio(path);
+        JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
+        
+        JRDocxExporter docEx = new JRDocxExporter();
+        docEx.setExporterInput(new SimpleExporterInput(jasperPrint));
+        docEx.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "\\" + nombreDoc +".docx"));
+        
+        SimpleDocxExporterConfiguration config = new SimpleDocxExporterConfiguration();
+        
+        docEx.setConfiguration(config);
+        docEx.exportReport();
+        
+        
+        File docx = new File(path + "\\" + nombreDoc + ".docx");
+        try {
+            Desktop.getDesktop().open(docx);
         } catch (IOException ex) {
             Logger.getLogger(JasperGenerator.class.getName()).log(Level.SEVERE, null, ex);
         }

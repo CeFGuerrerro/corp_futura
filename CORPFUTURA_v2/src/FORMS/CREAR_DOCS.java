@@ -8,6 +8,7 @@ import DOCS_DATASOURCES.DS_PerfilCliente;
 import DOCS_DATASOURCES.DS_ResolucionComite;
 import DOCS_DATASOURCES.DS_Solicitud1;
 import DOCS_DATASOURCES.DS_Solicitud2;
+import DOCS_DATASOURCES.DS_SolicitudExpress;
 import DOCS_DATASOURCES.JasperGenerator;
 import Entidades.Codeudores;
 import Entidades.DatosPersonales;
@@ -43,6 +44,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
     private DS_DeclaracionBienes decl = new DS_DeclaracionBienes();
     private DS_HojaDesembolso hoja = new DS_HojaDesembolso();
     private DS_CheckList check = new DS_CheckList();
+    private DS_SolicitudExpress express = new DS_SolicitudExpress();
 
     public CREAR_DOCS(SolicitudCredito sol) {
 
@@ -336,7 +338,15 @@ public class CREAR_DOCS extends javax.swing.JFrame {
 
             }
         }
-        if (chksolicitud.isSelected()) {
+        if (chksolicitud.isSelected() && solicitud.getTipoCredito() == 5) {
+            String doc = "SolicitudExpress";
+            try {
+                jasper.crearReporteDocx(doc, solicitud.getDatosPersonales().getNombre(),express);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());
+
+            }
+        }else {
             String doc1 = "Solicitud1";
             String doc2 = "Solicitud2";
             parametros.put("Familiares", solicitud.getDatosPersonales().getFamiliaresList());
@@ -425,6 +435,7 @@ public class CREAR_DOCS extends javax.swing.JFrame {
         decl.addSolicitud(solicitud);
         hoja.addResolucion(solicitud);
         check.addSolicitud(solicitud);
+        express.addSolicitud(solicitud);
 
         for (Referencias r : solicitud.getDatosPersonales().getReferenciasList()) {
             if (r.getTipoReferencia() == false) {
