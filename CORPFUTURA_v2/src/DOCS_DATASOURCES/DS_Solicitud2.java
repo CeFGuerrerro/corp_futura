@@ -141,6 +141,21 @@ public class DS_Solicitud2 implements JRDataSource {
                     }
                     return valor;
                 }
+            case "capital":
+                valor = listaSolicitudes.get(indice).getCapitalDes();
+                return valor;
+            case "intereses":
+                valor = listaSolicitudes.get(indice).getInteresesDes();
+                return valor;
+            case "papeleria":
+                valor = listaSolicitudes.get(indice).getAsesoria();
+                return valor;
+            case "ivapapeleria":
+                valor = listaSolicitudes.get(indice).getIvaAsesoria();
+                return valor;
+            case "cuota":
+                valor = listaSolicitudes.get(indice).getCuota();
+                return valor;
 
         }
         return valor;
