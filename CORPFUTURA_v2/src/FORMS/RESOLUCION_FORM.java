@@ -847,7 +847,6 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         txtNombre.setText(solicitud.getDatosPersonales().getNombre());
         txtIdsolicitud.setText(String.valueOf(solicitud.getSolicitudCreditoPK().getIdSolicitudCredito()));
         fechsolicitud.setDate(solicitud.getFechaSolicitud());
-        System.out.println(solicitud.getTasaInteres());
         txttasa.setText(solicitud.getTasaInteres());
         if(solicitud.getEvaluacionCredito() != null){
         fechevaluacion.setDate(solicitud.getEvaluacionCredito().getFechaEvaluacion());
@@ -867,6 +866,10 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
                txtTotalIntereses.setText(solicitud.getInteresesGa().toString());
                txtTotalIva.setText(solicitud.getIvaGa().toString());
             }
+            
+            chkcuotafinal.setSelected(evaluacion.getDescuentoCf());
+            chkAsesoria.setSelected(evaluacion.getDescuentoAsesoria());
+            
     }
     
     public void obtenerdetallemonto(monto monto){

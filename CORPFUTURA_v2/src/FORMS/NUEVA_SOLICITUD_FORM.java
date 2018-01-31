@@ -37,6 +37,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     public boolean desCargados=false;
     public boolean sinCreditos=false;
     public int idCreditoACambiar=0;
+    
     public String interesesGC;
     public String ivaGC;
     public String interesRef;
@@ -819,7 +820,7 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
                     }else{JOptionPane.showMessageDialog(this, "No se a escogido el crédito a refinanciar o reestructurar");}
               
-                }else { JOptionPane.showMessageDialog(this, "el valor ingresado del monto no es correcto");}    
+            }else { JOptionPane.showMessageDialog(this, "el valor ingresado del monto no es correcto");}    
         }else{ JOptionPane.showMessageDialog(this, "Hace falta especificar valores"); }
       
       
@@ -982,6 +983,19 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
   
     }
     
+    private void cargarCarteras(){
+        modeloCarteras.addElement("<SELECCIONAR>");
+        for(Usuarios usuario: ujc.findUsuariosEntities())
+        {
+            if(usuario.getChkCartera()){
+                String cartera = usuario.getCartera()+" - "+usuario.getNombre();
+                modeloCarteras.addElement(cartera);
+                usuarios.add(usuario);
+            }
+        }
+        cmbCarteras.updateUI();
+    }
+    
     private void cargarDatosSolicitud(SolicitudCredito solicitud){
         
         SolicitudCreditoPK pk =new SolicitudCreditoPK(scjc.obtenerID(),datospersonales.getDui());
@@ -1021,23 +1035,25 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
             solicitud.setCapitalDes(0.0);
         }
         
+        solicitud.setDescuentoAsesoria(chkAsesoria.isSelected());
+        solicitud.setDescuentoCf(chkcuotafinal.isSelected());
+        
+        if(chkAsesoria.isSelected()){
+            double ivaasesoria = mont.getIvaAsesoria();
+            double asesoriasiniva = Double.parseDouble(mont.getAsesoria()) - mont.getIvaAsesoria();
+            solicitud.setAsesoria(asesoriasiniva);
+            solicitud.setIvaAsesoria(ivaasesoria); 
+        }else{
+            solicitud.setAsesoria(0.0);
+            solicitud.setIvaAsesoria(0.0);
+        }
+        
+        
         solicitud.setIdUsuario(usuarios.get(cmbCarteras.getSelectedIndex()-1));
     
     }
     
-    private void cargarCarteras(){
-        modeloCarteras.addElement("<SELECCIONAR>");
-        for(Usuarios usuario: ujc.findUsuariosEntities())
-        {
-            if(usuario.getChkCartera()){
-                String cartera = usuario.getCartera()+" - "+usuario.getNombre();
-                modeloCarteras.addElement(cartera);
-                usuarios.add(usuario);
-            }
-        }
-        cmbCarteras.updateUI();
-    
-    }
+   
     
 
     

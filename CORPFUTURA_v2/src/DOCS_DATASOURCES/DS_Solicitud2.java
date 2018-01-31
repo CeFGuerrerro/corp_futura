@@ -82,31 +82,65 @@ public class DS_Solicitud2 implements JRDataSource {
                     valor = "MENSUAL";
                 }
                 return valor;
-            case "conyugue":
-                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getNombre();
+            case "nneg":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getNombre();
+                    return valor;
                 }
-                return valor;
-            case "dirconyugue":
-                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getDireccion();
+            case "giro":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getGiro();
+                    return valor;
                 }
-                return valor;
-            case "trabconyugue":
-                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getLugarTrabajo();
+            case "dirneg":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getDireccion();
+                    return valor;
                 }
-                return valor;
-            case "cargoconyugue":
-                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getCargo();
+            case "llegarneg":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getComoLlegar();
+                    return valor;
                 }
-                return valor;
-            case "telconyugue":
-                if (listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue() != null) {
-                    valor = listaSolicitudes.get(indice).getDatosPersonales().getDatosConyugue().getTelefono();
+            case "tneg":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getTiempoFuncion();
+                    return valor;
                 }
-                return valor;
+            case "telneg":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getTelefono();
+                    return valor;
+                }
+            case "hventa":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getHorarios();
+                    return valor;
+                }
+            case "rutas":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getRutasVenta();
+                    return valor;
+                }
+            case "utilidad":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getUtilidadMensual();
+                    return valor;
+                }
+            case "empleados":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getNumeroEmpleados();
+                    return valor;
+                }
+            case "local":
+                if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
+                    if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getTipoLocal() == 1) {
+                        valor = "PROPIO";
+                    } else if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getTipoLocal() == 2) {
+                        valor = "ALQUILADO";
+                    }
+                    return valor;
+                }
 
         }
         return valor;

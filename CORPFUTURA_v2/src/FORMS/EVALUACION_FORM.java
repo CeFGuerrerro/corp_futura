@@ -674,7 +674,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
                                             .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                                 .addComponent(jLabel18)
                                                 .addComponent(txtcapitald, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                             .addComponent(jLabel20)
                                             .addComponent(txtinteresesd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -860,9 +860,12 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         evaluacion.setTipoGarantia((short)cmbtipogarantia.getSelectedIndex());
         evaluacion.setJustificacion(txtjustificacion.getText());
         
+        
         monto monto = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(),solicitud.getTasaInteres());
         evaluacion.setCuota(Double.valueOf(monto.getCuota()));
-        evaluacion.setIvaCuota(Double.valueOf(monto.valorXCuota(monto.getTotalIva())));
+        
+        evaluacion.setDescuentoAsesoria(chkAsesoria.isSelected());
+        evaluacion.setDescuentoCf(chkcuotafinal.isSelected());
         
     }
     
@@ -877,6 +880,9 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         cmbformapagossol.setSelectedIndex(solicitud.getFormaPago());
         cmbEstadocredito.setSelectedIndex(solicitud.getEstado());
         txttasa.setText(solicitud.getTasaInteres());
+        chkcuotafinal.setSelected(solicitud.getDescuentoCf());
+        chkAsesoria.setSelected(solicitud.getDescuentoAsesoria());
+        
            
     }
     
@@ -898,7 +904,6 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         }else{
             //btnGuardar.setEnabled(false);
             evaluacion = solicitud.getEvaluacionCredito();
-            
             txtmonto.setText(String.valueOf(evaluacion.getMonto())); 
             cmbplazos.setSelectedIndex(evaluacion.getPlazo());
             cmbformapagos.setSelectedIndex(evaluacion.getFormaPago()); 
@@ -906,9 +911,12 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
             cmbtipogarantia.setSelectedIndex(evaluacion.getTipoGarantia());
             fechevaluacion.setDate(evaluacion.getFechaEvaluacion());
             txtjustificacion.setText(evaluacion.getJustificacion());
+            chkcuotafinal.setSelected(evaluacion.getDescuentoCf());
+            chkAsesoria.setSelected(evaluacion.getDescuentoAsesoria());
         }
         
         cmbEstadocredito.setSelectedIndex(solicitud.getEstado());
+        
         
         if(solicitud.getTipoCredito()!=3){
             mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(),solicitud.getTasaInteres()); 

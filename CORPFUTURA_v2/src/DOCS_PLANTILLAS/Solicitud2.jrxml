@@ -341,14 +341,13 @@
 			</staticText>
 			<componentElement>
 				<reportElement x="1" y="284" width="486" height="70" uuid="f6556dcc-7cb4-45c7-b5cb-e82484c76e94">
-					<property name="com.jaspersoft.studio.unit.CONTENTS.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset1" uuid="7d774e10-ef15-48da-a90b-df9de293b39b">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{RefFamiliares})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="70" width="486">
+					<jr:listContents height="14" width="486">
 						<textField>
 							<reportElement x="0" y="0" width="68" height="14" uuid="97aa5d9c-d5ac-459f-bfcb-921cca63b717">
 								<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -421,14 +420,13 @@
 				<reportElement x="0" y="405" width="486" height="70" uuid="3e9123c2-e644-4e55-bbbe-00e0f2ef236c">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.CONTENTS.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset2" uuid="578ffcff-c3bc-430a-ace7-f6559427a7de">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{RefPersonales})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="70" width="486">
+					<jr:listContents height="14" width="486">
 						<textField>
 							<reportElement x="0" y="0" width="68" height="14" uuid="5b2e2915-d675-4c03-9af5-7fd7c0b93999">
 								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>

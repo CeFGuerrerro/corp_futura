@@ -8,6 +8,7 @@ import CONTROLADORES.DatosPersonalesJpaController;
 
 import CONTROLADORES.DomicilioJpaController;
 import CONTROLADORES.exceptions.NonexistentEntityException;
+import FORMS.OBSERVACION_CLIENTE_FORM;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,10 +28,149 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
     public DomicilioJpaController       domjc= new DomicilioJpaController();
     
     public String msjValidacion;
+    public String observacion="";
     
     public DATOS_PERSONALES_PNL(CLIENTE_PNL ppal) {
         initComponents();  
         panelppal = ppal;
+        chkprocede.setSelected(true);
+    }
+    
+    public void limpiarcampos(){
+        
+        //DATOS PERSONALES 
+        txtdui.setText("");
+        txtnombre.setText("");
+        txtnit.setText("");
+        dtnacimiento.setDate(null);
+        cmbcivil.setSelectedIndex(0);
+        txtedad.setText("");
+        dtexpedicion.setDate(null);
+        txtprofesion.setText("");
+        txtocupacion.setText("");
+        cmbestudio.setSelectedIndex(0);
+        txttelpers.setText("");
+        txtcel.setText("");
+        txtdependen.setText("");
+        txtnumhijos.setText("");
+        observacion= "";
+        
+            //DATOS DOMICILIO
+        txtdireccion.setText("");
+        txtreferencia.setText("");
+        txtllegar.setText("");
+        txtanios.setText("");
+        cmbsituacionv.setSelectedIndex(0);
+        
+        domicilio = null; domicilio = new Domicilio();
+        datospersonales = null; datospersonales = new DatosPersonales();
+
+    }
+    
+    public void llenardatospersonales(){
+        
+            datospersonales.setCelular(txtcel.getText().trim());
+            datospersonales.setDui(txtdui.getText().trim());
+            datospersonales.setEstadoCivil((short)cmbcivil.getSelectedIndex());
+            datospersonales.setFechaExpedicion(dtexpedicion.getDate());
+            datospersonales.setFechaNacimiento(dtnacimiento.getDate());
+            datospersonales.setNit(txtnit.getText().trim());
+            datospersonales.setNivelEstudio((short)cmbestudio.getSelectedIndex());
+            datospersonales.setNombre(txtnombre.getText().trim());
+            datospersonales.setOcupacion(txtocupacion.getText().trim());
+            datospersonales.setProfesion(txtprofesion.getText().trim());
+            datospersonales.setTelefono(txttelpers.getText().trim());
+            if (txtnumhijos.getText().isEmpty() == false) {
+                    datospersonales.setCantidadHijos(txtnumhijos.getText().trim());
+            } else {
+                    datospersonales.setCantidadHijos("0");}
+            if (txtdependen.getText().isEmpty() == false) {
+                    datospersonales.setDependen(txtdependen.getText().trim());
+            } else {
+                    datospersonales.setDependen("0");}
+            
+            datospersonales.setObservacion(observacion);
+            datospersonales.setProcede(chkprocede.isSelected());
+    }
+
+    public void llenardatosdomicilio(){
+            domicilio.setDui(txtdui.getText());
+            domicilio.setComoLlegar(txtllegar.getText());
+            domicilio.setDomicilio(txtdireccion.getText());
+            domicilio.setPuntoReferencia(txtreferencia.getText());
+            domicilio.setSituacionVivienta((short)cmbsituacionv.getSelectedIndex());
+            domicilio.setDatosPersonales(datospersonales);
+            if (txtanios.getText().isEmpty() == false) {
+                    domicilio.setTiempoVivienda(txtanios.getText());
+            } else {
+                    domicilio.setTiempoVivienda("0");}
+
+    }
+    
+    public void cargardatospersonales(DatosPersonales dt){
+           
+        txtdui.setText(dt.getDui());
+        txtnombre.setText(dt.getNombre());
+        txtnit.setText(dt.getNit());
+        txttelpers.setText(dt.getTelefono());
+        txtcel.setText(dt.getCelular());
+        txtprofesion.setText(dt.getProfesion());
+        txtocupacion.setText(dt.getOcupacion());
+        cmbcivil.setSelectedIndex(dt.getEstadoCivil());
+        cmbestudio.setSelectedIndex(dt.getNivelEstudio());
+        dtnacimiento.setDate(dt.getFechaNacimiento());
+        dtexpedicion.setDate(dt.getFechaExpedicion());  
+        txtdependen.setText(dt.getDependen());
+        txtnumhijos.setText(dt.getCantidadHijos());
+        observacion=dt.getObservacion();
+        chkprocede.setSelected(dt.getProcede());
+    
+    }
+    
+    public void cargardomicilio(Domicilio dom){
+        
+        txtdireccion.setText(dom.getDomicilio());
+        txtreferencia.setText(dom.getPuntoReferencia());
+        txtllegar.setText(dom.getComoLlegar());
+        txtanios.setText(dom.getTiempoVivienda());
+        cmbsituacionv.setSelectedIndex(dom.getSituacionVivienta());
+          
+    }
+    
+    public void recibirDatos(DatosPersonales dp){
+    
+        datospersonales = dp;
+        domicilio = dp.getDomicilio();
+        
+        if (datospersonales != null) {cargardatospersonales(datospersonales); }
+        if (domicilio != null) {cargardomicilio(domicilio);}
+
+    }
+    
+    public boolean validarCampos(){
+            
+            msjValidacion = "Falta llenar campos obligatorios:\n";
+            boolean validacion =true; 
+            if(txtnombre.getText().trim().isEmpty()){validacion=false; msjValidacion += "*Nombre\n";}
+            if(txtdui.getText().trim().isEmpty()){validacion=false; msjValidacion += "*DUI\n"; }
+            if(txtnit.getText().trim().isEmpty()){validacion=false; msjValidacion += "*NIT\n";}
+            if(dtexpedicion.getDate() == null ){validacion=false; msjValidacion += "*Fecha de Expedición (DUI)\n";}
+            if(dtnacimiento.getDate() == null ){validacion=false; msjValidacion += "*Fecha de Nacimiento (DUI)\n";}
+            if(cmbcivil.getSelectedIndex()==0){validacion=false; msjValidacion += "*Estado Civil\n";} 
+            if(cmbestudio.getSelectedIndex()==0){validacion=false; msjValidacion += "*Nivel de Estudio\n";} 
+            if(txtdireccion.getText().trim().isEmpty()){validacion=false; msjValidacion += "*Dirección de vivienda\n"; }
+            if(txtanios.getText().trim().isEmpty()){validacion=false; msjValidacion += "*Años en vivienda\n";}
+            if(cmbsituacionv.getSelectedIndex()==0){validacion=false; msjValidacion += "*Situación en vivienda\n";}
+            return validacion;
+    }
+    
+    public boolean validacionBasica(){
+            
+            boolean validacion =true; 
+            if(txtnombre.getText().trim().isEmpty()){validacion=false;}
+            if(txtdui.getText().trim().isEmpty()){validacion=false;}
+            if(txtnit.getText().trim().isEmpty()){validacion=false;}
+            return validacion;
     }
 
     @SuppressWarnings("unchecked")
@@ -78,6 +218,8 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         txtdependen = new javax.swing.JTextField();
         txtnumhijos = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
+        chkprocede = new javax.swing.JCheckBox();
+        hvadd = new Label.HoverIcon();
 
         setBackground(new java.awt.Color(240, 236, 236));
         setPreferredSize(new java.awt.Dimension(934, 661));
@@ -254,6 +396,18 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
             }
         });
 
+        chkprocede.setBackground(new java.awt.Color(240, 236, 236));
+        chkprocede.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        chkprocede.setForeground(new java.awt.Color(51, 51, 51));
+        chkprocede.setText("Cliente Procede");
+
+        hvadd.setText("hoverIcon1");
+        hvadd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hvaddMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -296,31 +450,37 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                                 .addComponent(lblcel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtcel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtdui, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblnit)
-                                .addGap(5, 5, 5)
-                                .addComponent(txtnit, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(cmbestudio, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbcivil, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dtexpedicion, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtanios, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtreferencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtllegar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtocupacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtprofesion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtnombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtocupacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtprofesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtnombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtdui, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblnit)
+                                        .addGap(5, 5, 5)
+                                        .addComponent(txtnit, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtdependen, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtnumhijos, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(txtreferencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtllegar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtdependen, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtnumhijos, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(chkprocede)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(hvadd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addComponent(lblconyugue1)
                     .addComponent(lbldatospersonales)
                     .addGroup(layout.createSequentialGroup()
@@ -333,16 +493,23 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(lbldatospersonales)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lblnombre)
-                    .addComponent(txtnombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblnombre)
+                            .addComponent(txtnombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(chkprocede)
+                            .addComponent(hvadd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lbldui)
-                    .addComponent(txtdui, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblnit)
-                    .addComponent(txtnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtdui, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lblfechexp)
@@ -362,11 +529,11 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblocupacion)
-                            .addComponent(txtprofesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtprofesion, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(lblocupacion1)
-                            .addComponent(txtocupacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtocupacion, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -412,8 +579,10 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                         .addComponent(jLabel16)))
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addGap(200, 200, 200))
         );
+
+        hvadd.setImages("/IMAGES/ICONS/add1.png","/IMAGES/ICONS/add.png");
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
@@ -461,21 +630,33 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         boolean verificacion = true;
         boolean edicion = false;
+        boolean guardar = true;
         
         try{
             if (dtjc.findDatosPersonales(txtdui.getText()) != null) {
                 edicion = true;
             }
-        }catch(Exception ex){JOptionPane.showMessageDialog(null, "Error de conexión a la base.\n");}
-
-        if (validarCampos() == false) {
-            JOptionPane.showMessageDialog(null, msjValidacion);
-        } else {
-
-            llenardatospersonales();
-            llenardatosdomicilio();
-
+        }catch(Exception ex){JOptionPane.showMessageDialog(null, "Error de conexión a la base.\n"); guardar =false;}
+        
+        if(chkprocede.isSelected()){
+            if (validarCampos() == false) {
+                JOptionPane.showMessageDialog(null, msjValidacion); guardar = false;
+            } else {
+                llenardatospersonales();
+                llenardatosdomicilio();
+            }
+        }else{
+            if (validacionBasica() == false) {
+                JOptionPane.showMessageDialog(null, "Es necesario ingresar al menos los datos Nombre, DUI y NIT."); guardar = false;
+            } else {
+                llenardatospersonales();
+                llenardatosdomicilio();
+            }
+        }
+        
+        if(guardar){
             if (edicion == false) {
+            
                 try {
                     dtjc.create(datospersonales);
                     domjc.create(domicilio);
@@ -488,153 +669,40 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                 
             } else {
 
-                try {
+                    try {
                     dtjc.edit(datospersonales);
                     domjc.edit(domicilio);
-                } catch (NonexistentEntityException ex) {
-                    verificacion = false;
-                    JOptionPane.showMessageDialog(null, "Error al actualizar el cliente.\n");
                 } catch (Exception ex) {
                     verificacion = false;
                     JOptionPane.showMessageDialog(null, "Error al actualizar el cliente.\n");
                 }
                 if(verificacion){JOptionPane.showMessageDialog(null, "Datos del Cliente actualizados con éxito.");}
+
             }
         }
         
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    public void limpiarcampos(){
+    private void hvaddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvaddMouseClicked
         
-        //DATOS PERSONALES 
-        txtdui.setText("");
-        txtnombre.setText("");
-        txtnit.setText("");
-        dtnacimiento.setDate(null);
-        cmbcivil.setSelectedIndex(0);
-        txtedad.setText("");
-        dtexpedicion.setDate(null);
-        txtprofesion.setText("");
-        txtocupacion.setText("");
-        cmbestudio.setSelectedIndex(0);
-        txttelpers.setText("");
-        txtcel.setText("");
-        txtdependen.setText("");
-        txtnumhijos.setText("");
+        OBSERVACION_CLIENTE_FORM observacion = new  OBSERVACION_CLIENTE_FORM(this);
+        observacion.setVisible(true);
         
-            //DATOS DOMICILIO
-        txtdireccion.setText("");
-        txtreferencia.setText("");
-        txtllegar.setText("");
-        txtanios.setText("");
-        cmbsituacionv.setSelectedIndex(0);
-        
-        domicilio = null; domicilio = new Domicilio();
-        datospersonales = null; datospersonales = new DatosPersonales();
+    }//GEN-LAST:event_hvaddMouseClicked
 
-    }
     
-    public void llenardatospersonales(){
-        
-            datospersonales.setCelular(txtcel.getText().trim());
-            datospersonales.setDui(txtdui.getText().trim());
-            datospersonales.setEstadoCivil((short)cmbcivil.getSelectedIndex());
-            datospersonales.setFechaExpedicion(dtexpedicion.getDate());
-            datospersonales.setFechaNacimiento(dtnacimiento.getDate());
-            datospersonales.setNit(txtnit.getText().trim());
-            datospersonales.setNivelEstudio((short)cmbestudio.getSelectedIndex());
-            datospersonales.setNombre(txtnombre.getText().trim());
-            datospersonales.setOcupacion(txtocupacion.getText().trim());
-            datospersonales.setProfesion(txtprofesion.getText().trim());
-            datospersonales.setTelefono(txttelpers.getText().trim());
-            if (txtnumhijos.getText().isEmpty() == false) {
-                    datospersonales.setCantidadHijos(txtnumhijos.getText().trim());
-            } else {
-                    datospersonales.setCantidadHijos("0");}
-            if (txtdependen.getText().isEmpty() == false) {
-                    datospersonales.setDependen(txtdependen.getText().trim());
-            } else {
-                    datospersonales.setDependen("0");}
-    }
-
-    public void llenardatosdomicilio(){
-            domicilio.setDui(txtdui.getText());
-            domicilio.setComoLlegar(txtllegar.getText());
-            domicilio.setDomicilio(txtdireccion.getText());
-            domicilio.setPuntoReferencia(txtreferencia.getText());
-            domicilio.setSituacionVivienta((short)cmbsituacionv.getSelectedIndex());
-            domicilio.setDatosPersonales(datospersonales);
-            if (txtanios.getText().isEmpty() == false) {
-                    domicilio.setTiempoVivienda(txtanios.getText());
-            } else {
-                    domicilio.setTiempoVivienda("0");}
-
-    }
-    
-    public void cargardatospersonales(DatosPersonales dt){
-           
-        txtdui.setText(dt.getDui());
-        txtnombre.setText(dt.getNombre());
-        txtnit.setText(dt.getNit());
-        txttelpers.setText(dt.getTelefono());
-        txtcel.setText(dt.getCelular());
-        txtprofesion.setText(dt.getProfesion());
-        txtocupacion.setText(dt.getOcupacion());
-        cmbcivil.setSelectedIndex(dt.getEstadoCivil());
-        cmbestudio.setSelectedIndex(dt.getNivelEstudio());
-        dtnacimiento.setDate(dt.getFechaNacimiento());
-        dtexpedicion.setDate(dt.getFechaExpedicion());  
-        txtdependen.setText(dt.getDependen());
-        txtnumhijos.setText(dt.getCantidadHijos());
-    
-    }
-    
-    public void cargardomicilio(Domicilio dom){
-        
-        txtdireccion.setText(dom.getDomicilio());
-        txtreferencia.setText(dom.getPuntoReferencia());
-        txtllegar.setText(dom.getComoLlegar());
-        txtanios.setText(dom.getTiempoVivienda());
-        cmbsituacionv.setSelectedIndex(dom.getSituacionVivienta());
-          
-    }
-    
-    public void recibirDatos(DatosPersonales dp){
-    
-        datospersonales = dp;
-        domicilio = dp.getDomicilio();
-        
-        if (datospersonales != null) {cargardatospersonales(datospersonales); }
-        if (domicilio != null) {cargardomicilio(domicilio);}
-
-    }
-    
-    public boolean validarCampos(){
-            
-            msjValidacion = "Falta llenar campos obligatorios:\n";
-            boolean validacion =true; 
-            if(txtnombre.getText().trim().isEmpty()){validacion=false; msjValidacion += "*Nombre\n";}
-            if(txtdui.getText().trim().isEmpty()){validacion=false; msjValidacion += "*DUI\n"; }
-            if(txtnit.getText().trim().isEmpty()){validacion=false; msjValidacion += "*NIT\n";}
-            if(dtexpedicion.getDate() == null ){validacion=false; msjValidacion += "*Fecha de Expedición (DUI)\n";}
-            if(dtnacimiento.getDate() == null ){validacion=false; msjValidacion += "*Fecha de Nacimiento (DUI)\n";}
-            if(cmbcivil.getSelectedIndex()==0){validacion=false; msjValidacion += "*Estado Civil\n";} 
-            if(cmbestudio.getSelectedIndex()==0){validacion=false; msjValidacion += "*Nivel de Estudio\n";} 
-            if(txtdireccion.getText().trim().isEmpty()){validacion=false; msjValidacion += "*Dirección de vivienda\n"; }
-            if(txtanios.getText().trim().isEmpty()){validacion=false; msjValidacion += "*Años en vivienda\n";}
-            if(cmbsituacionv.getSelectedIndex()==0){validacion=false; msjValidacion += "*Situación en vivienda\n";}
-            return validacion;
-    }
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBox chkprocede;
     public javax.swing.JComboBox<String> cmbcivil;
     public javax.swing.JComboBox<String> cmbestudio;
     public javax.swing.JComboBox<String> cmbsituacionv;
     private com.toedter.calendar.JDateChooser dtexpedicion;
     private com.toedter.calendar.JDateChooser dtnacimiento;
+    private Label.HoverIcon hvadd;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
