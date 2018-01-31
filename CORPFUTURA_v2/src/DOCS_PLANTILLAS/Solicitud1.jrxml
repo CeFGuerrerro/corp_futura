@@ -501,7 +501,7 @@
 				<text><![CDATA[Profesión u Oficio: (Según DUI):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="333" width="52" height="14" uuid="99e74301-97a7-4055-b071-5c87b8417fc5">
+				<reportElement x="290" y="333" width="52" height="14" uuid="99e74301-97a7-4055-b071-5c87b8417fc5">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -520,8 +520,9 @@
 				<textFieldExpression><![CDATA[$F{oficio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="352" y="333" width="125" height="14" uuid="a938fa71-ae3b-466e-8061-29c14979b77f">
+				<reportElement x="342" y="333" width="135" height="14" uuid="a938fa71-ae3b-466e-8061-29c14979b77f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>

@@ -8,22 +8,25 @@ package DOCS_DATASOURCES;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignStyle;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.export.SimpleDocxExporterConfiguration;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 /**
  *
@@ -42,8 +45,14 @@ public class JasperGenerator {
         JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
-        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + nombreDoc + ".pdf");
-        //JasperViewer.viewReport(jasperPrint, false);
+        
+        JRPdfExporter pdfEx = new JRPdfExporter();
+        pdfEx.setExporterInput(new SimpleExporterInput(jasperPrint));
+        pdfEx.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "\\" + nombreDoc + ".pdf"));
+        
+        SimplePdfExporterConfiguration config = new SimplePdfExporterConfiguration();
+        pdfEx.setConfiguration(config);
+        pdfEx.exportReport();        
         
         File pdf = new File(path + "\\" + nombreDoc + ".pdf");
         try {
@@ -68,12 +77,46 @@ public class JasperGenerator {
         JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
-        JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + nombreDoc + ".pdf");
-        //JasperViewer.viewReport(jasperPrint, false);
+        
+        JRPdfExporter pdfEx = new JRPdfExporter();
+        pdfEx.setExporterInput(new SimpleExporterInput(jasperPrint));
+        pdfEx.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "\\" + nombreDoc + ".pdf"));
+        
+        SimplePdfExporterConfiguration config = new SimplePdfExporterConfiguration();
+        pdfEx.setConfiguration(config);
+        pdfEx.exportReport();  
+        
+        
         
         File pdf = new File(path + "\\" + nombreDoc + ".pdf");
         try {
             Desktop.getDesktop().open(pdf);
+        } catch (IOException ex) {
+            Logger.getLogger(JasperGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void crearReporteDocx(String nombreDoc, String nombreCli, JRDataSource dataSource) throws JRException {
+        path = System.getProperty("user.home") + "\\Desktop\\CORP_FUTURA\\PERFILES_SOLICITUDES\\" + nombreCli;
+        crearDirectorio(path);
+        JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
+        
+        JRDocxExporter docEx = new JRDocxExporter();
+        docEx.setExporterInput(new SimpleExporterInput(jasperPrint));
+        docEx.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "\\" + nombreDoc +".docx"));
+        
+        SimpleDocxExporterConfiguration config = new SimpleDocxExporterConfiguration();
+        
+        docEx.setConfiguration(config);
+        docEx.exportReport();
+        
+        
+        File docx = new File(path + "\\" + nombreDoc + ".docx");
+        try {
+            Desktop.getDesktop().open(docx);
         } catch (IOException ex) {
             Logger.getLogger(JasperGenerator.class.getName()).log(Level.SEVERE, null, ex);
         }
