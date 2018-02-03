@@ -25,7 +25,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
     public CreditosJpaController cjc = new CreditosJpaController();
     public NUEVA_SOLICITUD_FORM form;
   
-    public double totalVencido;
+    public double total;
     public double totalIntereses;
     public double totalIva;
     
@@ -60,8 +60,8 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         credito = modelo.obtenerCredito(indice);
         double porcentaje = (cjc.obtenerTotalPagado(credito)/cjc.obtenerTotalAPagar(credito))*100;
         porcentaje = monto.redondear(porcentaje, 2);
+        
         double capitalpendiente = monto.redondear((credito.getMonto()-credito.getSaldoPagado()), 2);
-        //totalVencido = monto.redondear((capitalpendiente+cjc.interesesVencidos(credito)+cjc.ivaVencidos(credito)+cjc.moraVencida(credito)), 2);
         totalIntereses = monto.redondear(credito.getTotalIntereses()-credito.getInteresPagados(), 2);
         totalIva = monto.redondear(credito.getTotalIva()-credito.getIvaPagado(), 2);
         
@@ -85,11 +85,12 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         txtInteresespendientes.setText(String.valueOf(totalIntereses));
         
         txtCapitalPendiente.setText(String.valueOf(capitalpendiente));
+     
         //txtInteresesVencidos.setText(String.valueOf(cjc.interesesVencidos(credito)));
-        txtMoraVencida.setText(String.valueOf(cjc.moraVencida(credito)));
+        //txtMoraVencida.setText(String.valueOf(cjc.moraVencida(credito)));
+        //total
         
-        
-        txtTotal.setText(String.valueOf(totalVencido));
+        txtTotal.setText(String.valueOf(total));
         
         
     }
@@ -120,7 +121,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
                         if(tipocredito==3){cargarGestionArreglo();}
                         else if(tipocredito==4){cargarRefinanciamiento();}
                         form.sinCreditos=true;
-                        form.idCreditoACambiar=0;
+                        form.idCreditoACambiar=-1;
             }else{JOptionPane.showMessageDialog(this, "Es necesario especificar de forma correcta el valor de los campos:\n"+cadena); cargar = false;}
         }
         return cargar;

@@ -11,6 +11,7 @@ import Entidades.CreditosPK;
 import Entidades.EvaluacionCredito;
 import Entidades.SolicitudCredito;
 import FORMS.PANELS.LISTA_SOLICITUDES_PNL;
+import UTILIDADES.fechas;
 import UTILIDADES.monto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -420,6 +421,11 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         txtdeducciones.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
         hvreload.setText("hoverIcon1");
+        hvreload.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hvreloadMouseClicked(evt);
+            }
+        });
 
         jLabel35.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(51, 51, 51));
@@ -841,6 +847,14 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         if(!Character.isDigit(caracter)) evt.consume();
     }//GEN-LAST:event_txttasaKeyTyped
 
+    private void hvreloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvreloadMouseClicked
+        
+        if(fechprimerpago.getDate()!=null && cmbformapagos.getSelectedIndex()!=0 && mont!=null ){
+            fechvencimiento.setDate(fechas.fechaVencimiento(fechprimerpago.getDate(), cmbformapagos.getSelectedIndex(), mont.numeroCuotas()));
+        }
+        
+    }//GEN-LAST:event_hvreloadMouseClicked
+
     public void cargarSolicitud(SolicitudCredito solicitud){
         
         txtDui.setText(solicitud.getDatosPersonales().getDui());
@@ -898,7 +912,7 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
     }
     
     public void llenarCredito(){
-    
+       
         credito = new Creditos();
         CreditosPK pk = new CreditosPK();
         pk.setDui(solicitud.getSolicitudCreditoPK().getDui());

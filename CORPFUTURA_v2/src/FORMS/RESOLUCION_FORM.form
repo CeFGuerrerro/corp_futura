@@ -1157,6 +1157,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="hoverIcon1"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="hvreloadMouseClicked"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="hvreload.setImages(&quot;/IMAGES/ICONS/reload1.png&quot;,&quot;/IMAGES/ICONS/reload.png&quot;);"/>
           </AuxValues>

@@ -9,6 +9,7 @@ import CONTROLADORES.DatosPersonalesJpaController;
 import CONTROLADORES.DomicilioJpaController;
 import CONTROLADORES.exceptions.NonexistentEntityException;
 import FORMS.OBSERVACION_CLIENTE_FORM;
+import UTILIDADES.fechas;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -124,6 +125,9 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         txtnumhijos.setText(dt.getCantidadHijos());
         observacion=dt.getObservacion();
         chkprocede.setSelected(dt.getProcede());
+        if(dt.getFechaNacimiento()!=null){ 
+            txtedad.setText(fechas.calcularEdad(dt.getFechaNacimiento())+" años");   
+        }
     
     }
     
@@ -220,6 +224,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         btnGuardar = new javax.swing.JButton();
         chkprocede = new javax.swing.JCheckBox();
         hvadd = new Label.HoverIcon();
+        hvreload = new Label.HoverIcon();
 
         setBackground(new java.awt.Color(240, 236, 236));
         setPreferredSize(new java.awt.Dimension(934, 661));
@@ -408,6 +413,13 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
             }
         });
 
+        hvreload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/ICONS/reload.png"))); // NOI18N
+        hvreload.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hvreloadMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -443,7 +455,9 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(lbledad)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtedad, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtedad, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(hvreload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txttelpers, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -523,17 +537,18 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
                     .addComponent(lbledad)
                     .addComponent(txtedad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dtnacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblnacimiento))
+                    .addComponent(lblnacimiento)
+                    .addComponent(hvreload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblocupacion)
-                            .addComponent(txtprofesion, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
+                            .addComponent(txtprofesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(lblocupacion1)
-                            .addComponent(txtocupacion, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))
+                            .addComponent(txtocupacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -583,6 +598,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         );
 
         hvadd.setImages("/IMAGES/ICONS/add1.png","/IMAGES/ICONS/add.png");
+        hvreload.setImages("/IMAGES/ICONS/reload1.png","/IMAGES/ICONS/reload.png");
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
@@ -690,6 +706,14 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
         
     }//GEN-LAST:event_hvaddMouseClicked
 
+    private void hvreloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvreloadMouseClicked
+        
+        if(dtnacimiento.getDate()!=null){ 
+            txtedad.setText(fechas.calcularEdad(dtnacimiento.getDate())+" años");   
+        }
+        
+    }//GEN-LAST:event_hvreloadMouseClicked
+
     
     
     
@@ -703,6 +727,7 @@ public class DATOS_PERSONALES_PNL extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser dtexpedicion;
     private com.toedter.calendar.JDateChooser dtnacimiento;
     private Label.HoverIcon hvadd;
+    private Label.HoverIcon hvreload;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;

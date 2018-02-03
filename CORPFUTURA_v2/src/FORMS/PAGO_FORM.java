@@ -41,22 +41,20 @@ public class PAGO_FORM extends javax.swing.JFrame {
     public PagosJpaController pjc = new PagosJpaController();
     public MoraJpaController mjc = new MoraJpaController();
     
-    public PAGO_FORM(Creditos credito1, LISTA_CREDITOS_PNL cp1,LISTA_MORAS_PNL mp1) {
+    public PAGO_FORM(Creditos credito1, LISTA_CREDITOS_PNL cp1, LISTA_MORAS_PNL mp1) {
         
         initComponents();
         this.setLocationRelativeTo(null);
         
         
         credito=credito1;
-        mora = cjc.obtenerMoraActual(credito);
+        mora = credito.getSolicitudCredito().getMora();
         
         cp=cp1;
         mp=mp1;
         
-        cuotasalafecha = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(),mp.panel.fechadesistema);
+        cuotasalafecha = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(),mp.panel.fechasistema.getDate());
         
-        
-
         cargarCredito();
         cargarListaCuotas();
         cargarMontosPendientes();
@@ -709,7 +707,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
     
     private void cargarMontosPendientes(){
         
-        if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), mp.panel.fechadesistema)){
+        if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), mp.panel.fechasistema.getDate())){
             
             if(mora!=null){
 

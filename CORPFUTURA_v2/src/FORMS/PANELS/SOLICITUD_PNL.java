@@ -20,11 +20,17 @@ public class SOLICITUD_PNL extends javax.swing.JPanel {
     public NUEVA_SOLICITUD_FORM nuevasolicitud;
     public EVALUACION_FORM evaluacion;
     public RESOLUCION_FORM resolucion;
+    
+    public CREDITOS_PNL cpanel;
+    
     public CREAR_DOCS docs;
  
     
-    public SOLICITUD_PNL() {
+    public SOLICITUD_PNL(CREDITOS_PNL cpanel1) {
+        
         initComponents();
+        
+        cpanel = cpanel1;
         cargarPanel(sp);
     }
 
@@ -36,9 +42,7 @@ public class SOLICITUD_PNL extends javax.swing.JPanel {
             contenidoSolicitud.add(panel);
             contenidoSolicitud.revalidate();
             contenidoSolicitud.repaint();
-            
-            
-    
+               
     }
     
     
@@ -144,7 +148,7 @@ public class SOLICITUD_PNL extends javax.swing.JPanel {
 
     private void hvNuevaSolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvNuevaSolMouseClicked
         
-        nuevasolicitud = new NUEVA_SOLICITUD_FORM(sp);
+        nuevasolicitud = new NUEVA_SOLICITUD_FORM(sp,cpanel.fechasistema.getDate());
         nuevasolicitud.setVisible(true);
       
 

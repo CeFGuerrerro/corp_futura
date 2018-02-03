@@ -34,7 +34,7 @@ public class fechas {
         return verificar;
 
     }
-
+    
     public static int numerodepagos(int formaPago, Date fechaInicio, Date fechasistema) {
 
         int pagos = 0;
@@ -82,7 +82,8 @@ public class fechas {
                         fecha.setTime(fecha.getTime()+(86400000*14));
                         break;
                     case 3:
-                        fecha.setTime(fecha.getTime()+(86400000*28));
+                        fecha.setTime(fecha.getTime()+(86400000*14));
+                        fecha.setTime(fecha.getTime()+(86400000*14));
                         break;
                 }
                 
@@ -94,6 +95,34 @@ public class fechas {
         }
         
         return cuotas;
+    }
+    
+    public static Date fechaVencimiento(Date fechaInicio, int formaPago, int numeroCuotas){
+    
+        Date fecha= normalizarFecha(fechaInicio);
+        int contador = 1;
+         
+        while(contador<=numeroCuotas){
+        
+            if(contador>1){
+            
+                switch (formaPago) {
+                    case 1:
+                        fecha.setTime(fecha.getTime()+(86400000*7));
+                        break;
+                    case 2:
+                        fecha.setTime(fecha.getTime()+(86400000*14));
+                        break;
+                    case 3:
+                        fecha.setTime(fecha.getTime()+(86400000*14));
+                        fecha.setTime(fecha.getTime()+(86400000*14));
+                        break;
+                }
+            }
+            contador++;  
+        }
+        
+        return fecha;
     }
     
     public static Date normalizarFecha(Date fecha) {

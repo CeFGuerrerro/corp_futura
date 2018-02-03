@@ -248,7 +248,7 @@ public class CreditosJpaController implements Serializable {
         
         intvencidos = monto.valorXCuota(credito.getTotalIntereses(), credito.getPlazo(), credito.getFormaPago());
         intvencidos = intvencidos*cuotas;
-        intvencidos = intvencidos-credito.getInteresPagados();
+        intvencidos = intvencidos-obtenerInteresesPagados(credito);
         intvencidos = monto.redondear(intvencidos, 2);
         
         return intvencidos;
@@ -260,7 +260,7 @@ public class CreditosJpaController implements Serializable {
         
         ivaVencido = monto.valorXCuota(credito.getTotalIva(), credito.getPlazo(), credito.getFormaPago());
         ivaVencido = ivaVencido*cuotas;
-        ivaVencido = ivaVencido-credito.getIvaPagado();
+        ivaVencido = ivaVencido-obtenerIvaPagado(credito);
         ivaVencido = monto.redondear(ivaVencido, 2);
         
         return ivaVencido;
@@ -269,25 +269,20 @@ public class CreditosJpaController implements Serializable {
     public double capitalVencido(Creditos credito, int cuotas){
         
         double capV=0.0;
-        
+       
         capV = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
         capV = capV*cuotas;
-        capV = capV-credito.getSaldoPagado();
+        capV = capV-obtenerCapitalPagado(credito);
         capV = monto.redondear(capV, 2);
         
         return capV;
-    }
-    
-    public double moraVencida(Creditos credito){
-        double moravencida=0.0;
-        return moravencida;
     }
     
     public int getCuotasPagadascf(Creditos credito){
     
        int cuotas=0;
         
-            if(credito.getCuotasPagadas()==credito.getCuotasPorPagar()-1){
+            if(credito.getCuotasPagadas()==(credito.getCuotasPorPagar()-1)){
                 cuotas = credito.getCuotasPorPagar();
             }else{
                 cuotas = credito.getCuotasPagadas()-1;
@@ -295,20 +290,68 @@ public class CreditosJpaController implements Serializable {
 
        return cuotas; 
     }
-     
-    public Mora obtenerMoraActual(Creditos credito){
+    
+    public double obtenerCapitalPagado(Creditos credito){
         
-        Mora mora=null;
+        double pagado=0.0;
         
-        if(credito.getSolicitudCredito().getMoraList().size()>0){
-            for(Mora mora1: credito.getSolicitudCredito().getMoraList()){
-                if(mora1.getEstado()<2){mora=mora1;}
+        if(credito.getDescuentoCf()){
+            if(credito.getCuotasPagadas()==(credito.getCuotasPorPagar()-1)){
+                pagado = credito.getSaldoPagado();
+            }else{
+                double capitalcf = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
+                pagado = credito.getSaldoPagado()-capitalcf;
                 
             }
-            
+        }else{
+                pagado = credito.getSaldoPagado();   
         }
-        return mora;
+     
+        pagado = monto.redondear(pagado, 2);
+        
+        return pagado;
     }
-       
+    
+    public double obtenerIvaPagado(Creditos credito){
+        
+        double pagado=0.0;
+        
+        if(credito.getDescuentoCf()){
+            if(credito.getCuotasPagadas()==(credito.getCuotasPorPagar()-1)){
+                pagado = credito.getIvaPagado();
+            }else{
+                double ivacf = monto.valorXCuota(credito.getTotalIva(), credito.getPlazo(), credito.getFormaPago());
+                pagado = credito.getIvaPagado()-ivacf;    
+            }
+        }else{
+                pagado = credito.getIvaPagado();   
+        }
+        
+        pagado = monto.redondear(pagado, 2);
+     
+        return pagado;
+    }
+    
+    public double obtenerInteresesPagados(Creditos credito){
+        
+        double pagado=0.0;
+        
+        if(credito.getDescuentoCf()){
+            if(credito.getCuotasPagadas()==(credito.getCuotasPorPagar()-1)){
+                pagado = credito.getInteresPagados();
+            }else{
+                double interesescf = monto.valorXCuota(credito.getTotalIntereses(), credito.getPlazo(), credito.getFormaPago());
+                pagado = credito.getInteresPagados()-interesescf;    
+            }
+        }else{
+                pagado = credito.getInteresPagados();   
+        }
+        
+        pagado = monto.redondear(pagado, 2);
+     
+        return pagado;
+
+    }
+         
       
 }

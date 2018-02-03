@@ -15,8 +15,9 @@ import javax.swing.JPanel;
 public class MAIN_FORM extends javax.swing.JFrame {
 
     private CLIENTE_PNL   cliente   = new CLIENTE_PNL();
-    private SOLICITUD_PNL solicitud = new SOLICITUD_PNL();
     private CREDITOS_PNL creditos = new CREDITOS_PNL();
+    private SOLICITUD_PNL solicitud = new SOLICITUD_PNL(creditos);
+    
     
     public MAIN_FORM() {
         initComponents();
@@ -158,7 +159,7 @@ public class MAIN_FORM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void a1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_a1MouseClicked
-        solicitud = new SOLICITUD_PNL();
+        solicitud = new SOLICITUD_PNL(creditos);
         a1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/solicitudAct.png"))); 
         a.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/clienteDes.png"))); 
         a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/creditosDes.png")));

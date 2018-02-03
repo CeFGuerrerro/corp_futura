@@ -58,6 +58,8 @@
                               <Component id="lbledad" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtedad" min="-2" pref="82" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="hvreload" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="txttelpers" min="-2" pref="131" max="-2" attributes="0"/>
@@ -162,18 +164,19 @@
                   <Component id="txtedad" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="dtnacimiento" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="lblnacimiento" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="hvreload" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblocupacion" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtprofesion" pref="20" max="32767" attributes="0"/>
+                          <Component id="txtprofesion" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="2" attributes="0">
                           <Component id="lblocupacion1" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtocupacion" alignment="2" pref="21" max="32767" attributes="0"/>
+                          <Component id="txtocupacion" alignment="2" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -762,6 +765,19 @@
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="hvadd.setImages(&quot;/IMAGES/ICONS/add1.png&quot;,&quot;/IMAGES/ICONS/add.png&quot;);"/>
+      </AuxValues>
+    </Component>
+    <Component class="Label.HoverIcon" name="hvreload">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/IMAGES/ICONS/reload.png"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="hvreloadMouseClicked"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="hvreload.setImages(&quot;/IMAGES/ICONS/reload1.png&quot;,&quot;/IMAGES/ICONS/reload.png&quot;);"/>
       </AuxValues>
     </Component>
   </SubComponents>

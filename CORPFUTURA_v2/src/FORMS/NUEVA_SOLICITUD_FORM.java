@@ -15,6 +15,7 @@ import UTILIDADES.archivos;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -52,12 +53,16 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private SolicitudCreditoJpaController scjc = new SolicitudCreditoJpaController();
     private UsuariosJpaController ujc = new UsuariosJpaController();
     
+    public Date fechasistema;
     
-    public NUEVA_SOLICITUD_FORM(LISTA_SOLICITUDES_PNL lista) {
+    
+    public NUEVA_SOLICITUD_FORM(LISTA_SOLICITUDES_PNL lista, Date fecha) {
         
         initComponents();
+        
         this.setLocationRelativeTo(null);
         listasolicitud = lista;
+        fechasistema = fecha;
         cargarCarteras();
         
     }
@@ -962,7 +967,8 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
             }
             
             if(cmbtipocredito.getSelectedIndex()==3 || cmbtipocredito.getSelectedIndex()==4){ 
-                if(idCreditoACambiar!=0){validacion=false;}
+                
+                if(idCreditoACambiar==0){validacion=false;}
             }
                 
         return validacion;
@@ -1011,8 +1017,8 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         solicitud.setEstado((short)cmbEstadocredito.getSelectedIndex());
         solicitud.setDesembolso(false);
         solicitud.setIdCreditodes(idCreditoACambiar);
-        if(txtDestinoCredito.getText().isEmpty()){solicitud.setDestinoCredito("");}else{solicitud.setDestinoCredito(txtDestinoCredito.getText());}
-        if(txtObservaciones.getText().isEmpty()){solicitud.setObservacion("");}else{solicitud.setObservacion(txtObservaciones.getText());}
+        solicitud.setDestinoCredito(txtDestinoCredito.getText());
+        solicitud.setObservacion(txtObservaciones.getText());
         
         if(cmbtipocredito.getSelectedIndex()!=3){
             solicitud.setTasaInteres(txttasa.getText());

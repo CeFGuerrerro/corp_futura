@@ -6,6 +6,7 @@ import CONTROLADORES.MoraJpaController;
 import Entidades.Creditos;
 import Entidades.DatosPersonales;
 import Entidades.Mora;
+import Entidades.MoraPK;
 import MODELOSTBL.modeloCreditos;
 import MODELOSTBL.modeloMoras;
 import UTILIDADES.monto;
@@ -101,7 +102,7 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
 
         tblMoras.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                cargarDatosMora(tblMoras.getSelectedRow());
+
             }
         });
 
@@ -182,57 +183,117 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
       
         for(Creditos credito: listaCreditos){
             
-            if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), panel.fechadesistema)){
+            if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), panel.fechasistema.getDate())){
                 
-               int cuotas = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), panel.fechadesistema);
+               int cuotas = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), panel.fechasistema.getDate());
                 
                if(credito.getDescuentoCf()){
-                   if(!fechas.esLunes_miercoles(panel.fechadesistema)){
+                   if(!fechas.esLunes_miercoles(panel.fechasistema.getDate())){
                        
                         int cuotasPagadas = cjc.getCuotasPagadascf(credito);
                         if(cuotasPagadas<cuotas){
                            
-                            Mora mora = cjc.obtenerMoraActual(credito);
+                            Mora mora = credito.getSolicitudCredito().getMora();
                             if(mora==null){
                         
-                                mora = obtenerMoraconDatos(credito);
-                        
+                                mora = obtenerMoraconDatos(credito,cuotas);                        
                                 try { mjc.create(mora);} catch (Exception ex) 
                                 {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
                             
                             }else{
-                               
-                                actualizarTotalMora(cuotas,cuotasPagadas,mora);
+                                
+                                if(mora.getEstado()==0){
                                     
+                                    if(mora.getUltimaCuotaEnMora()<cuotas){
+
+                                      mora = nuevoTotalMora(mora,cuotas,credito);
+                                      try { mjc.edit(mora);} catch (Exception ex) 
+                                      {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
+                                        
+                                    }
+                                       
+                                }else{
+                                
+                                    mora = actualizarTotalMora(mora,cuotas,credito);
+                                    try { mjc.edit(mora);} catch (Exception ex) 
+                                    {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
+                                    
+                                }
+                                       
                             }
                            
                         }
                        
                    }
                }else{
-                   if(!fechas.esLunes(panel.fechadesistema)){
-                       
-                        if(credito.getCuotasPagadas()<cuotas){
+                   if(credito.getSolicitudCredito().getTipoCredito()!=5){
+                        
+                        if(!fechas.esLunes(panel.fechasistema.getDate())){
+                           
+                            if(credito.getCuotasPagadas()<cuotas){
                       
-                            Mora mora = cjc.obtenerMoraActual(credito);
-                            if(mora==null){
+                                Mora mora = credito.getSolicitudCredito().getMora();
+                                if(mora==null){
                         
-                                mora = obtenerMoraconDatos(credito);
-                        
-                                try { mjc.create(mora);} catch (Exception ex) 
-                                {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
+                                    mora = obtenerMoraconDatos(credito, cuotas); 
+                                    try { mjc.create(mora);} catch (Exception ex) 
+                                    {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
                             
-                            }else{
+                                }else{
                                
-                               actualizarTotalMora(cuotas,credito.getCuotasPagadas(),mora);
+                                    if(mora.getEstado()==0){
+                                    
+                                        if(mora.getUltimaCuotaEnMora()<cuotas){
+                                        
+                                            mora = nuevoTotalMora(mora,cuotas,credito);                                  
+                                            try { mjc.edit(mora);} catch (Exception ex) 
+                                            {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
+                                    
+                                        }
+                                    
+                                    }else{
+                                
+                                        mora = actualizarTotalMora(mora,cuotas,credito);
+                                        try { mjc.edit(mora);} catch (Exception ex) 
+                                        {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
+                                    }
                                    
-                            }
+                                }
                           
+                            }
+                        
                         }
                         
-                   }
-               }
+                   }else{
+                    
+                        if(credito.getCuotasPagadas()<cuotas){
+                      
+                                Mora mora = credito.getSolicitudCredito().getMora();
+                                if(mora==null){
+                        
+                                    mora = obtenerMoraconDatos(credito, cuotas); 
+                                    try { mjc.create(mora);} catch (Exception ex) 
+                                    {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
+                            
+                                }else{
+                                
+                                    if(mora.getEstado()==0){
 
+                                            mora = nuevoTotalMoraExpressDias(mora,cuotas,credito);                                  
+                                            try { mjc.edit(mora);} catch (Exception ex) 
+                                            {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
+                                        
+                                    }else{
+                                            
+                                    
+                                    }
+                                    
+                                
+                                
+                                }
+                        }
+                  }
+               }
                     
             }  
                 
@@ -245,53 +306,110 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
         
     }//GEN-LAST:event_calcularMoraActionPerformed
 
-    public void cargarDatosMora(int indice){
-            
-    
-    }
-    
-    public Mora obtenerMoraconDatos(Creditos credito){
+    public Mora obtenerMoraconDatos(Creditos credito,int cuota){
     
         
         Mora mora = new Mora();
-        mora.setIdMora(mjc.getMoraCount()+1);
+        MoraPK morapk = new MoraPK(credito.getCreditosPK().getDui(),credito.getCreditosPK().getIdSolicitudCredito());
+        
+        mora.setMoraPK(morapk);
+        
         mora.setEstado((short)0);
-        mora.setFechaInicio(panel.fechadesistema);
-        mora.setMoraTotal(5.65);
+        if(credito.getSolicitudCredito().getTipoCredito()!=5){mora.setMoraTotal(5.65);}
+        else{mora.setMoraTotal(11.30);}
         mora.setMoraCancelada(0.0);
-        mora.setCuotasPagadas(0);
-        mora.setCuotasEnMora(1);
+        mora.setUltimaCuotaEnMora((short)cuota);
+        mora.setCoutasMoraPendiente((short)1);
+        mora.setCoutasPendientes((short)1);
+        
+        mora.setListaCuotasEnMora(listaCuotasMora(mora.getListaCuotasEnMora(),cuota));
+        
+        mora.setCapitalVencido(cjc.capitalVencido(credito, cuota));
+        mora.setInteresVencido(cjc.interesesVencidos(credito, cuota));
+        mora.setIvaVencido(cjc.ivaVencidos(credito, cuota));
+        
+        if(credito.getSolicitudCredito().getTipoCredito()==5){
+            mora.setDiasAtrasoXpress((short)1);
+            mora.setUltimaFechaMora(panel.fechasistema.getDate());}
+        
         mora.setSolicitudCredito(credito.getSolicitudCredito());
         
-       
+        
         return mora;
     }
     
-    public void actualizarTotalMora(int cuotas, int cuotaspagadas, Mora mora){
+    public Mora nuevoTotalMora(Mora mora, int cuotas, Creditos credito){
     
-         int cuotasPendientes = cuotas-cuotaspagadas;
-         int cuotasMoraPendPago=0;
-         
-         if(cuotasPendientes>mora.getCuotasEnMora()){
-             mora.setCuotasEnMora(mora.getCuotasEnMora()+1);
-             cuotasMoraPendPago = mora.getCuotasEnMora()-mora.getCuotasPagadas();
-             
-             
-             
-         }
-         
-         
-         
-         if(cuotasMoraPendPago>4){
+        mora.setUltimaCuotaEnMora((short)cuotas);
+        mora.setCoutasMoraPendiente((short)(mora.getCoutasMoraPendiente()+1));
+        mora.setCoutasPendientes((short)(mora.getCoutasPendientes()+1));
+        mora.setListaCuotasEnMora(listaCuotasMora(mora.getListaCuotasEnMora(),cuotas));
+        
+        mora.setCapitalVencido(cjc.capitalVencido(credito, cuotas));
+        mora.setInteresVencido(cjc.interesesVencidos(credito, cuotas));
+        mora.setIvaVencido(cjc.ivaVencidos(credito, cuotas));
+        
+        mora.setMoraTotal(monto.redondear(mora.getMoraTotal()+5.65,2));
+        
+        return mora;
+        
+    }
+    
+    public Mora nuevoTotalMoraExpressDias(Mora mora, int cuotas, Creditos credito){
+        
+        Date fechamora = fechas.normalizarFecha(mora.getUltimaFechaMora());
+        Date fechaActual = fechas.normalizarFecha(panel.fechasistema.getDate());
+        
+        if(mora.getUltimaCuotaEnMora()==cuotas){
+            
+            if(fechamora.before(fechaActual)){ 
                 
-                //mora.setCuotasPendientes(cuotasMoraPendPago);
-                double moraTotal = monto.redondear((mora.getMoraTotal()+5.65), 2);
-                mora.setMoraTotal(moraTotal);
-
-                try { mjc.edit(mora);} catch (Exception ex) 
-                {Logger.getLogger(LISTA_MORAS_PNL.class.getName()).log(Level.SEVERE, null, ex);}
-         }
+                mora.setMoraTotal(monto.redondear(mora.getMoraTotal()+1.13,2));
+                mora.setUltimaFechaMora(fechaActual);
+            }
+            
+        }else if(cuotas>mora.getUltimaCuotaEnMora()){
+        
+            mora.setUltimaCuotaEnMora((short)cuotas);
+            mora.setCoutasMoraPendiente((short)(mora.getCoutasMoraPendiente()+1));
+            mora.setCoutasPendientes((short)(mora.getCoutasPendientes()+1));
+            mora.setListaCuotasEnMora(listaCuotasMora(mora.getListaCuotasEnMora(),cuotas));
+            
+            mora.setCapitalVencido(cjc.capitalVencido(credito, cuotas));
+            mora.setInteresVencido(cjc.interesesVencidos(credito, cuotas));
+            mora.setIvaVencido(cjc.ivaVencidos(credito, cuotas));
+            
+            mora.setUltimaFechaMora(fechaActual);
+                
+        }
+        
+        return mora;     
+    }
     
+    public Mora actualizarTotalMora(Mora mora, int cuotas, Creditos credito){
+    
+        mora.setEstado((short)0);
+        mora.setUltimaCuotaEnMora((short)cuotas);
+        mora.setCoutasMoraPendiente((short)1);
+        mora.setCoutasPendientes((short)1);
+        mora.setListaCuotasEnMora(listaCuotasMora(mora.getListaCuotasEnMora(),cuotas));
+        
+        mora.setCapitalVencido(cjc.capitalVencido(credito, cuotas));
+        mora.setInteresVencido(cjc.interesesVencidos(credito, cuotas));
+        mora.setIvaVencido(cjc.ivaVencidos(credito, cuotas));
+        
+        mora.setMoraTotal(monto.redondear(mora.getMoraTotal()+5.65,2));
+        
+        return mora;
+        
+    }
+    
+    public String listaCuotasMora(String lista,int cuota){
+       
+        if(lista==null){lista="";}
+        lista=lista+cuota+"-";
+        
+        return lista;
     }
     
     

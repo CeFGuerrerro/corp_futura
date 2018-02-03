@@ -4,6 +4,7 @@ package MODELOSTBL;
 
 import Entidades.Creditos;
 import Entidades.Mora;
+import UTILIDADES.monto;
 import java.util.LinkedList;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -21,7 +22,6 @@ public class modeloMoras implements TableModel {
         java.lang.Integer.class,
         java.lang.String.class,
         java.lang.Long.class,
-        java.util.Date.class,
         java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
@@ -38,7 +38,7 @@ public class modeloMoras implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 7;
+        return 6;
     }
 
     @Override
@@ -51,13 +51,11 @@ public class modeloMoras implements TableModel {
                          break;
             case 2:      columna="Monto"; 
                          break;
-            case 3:      columna="Fecha de inicio"; 
+            case 3:      columna="Mora Pendiente"; 
                          break;
-            case 4:      columna="Mora Pendiente"; 
+            case 4:      columna="Mora Pagada"; 
                          break;
-            case 5:      columna="Mora Pagada"; 
-                         break;
-            case 6:      columna="Mora Total"; 
+            case 5:      columna="Mora Total"; 
                          break;
 
         }
@@ -131,12 +129,10 @@ public class modeloMoras implements TableModel {
             case 2:
                 return aux.getSolicitudCredito().getCreditos().getMonto();
             case 3:
-                return aux.getFechaInicio();
+                return monto.redondear(aux.getMoraTotal()-aux.getMoraCancelada(), 2);
             case 4:
-                return aux.getMoraTotal()-aux.getMoraCancelada();
-            case 5:
                 return aux.getMoraCancelada();
-            case 6:
+            case 5:
                 return aux.getMoraTotal();
 
             default:

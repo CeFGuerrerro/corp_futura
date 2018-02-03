@@ -19,13 +19,13 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
     
     public PAGO_FORM pagoForm;
    
-    public Date fechadesistema;
  
     
     public CREDITOS_PNL() {
         initComponents();
         cargarPanel(cp);
         hvCreditos.setSeleccionado(hvMoras,hvPagos);
+        fechasistema.setDate(fechas.fechaActual());
     }
 
     public void cargarPanel(JPanel panel){
@@ -50,8 +50,8 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
         hvPagos = new Label.HvLabel();
         hvMoras = new Label.HvLabel();
         hvCreditos = new Label.HvLabel();
-        jButton1 = new javax.swing.JButton();
-        lblfecha = new javax.swing.JLabel();
+        fechasistema = new com.toedter.calendar.JDateChooser();
+        jLabel15 = new javax.swing.JLabel();
         contenidoCreditos = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(240, 236, 236));
@@ -83,16 +83,11 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("actualizar fecha");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        fechasistema.setBackground(new java.awt.Color(71, 109, 146));
 
-        lblfecha.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblfecha.setForeground(new java.awt.Color(255, 255, 255));
-        lblfecha.setText("Fecha");
+        jLabel15.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("Fecha:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -105,11 +100,11 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
                 .addComponent(hvMoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hvPagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(lblfecha, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fechasistema, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,8 +114,9 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
                     .addComponent(hvPagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hvMoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hvCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblfecha, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(jLabel15)
+                        .addComponent(fechasistema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(13, 13, 13))
         );
 
@@ -167,32 +163,14 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
         hvCreditos.setSeleccionado(hvMoras,hvPagos);
     }//GEN-LAST:event_hvCreditosMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        if(lblfecha.getText().equals("Fecha")){
-            fechadesistema = fechas.fechaActual();
-            SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
-            String fechaFormateada = formato.format(fechadesistema);
-            lblfecha.setText(fechaFormateada);
-        }
-        else{
-            fechadesistema.setTime(fechadesistema.getTime()+86400000);
-             SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
-            String fechaFormateada = formato.format(fechadesistema);
-            lblfecha.setText(fechaFormateada);
-        }
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contenidoCreditos;
+    public com.toedter.calendar.JDateChooser fechasistema;
     private Label.HvLabel hvCreditos;
     private Label.HvLabel hvMoras;
     private Label.HvLabel hvPagos;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblfecha;
     // End of variables declaration//GEN-END:variables
 }

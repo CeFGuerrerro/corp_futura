@@ -1,24 +1,24 @@
 
 package CONTROLADORES;
 
+import CONTROLADORES.exceptions.IllegalOrphanException;
+import CONTROLADORES.exceptions.NonexistentEntityException;
+import CONTROLADORES.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import Entidades.Mora;
 import Entidades.DatosPersonales;
 import Entidades.Usuarios;
 import Entidades.EvaluacionCredito;
 import Entidades.Creditos;
-import Entidades.Mora;
-import java.util.ArrayList;
-import java.util.List;
 import Entidades.Pagos;
 import Entidades.SolicitudCredito;
 import Entidades.SolicitudCreditoPK;
-import CONTROLADORES.exceptions.IllegalOrphanException;
-import CONTROLADORES.exceptions.NonexistentEntityException;
-import CONTROLADORES.exceptions.PreexistingEntityException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -26,7 +26,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author o-a19
+ * @author dvid1
  */
 public class SolicitudCreditoJpaController implements Serializable {
 
@@ -43,9 +43,6 @@ public class SolicitudCreditoJpaController implements Serializable {
         if (solicitudCredito.getSolicitudCreditoPK() == null) {
             solicitudCredito.setSolicitudCreditoPK(new SolicitudCreditoPK());
         }
-        if (solicitudCredito.getMoraList() == null) {
-            solicitudCredito.setMoraList(new ArrayList<Mora>());
-        }
         if (solicitudCredito.getPagosList() == null) {
             solicitudCredito.setPagosList(new ArrayList<Pagos>());
         }
@@ -54,6 +51,11 @@ public class SolicitudCreditoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Mora mora = solicitudCredito.getMora();
+            if (mora != null) {
+                mora = em.getReference(mora.getClass(), mora.getMoraPK());
+                solicitudCredito.setMora(mora);
+            }
             DatosPersonales datosPersonales = solicitudCredito.getDatosPersonales();
             if (datosPersonales != null) {
                 datosPersonales = em.getReference(datosPersonales.getClass(), datosPersonales.getDui());
@@ -74,12 +76,6 @@ public class SolicitudCreditoJpaController implements Serializable {
                 creditos = em.getReference(creditos.getClass(), creditos.getCreditosPK());
                 solicitudCredito.setCreditos(creditos);
             }
-            List<Mora> attachedMoraList = new ArrayList<Mora>();
-            for (Mora moraListMoraToAttach : solicitudCredito.getMoraList()) {
-                moraListMoraToAttach = em.getReference(moraListMoraToAttach.getClass(), moraListMoraToAttach.getIdMora());
-                attachedMoraList.add(moraListMoraToAttach);
-            }
-            solicitudCredito.setMoraList(attachedMoraList);
             List<Pagos> attachedPagosList = new ArrayList<Pagos>();
             for (Pagos pagosListPagosToAttach : solicitudCredito.getPagosList()) {
                 pagosListPagosToAttach = em.getReference(pagosListPagosToAttach.getClass(), pagosListPagosToAttach.getIdPago());
@@ -87,6 +83,15 @@ public class SolicitudCreditoJpaController implements Serializable {
             }
             solicitudCredito.setPagosList(attachedPagosList);
             em.persist(solicitudCredito);
+            if (mora != null) {
+                SolicitudCredito oldSolicitudCreditoOfMora = mora.getSolicitudCredito();
+                if (oldSolicitudCreditoOfMora != null) {
+                    oldSolicitudCreditoOfMora.setMora(null);
+                    oldSolicitudCreditoOfMora = em.merge(oldSolicitudCreditoOfMora);
+                }
+                mora.setSolicitudCredito(solicitudCredito);
+                mora = em.merge(mora);
+            }
             if (datosPersonales != null) {
                 datosPersonales.getSolicitudCreditoList().add(solicitudCredito);
                 datosPersonales = em.merge(datosPersonales);
@@ -112,15 +117,6 @@ public class SolicitudCreditoJpaController implements Serializable {
                 }
                 creditos.setSolicitudCredito(solicitudCredito);
                 creditos = em.merge(creditos);
-            }
-            for (Mora moraListMora : solicitudCredito.getMoraList()) {
-                SolicitudCredito oldSolicitudCreditoOfMoraListMora = moraListMora.getSolicitudCredito();
-                moraListMora.setSolicitudCredito(solicitudCredito);
-                moraListMora = em.merge(moraListMora);
-                if (oldSolicitudCreditoOfMoraListMora != null) {
-                    oldSolicitudCreditoOfMoraListMora.getMoraList().remove(moraListMora);
-                    oldSolicitudCreditoOfMoraListMora = em.merge(oldSolicitudCreditoOfMoraListMora);
-                }
             }
             for (Pagos pagosListPagos : solicitudCredito.getPagosList()) {
                 SolicitudCredito oldSolicitudCreditoOfPagosListPagos = pagosListPagos.getSolicitudCredito();
@@ -151,6 +147,8 @@ public class SolicitudCreditoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             SolicitudCredito persistentSolicitudCredito = em.find(SolicitudCredito.class, solicitudCredito.getSolicitudCreditoPK());
+            Mora moraOld = persistentSolicitudCredito.getMora();
+            Mora moraNew = solicitudCredito.getMora();
             DatosPersonales datosPersonalesOld = persistentSolicitudCredito.getDatosPersonales();
             DatosPersonales datosPersonalesNew = solicitudCredito.getDatosPersonales();
             Usuarios idUsuarioOld = persistentSolicitudCredito.getIdUsuario();
@@ -159,11 +157,15 @@ public class SolicitudCreditoJpaController implements Serializable {
             EvaluacionCredito evaluacionCreditoNew = solicitudCredito.getEvaluacionCredito();
             Creditos creditosOld = persistentSolicitudCredito.getCreditos();
             Creditos creditosNew = solicitudCredito.getCreditos();
-            List<Mora> moraListOld = persistentSolicitudCredito.getMoraList();
-            List<Mora> moraListNew = solicitudCredito.getMoraList();
             List<Pagos> pagosListOld = persistentSolicitudCredito.getPagosList();
             List<Pagos> pagosListNew = solicitudCredito.getPagosList();
             List<String> illegalOrphanMessages = null;
+            if (moraOld != null && !moraOld.equals(moraNew)) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("You must retain Mora " + moraOld + " since its solicitudCredito field is not nullable.");
+            }
             if (evaluacionCreditoOld != null && !evaluacionCreditoOld.equals(evaluacionCreditoNew)) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
@@ -176,14 +178,6 @@ public class SolicitudCreditoJpaController implements Serializable {
                 }
                 illegalOrphanMessages.add("You must retain Creditos " + creditosOld + " since its solicitudCredito field is not nullable.");
             }
-            for (Mora moraListOldMora : moraListOld) {
-                if (!moraListNew.contains(moraListOldMora)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Mora " + moraListOldMora + " since its solicitudCredito field is not nullable.");
-                }
-            }
             for (Pagos pagosListOldPagos : pagosListOld) {
                 if (!pagosListNew.contains(pagosListOldPagos)) {
                     if (illegalOrphanMessages == null) {
@@ -194,6 +188,10 @@ public class SolicitudCreditoJpaController implements Serializable {
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            if (moraNew != null) {
+                moraNew = em.getReference(moraNew.getClass(), moraNew.getMoraPK());
+                solicitudCredito.setMora(moraNew);
             }
             if (datosPersonalesNew != null) {
                 datosPersonalesNew = em.getReference(datosPersonalesNew.getClass(), datosPersonalesNew.getDui());
@@ -211,13 +209,6 @@ public class SolicitudCreditoJpaController implements Serializable {
                 creditosNew = em.getReference(creditosNew.getClass(), creditosNew.getCreditosPK());
                 solicitudCredito.setCreditos(creditosNew);
             }
-            List<Mora> attachedMoraListNew = new ArrayList<Mora>();
-            for (Mora moraListNewMoraToAttach : moraListNew) {
-                moraListNewMoraToAttach = em.getReference(moraListNewMoraToAttach.getClass(), moraListNewMoraToAttach.getIdMora());
-                attachedMoraListNew.add(moraListNewMoraToAttach);
-            }
-            moraListNew = attachedMoraListNew;
-            solicitudCredito.setMoraList(moraListNew);
             List<Pagos> attachedPagosListNew = new ArrayList<Pagos>();
             for (Pagos pagosListNewPagosToAttach : pagosListNew) {
                 pagosListNewPagosToAttach = em.getReference(pagosListNewPagosToAttach.getClass(), pagosListNewPagosToAttach.getIdPago());
@@ -226,6 +217,15 @@ public class SolicitudCreditoJpaController implements Serializable {
             pagosListNew = attachedPagosListNew;
             solicitudCredito.setPagosList(pagosListNew);
             solicitudCredito = em.merge(solicitudCredito);
+            if (moraNew != null && !moraNew.equals(moraOld)) {
+                SolicitudCredito oldSolicitudCreditoOfMora = moraNew.getSolicitudCredito();
+                if (oldSolicitudCreditoOfMora != null) {
+                    oldSolicitudCreditoOfMora.setMora(null);
+                    oldSolicitudCreditoOfMora = em.merge(oldSolicitudCreditoOfMora);
+                }
+                moraNew.setSolicitudCredito(solicitudCredito);
+                moraNew = em.merge(moraNew);
+            }
             if (datosPersonalesOld != null && !datosPersonalesOld.equals(datosPersonalesNew)) {
                 datosPersonalesOld.getSolicitudCreditoList().remove(solicitudCredito);
                 datosPersonalesOld = em.merge(datosPersonalesOld);
@@ -259,17 +259,6 @@ public class SolicitudCreditoJpaController implements Serializable {
                 }
                 creditosNew.setSolicitudCredito(solicitudCredito);
                 creditosNew = em.merge(creditosNew);
-            }
-            for (Mora moraListNewMora : moraListNew) {
-                if (!moraListOld.contains(moraListNewMora)) {
-                    SolicitudCredito oldSolicitudCreditoOfMoraListNewMora = moraListNewMora.getSolicitudCredito();
-                    moraListNewMora.setSolicitudCredito(solicitudCredito);
-                    moraListNewMora = em.merge(moraListNewMora);
-                    if (oldSolicitudCreditoOfMoraListNewMora != null && !oldSolicitudCreditoOfMoraListNewMora.equals(solicitudCredito)) {
-                        oldSolicitudCreditoOfMoraListNewMora.getMoraList().remove(moraListNewMora);
-                        oldSolicitudCreditoOfMoraListNewMora = em.merge(oldSolicitudCreditoOfMoraListNewMora);
-                    }
-                }
             }
             for (Pagos pagosListNewPagos : pagosListNew) {
                 if (!pagosListOld.contains(pagosListNewPagos)) {
@@ -312,6 +301,13 @@ public class SolicitudCreditoJpaController implements Serializable {
                 throw new NonexistentEntityException("The solicitudCredito with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
+            Mora moraOrphanCheck = solicitudCredito.getMora();
+            if (moraOrphanCheck != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This SolicitudCredito (" + solicitudCredito + ") cannot be destroyed since the Mora " + moraOrphanCheck + " in its mora field has a non-nullable solicitudCredito field.");
+            }
             EvaluacionCredito evaluacionCreditoOrphanCheck = solicitudCredito.getEvaluacionCredito();
             if (evaluacionCreditoOrphanCheck != null) {
                 if (illegalOrphanMessages == null) {
@@ -325,13 +321,6 @@ public class SolicitudCreditoJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This SolicitudCredito (" + solicitudCredito + ") cannot be destroyed since the Creditos " + creditosOrphanCheck + " in its creditos field has a non-nullable solicitudCredito field.");
-            }
-            List<Mora> moraListOrphanCheck = solicitudCredito.getMoraList();
-            for (Mora moraListOrphanCheckMora : moraListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This SolicitudCredito (" + solicitudCredito + ") cannot be destroyed since the Mora " + moraListOrphanCheckMora + " in its moraList field has a non-nullable solicitudCredito field.");
             }
             List<Pagos> pagosListOrphanCheck = solicitudCredito.getPagosList();
             for (Pagos pagosListOrphanCheckPagos : pagosListOrphanCheck) {
@@ -452,6 +441,7 @@ public class SolicitudCreditoJpaController implements Serializable {
         
         return lista;
     }
+    
     
     
     
