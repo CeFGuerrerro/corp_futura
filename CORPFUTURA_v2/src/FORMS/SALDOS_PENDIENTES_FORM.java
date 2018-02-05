@@ -3,11 +3,14 @@ package FORMS;
 
 
 import CONTROLADORES.CreditosJpaController;
+import CONTROLADORES.MoraJpaController;
 import Entidades.Creditos;
 import Entidades.DatosPersonales;
 import Entidades.SolicitudCredito;
 import MODELOSTBL.modeloCreditoxCliente;
+import UTILIDADES.fechas;
 import UTILIDADES.monto;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -23,6 +26,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
     
     public modeloCreditoxCliente modelo = new modeloCreditoxCliente();
     public CreditosJpaController cjc = new CreditosJpaController();
+    public MoraJpaController mjc = new MoraJpaController();
     public NUEVA_SOLICITUD_FORM form;
   
     public double total;
@@ -30,6 +34,9 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
     public double totalIva;
     
     private final String cadena = "-Intereses por pagar\n-Iva por pagar\n-Intereses vencidos\n-Mora vencida\n-Capital pendiente\n-TOTAL";
+    
+    public Date fecha;
+    public int cuotasaldia;
     
     
     public SALDOS_PENDIENTES_FORM(DatosPersonales datospersonales1, int tipocredito1, NUEVA_SOLICITUD_FORM form1) {
@@ -41,6 +48,8 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         tipocredito = tipocredito1;
         form = form1;
         cargarModelo();
+        fecha = form.fechasistema;
+        
          
     }
     
@@ -58,14 +67,14 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
     public void cargarTotalesCredito(int indice){
     
         credito = modelo.obtenerCredito(indice);
+        
+        if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), fecha)){
+            cuotasaldia = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(), fecha);
+         }else{cuotasaldia = 0;}
+        
         double porcentaje = (cjc.obtenerTotalPagado(credito)/cjc.obtenerTotalAPagar(credito))*100;
         porcentaje = monto.redondear(porcentaje, 2);
-        
-        double capitalpendiente = monto.redondear((credito.getMonto()-credito.getSaldoPagado()), 2);
-        totalIntereses = monto.redondear(credito.getTotalIntereses()-credito.getInteresPagados(), 2);
-        totalIva = monto.redondear(credito.getTotalIva()-credito.getIvaPagado(), 2);
-        
-        
+                
         txtTotalPago.setText(String.valueOf(cjc.obtenerTotalAPagar(credito)));
         txtTotalPagado.setText(String.valueOf(cjc.obtenerTotalPagado(credito)));
         txtporcentajepago.setText(String.valueOf(porcentaje));
@@ -80,16 +89,22 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         txtTotalCapitalPagado.setText(String.valueOf(credito.getSaldoPagado()));
         txtCuotasPagadas.setText(String.valueOf(credito.getCuotasPagadas()));
         
-        
+        double capitalpendiente = monto.redondear((credito.getMonto()-credito.getSaldoPagado()), 2);
+        totalIntereses = monto.redondear(credito.getTotalIntereses()-credito.getInteresPagados(), 2);
+        totalIva = monto.redondear(credito.getTotalIva()-credito.getIvaPagado(), 2);
+              
         txtivapendiente.setText(String.valueOf(totalIva));
         txtInteresespendientes.setText(String.valueOf(totalIntereses));
-        
         txtCapitalPendiente.setText(String.valueOf(capitalpendiente));
      
-        //txtInteresesVencidos.setText(String.valueOf(cjc.interesesVencidos(credito)));
-        //txtMoraVencida.setText(String.valueOf(cjc.moraVencida(credito)));
-        //total
-        
+        double intvencidos = cjc.interesesVencidos(credito,cuotasaldia);
+        intvencidos = intvencidos + cjc.ivaVencidos(credito, cuotasaldia);
+        intvencidos = monto.redondear(intvencidos, 2);
+        txtInteresesVencidos.setText(String.valueOf(intvencidos));
+        txtMoraVencida.setText(String.valueOf(mjc.getMoraPendiente(credito)));
+
+        total = capitalpendiente+intvencidos+mjc.getMoraPendiente(credito);
+        total = monto.redondear(total, 2);
         txtTotal.setText(String.valueOf(total));
         
         
@@ -368,7 +383,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
 
         jLabel33.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel33.setText("Intereses vencidos:");
+        jLabel33.setText("Intereses + IVA vencidos:");
 
         txtInteresesVencidos.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
@@ -380,7 +395,7 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
 
         jLabel36.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel36.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel36.setText("Mora vencida:");
+        jLabel36.setText("Mora pendiente:");
 
         txtMoraVencida.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
@@ -512,10 +527,9 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
                                     .addComponent(txtivapendiente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(20, 20, 20)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel36)
-                                        .addComponent(jLabel35)))))
+                                    .addComponent(jLabel36, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addGap(10, 10, 10)
                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtInteresesVencidos, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)

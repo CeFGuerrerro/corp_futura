@@ -3,6 +3,7 @@ package MODELOSTBL;
 
 
 import Entidades.Creditos;
+import UTILIDADES.monto;
 import java.util.LinkedList;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -136,7 +137,7 @@ public class modeloCreditos implements TableModel {
             case 3:
                 return aux.getSaldoPagado();
             case 4:
-                return (aux.getMonto()-aux.getSaldoPagado());
+                return monto.redondear((aux.getMonto()-aux.getSaldoPagado()),2);
             case 5:
                 return aux.getInteresPagados();
             case 6:

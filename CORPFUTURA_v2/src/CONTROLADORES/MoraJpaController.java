@@ -8,6 +8,7 @@ package CONTROLADORES;
 import CONTROLADORES.exceptions.IllegalOrphanException;
 import CONTROLADORES.exceptions.NonexistentEntityException;
 import CONTROLADORES.exceptions.PreexistingEntityException;
+import Entidades.Creditos;
 import Entidades.Mora;
 import Entidades.MoraPK;
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Entidades.SolicitudCredito;
+import UTILIDADES.monto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -227,6 +229,17 @@ public class MoraJpaController implements Serializable {
         }
         
         return lista;
+    }
+    
+    public double getMoraPendiente(Creditos credito){
+        double mora=0;
+        
+            if(credito.getSolicitudCredito().getMora()!=null){
+                mora = credito.getSolicitudCredito().getMora().getMoraTotal()- credito.getSolicitudCredito().getMora().getMoraCancelada();
+                mora = monto.redondear(mora, 2);
+            }
+    
+        return mora;
     }
     
 }
