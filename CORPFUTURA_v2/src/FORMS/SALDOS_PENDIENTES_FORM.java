@@ -115,28 +115,27 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
         boolean valoresValidos = true;
         boolean cargar =true;
         
-        if(monto.validarDouble(txtCapitalPendiente.getText())){form.capitalRef=txtCapitalPendiente.getText();}else{valoresValidos=false;}
-        if(monto.validarDouble(txtInteresesVencidos.getText())){ form.interesRef=txtInteresesVencidos.getText();}else{valoresValidos=false;}
-        if(monto.validarDouble(txtMoraVencida.getText())){form.moraRef=txtMoraVencida.getText();}else{valoresValidos=false;}
-        if(monto.validarDouble(txtInteresespendientes.getText())){form.interesesGC= txtInteresespendientes.getText();}else{valoresValidos=false;}
-        if(monto.validarDouble(txtivapendiente.getText())){form.ivaGC = txtivapendiente.getText();}else{valoresValidos=false;}
+        if(!monto.validarDouble(txtCapitalPendiente.getText())){valoresValidos=false;}
+        if(!monto.validarDouble(txtInteresesVencidos.getText())){valoresValidos=false;}
+        if(!monto.validarDouble(txtMoraVencida.getText())){valoresValidos=false;}
+        if(!monto.validarDouble(txtInteresespendientes.getText())){valoresValidos=false;}
+        if(!monto.validarDouble(txtivapendiente.getText())){valoresValidos=false;}
         if(!monto.validarDouble(txtTotal.getText())){valoresValidos=false;}
         
         if(!chkSinCreditos.isSelected()){
             if(credito!=null){
                 if(valoresValidos == true){
+                        pasarValores();
                         if(tipocredito==3){cargarGestionArreglo();}
-                        else if(tipocredito==4){cargarRefinanciamiento();}
-                         form.idCreditoACambiar=credito.getCreditosPK().getIdSolicitudCredito();
-                         form.tasa = credito.getSolicitudCredito().getTasaInteres();
+                        else{cargarRefinanciamiento();}
+
                 }else{JOptionPane.showMessageDialog(this, "Es necesario especificar de forma correcta el valor de los campos:\n"+cadena); cargar =false;}
             }else{JOptionPane.showMessageDialog(this, "Es necesario especificar el Credito a Refinanciar o reestructurar."); cargar = false; }      
         }else{
             if(valoresValidos == true){
+                        pasarValores();
                         if(tipocredito==3){cargarGestionArreglo();}
-                        else if(tipocredito==4){cargarRefinanciamiento();}
-                        form.sinCreditos=true;
-                        form.idCreditoACambiar=-1;
+                        else{cargarRefinanciamiento();}
             }else{JOptionPane.showMessageDialog(this, "Es necesario especificar de forma correcta el valor de los campos:\n"+cadena); cargar = false;}
         }
         return cargar;
@@ -154,6 +153,16 @@ public class SALDOS_PENDIENTES_FORM extends javax.swing.JFrame {
          form.txtmonto.setText(txtTotal.getText());
          form.txtTotalIntereses.setText(txtInteresespendientes.getText()); 
          form.txtTotalIva.setText(txtivapendiente.getText()); 
+
+    }
+    
+    public void pasarValores(){
+        
+        form.capitalRef=txtCapitalPendiente.getText();
+        form.interesRef=txtInteresesVencidos.getText();
+        form.moraRef=txtMoraVencida.getText();
+        form.interesesGC= txtInteresespendientes.getText();
+        form.ivaGC = txtivapendiente.getText();
     }
    
     @SuppressWarnings("unchecked")

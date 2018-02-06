@@ -36,15 +36,14 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
     private ArrayList<Usuarios> usuarios = new ArrayList();
     
     public boolean desCargados=false;
-    public boolean sinCreditos=false;
     public int idCreditoACambiar=0;
     
-    public String interesesGC;
-    public String ivaGC;
-    public String interesRef;
-    public String moraRef;
-    public String capitalRef;
-    public String tasa="";
+    public String interesesGC="";
+    public String ivaGC="";
+    public String interesRef="";
+    public String moraRef="";
+    public String capitalRef="";
+   
     
 
     public LISTA_SOLICITUDES_PNL listasolicitud;
@@ -785,45 +784,31 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
 
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
       
-        if(!txtmonto.getText().trim().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0){
+        if(!txtmonto.getText().trim().isEmpty() && cmbplazos.getSelectedIndex()!=0 && cmbformapagos.getSelectedIndex()!=0 && !txttasa.getText().trim().isEmpty()){
             if(monto.validarDouble(txtmonto.getText())){
                 limpiarCampos();
-                    //CLIENTE NUEVO, RECURRENTE Y EXPRESS
-                    if(cmbtipocredito.getSelectedIndex()<3 || cmbtipocredito.getSelectedIndex()>4){
-                       
-                        if(!txttasa.getText().trim().isEmpty()){  
+                    //CLIENTE NUEVO, RECURRENTE, REFINANCIAMIENTO Y EXPRESS
+                    if(cmbtipocredito.getSelectedIndex()!=3){
+                        
+                            txtinteresesd.setText(interesRef);
+                            txtmorad.setText(moraRef);
+                            txtcapitald.setText(capitalRef);
                             mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
                             mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
                             txtTotalIntereses.setText(mont.getTotalIntereses());
                             txtTotalIva.setText(mont.getTotalIva());
                             cargarCamposMontos(mont);
-                        }else{JOptionPane.showMessageDialog(this, "Es necesario Especificar la tasa de Interes");}
                     
-                    }else if(desCargados==true){
-                        //REFINANCIAMIENTO
-                        if(cmbtipocredito.getSelectedIndex()!=3){
-                            
-                            if(!txttasa.getText().trim().isEmpty()){
-                                txtinteresesd.setText(interesRef);
-                                txtmorad.setText(moraRef);
-                                txtcapitald.setText(capitalRef);
-                                mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txttasa.getText()); 
-                                mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected(),txtinteresesd.getText(),txtcapitald.getText(),txtmorad.getText());
-                                txtTotalIntereses.setText(mont.getTotalIntereses());
-                                txtTotalIva.setText(mont.getTotalIva());
-                                cargarCamposMontos(mont);
-                            }else{JOptionPane.showMessageDialog(this, "Es necesario Especificar la tasa de Interes");}
-                            
-                        //GESTION DE ARREGLO
-                        }else{
+                    }else{
+                            //GESTION DE ARREGLO
+                            if(desCargados){
                             txtTotalIntereses.setText(interesesGC);
                             txtTotalIva.setText(ivaGC);
                             mont = new monto(txtmonto.getText(),cmbplazos.getSelectedIndex(),cmbformapagos.getSelectedIndex(), txtTotalIva.getText(), txtTotalIntereses.getText());
                             mont.settotalDeducciones(chkAsesoria.isSelected(),chkcuotafinal.isSelected());
                             cargarCamposMontos(mont);
-                        }
-
-                    }else{JOptionPane.showMessageDialog(this, "No se a escogido el crédito a refinanciar o reestructurar");}
+                            }else{JOptionPane.showMessageDialog(this,"No se han especificado los saldos pendientes de la gestión de arreglo.");}
+                    }
               
             }else { JOptionPane.showMessageDialog(this, "el valor ingresado del monto no es correcto");}    
         }else{ JOptionPane.showMessageDialog(this, "Hace falta especificar valores"); }
@@ -956,21 +941,9 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
             if(datospersonales==null || txtmonto.getText().trim().isEmpty() || cmbplazos.getSelectedIndex()==0
                || cmbformapagos.getSelectedIndex()==0 || cmbtipocredito.getSelectedIndex()==0
                || cmbEstadocredito.getSelectedIndex()==0 || fechsolicitud.getDate().toString().isEmpty()
-               || txtDestinoCredito.getText().isEmpty() || cmbtipo.getSelectedIndex()==0 || cmbCarteras.getSelectedIndex()==0 ){validacion=false;}
-            
-            if(cmbtipocredito.getSelectedIndex()!=3){
-                if(txttasa.getText().trim().isEmpty()){validacion=false;}
-            }else{
-                if(sinCreditos==true){
-                    if(txttasa.getText().trim().isEmpty()){validacion=false;}
-                }
-            }
-            
-            if(cmbtipocredito.getSelectedIndex()==3 || cmbtipocredito.getSelectedIndex()==4){ 
-                
-                if(idCreditoACambiar==0){validacion=false;}
-            }
-                
+               || txtDestinoCredito.getText().isEmpty() || cmbtipo.getSelectedIndex()==0 || cmbCarteras.getSelectedIndex()==0 
+               || txttasa.getText().trim().isEmpty()){validacion=false;}
+                            
         return validacion;
     }
     
@@ -1016,31 +989,24 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
         solicitud.setTipo((short)cmbtipo.getSelectedIndex());
         solicitud.setEstado((short)cmbEstadocredito.getSelectedIndex());
         solicitud.setDesembolso(false);
-        solicitud.setIdCreditodes(idCreditoACambiar);
         solicitud.setDestinoCredito(txtDestinoCredito.getText());
         solicitud.setObservacion(txtObservaciones.getText());
+        solicitud.setTasaInteres(txttasa.getText());
         
         if(cmbtipocredito.getSelectedIndex()!=3){
-            solicitud.setTasaInteres(txttasa.getText());
             solicitud.setIvaGa(0.0);
             solicitud.setInteresesGa(0.0);
+            if(monto.validarDouble(interesRef)){solicitud.setInteresesDes(Double.valueOf(interesRef));}else{solicitud.setInteresesDes(0.0);}
+            if(monto.validarDouble(moraRef)){solicitud.setMoraDes(Double.valueOf(moraRef));}else{solicitud.setMoraDes(0.0);}
+            if(monto.validarDouble(capitalRef)){solicitud.setCapitalDes(Double.valueOf(capitalRef));}else{solicitud.setCapitalDes(0.0);}
         }else{
-            if(sinCreditos==false){solicitud.setTasaInteres(tasa);}
-            else{solicitud.setTasaInteres(txttasa.getText());}
             solicitud.setIvaGa(Double.valueOf(ivaGC));
             solicitud.setInteresesGa(Double.valueOf(interesesGC));
-        }
-       
-        if(cmbtipocredito.getSelectedIndex()==4){
-            solicitud.setInteresesDes(Double.valueOf(interesRef));
-            solicitud.setMoraDes(Double.valueOf(moraRef));
-            solicitud.setCapitalDes(Double.valueOf(capitalRef));
-        }else{
             solicitud.setInteresesDes(0.0);
             solicitud.setMoraDes(0.0);
             solicitud.setCapitalDes(0.0);
         }
-        
+              
         solicitud.setDescuentoAsesoria(chkAsesoria.isSelected());
         solicitud.setDescuentoCf(chkcuotafinal.isSelected());
         
@@ -1054,17 +1020,11 @@ public class NUEVA_SOLICITUD_FORM extends javax.swing.JFrame {
             solicitud.setIvaAsesoria(0.0);
         }
         
-        
         solicitud.setIdUsuario(usuarios.get(cmbCarteras.getSelectedIndex()-1));
     
     }
     
-   
-    
-
-    
-    
-
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgroup;

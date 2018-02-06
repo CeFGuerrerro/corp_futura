@@ -883,6 +883,8 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         chkcuotafinal.setSelected(solicitud.getDescuentoCf());
         chkAsesoria.setSelected(solicitud.getDescuentoAsesoria());
         
+        
+        
            
     }
     
