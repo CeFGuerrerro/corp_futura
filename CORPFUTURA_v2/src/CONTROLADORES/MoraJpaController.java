@@ -17,6 +17,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Entidades.SolicitudCredito;
+import UTILIDADES.fechas;
 import UTILIDADES.monto;
 import java.util.ArrayList;
 import java.util.List;
@@ -240,6 +241,31 @@ public class MoraJpaController implements Serializable {
             }
     
         return mora;
+    }
+    
+    public ArrayList<String> cuotasEnMora(Mora mora){
+    
+        ArrayList<String> cuotasEnMora = new ArrayList();
+        for(String cuota: mora.getListaCuotasEnMora().split("-")){ cuotasEnMora.add(cuota);}
+        
+        ArrayList<String> listaCuotas = fechas.fechasdeCuotas(mora.getSolicitudCredito().getCreditos());
+  
+        int contador =0;
+        int posicion =0;
+        
+        while(contador<listaCuotas.size()){
+            if(posicion<cuotasEnMora.size()){
+                if((contador+1)==Integer.valueOf(cuotasEnMora.get(posicion))){
+                    String moras = listaCuotas.get(contador)+"\t Cuota con Mora";
+                    listaCuotas.set(contador, moras);
+                    posicion += 1;
+                }
+            }
+            
+            contador +=1;
+        }
+        
+        return listaCuotas;
     }
     
 }

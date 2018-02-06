@@ -66,10 +66,9 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
         tblMoras = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         calcularMora = new javax.swing.JButton();
-        jLabel25 = new javax.swing.JLabel();
-        txtmontopendiente = new javax.swing.JTextField();
-        jLabel26 = new javax.swing.JLabel();
-        txtcuotaspendientes = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaCuotas = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(240, 236, 236));
 
@@ -102,7 +101,7 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
 
         tblMoras.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
-
+                txtAreaCuotas.setText(cargarListaCuotas(tblMoras.getSelectedRow()));
             }
         });
 
@@ -119,19 +118,14 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
             }
         });
 
-        jLabel25.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel25.setText("MONTO PENDIENTE");
+        txtAreaCuotas.setColumns(20);
+        txtAreaCuotas.setLineWrap(true);
+        txtAreaCuotas.setRows(5);
+        jScrollPane2.setViewportView(txtAreaCuotas);
 
-        txtmontopendiente.setEditable(false);
-        txtmontopendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-
-        jLabel26.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel26.setText("Nº  CUOTAS PENDIENTES");
-
-        txtcuotaspendientes.setEditable(false);
-        txtcuotaspendientes.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel2.setText("LISTA DE CUOTAS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -145,17 +139,10 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                         .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
                             .addComponent(calcularMora, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel25)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtmontopendiente, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel26)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtcuotaspendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -167,15 +154,11 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                 .addComponent(calcularMora, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel25)
-                    .addComponent(txtmontopendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(txtcuotaspendientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26))
-                .addContainerGap(248, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(176, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -380,8 +363,30 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
             mora.setIvaVencido(cjc.ivaVencidos(credito, cuotas));
             
             mora.setUltimaFechaMora(fechaActual);
+            mora.setMoraTotal(monto.redondear(mora.getMoraTotal()+11.30,2));
+            
                 
         }
+        
+        return mora;     
+    }
+    
+    public Mora actualizarMoraExpress(Mora mora, int cuotas, Creditos credito){
+        
+        mora.setEstado((short)0);
+        mora.setUltimaCuotaEnMora((short)cuotas);
+        mora.setCoutasMoraPendiente((short)1);
+        mora.setCoutasPendientes((short)1);
+        mora.setListaCuotasEnMora(listaCuotasMora(mora.getListaCuotasEnMora(),cuotas));
+        
+        mora.setCapitalVencido(cjc.capitalVencido(credito, cuotas));
+        mora.setInteresVencido(cjc.interesesVencidos(credito, cuotas));
+        mora.setIvaVencido(cjc.ivaVencidos(credito, cuotas));
+        
+        Date fechaActual = fechas.normalizarFecha(panel.fechasistema.getDate());
+        mora.setUltimaFechaMora(fechaActual);
+        
+        mora.setMoraTotal(monto.redondear(mora.getMoraTotal()+11.30,2));
         
         return mora;     
     }
@@ -412,7 +417,16 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
         return lista;
     }
     
-    
+    public String cargarListaCuotas(int indice){
+        
+        Mora mora = modelo.obtenerMora(indice);
+        String cadena="";
+        for(String cuota:mjc.cuotasEnMora(mora)){
+            cadena=cadena+cuota+"\n";
+        }
+        
+        return cadena;
+    }
     
 
     
@@ -420,11 +434,10 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calcularMora;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTable tblMoras;
-    private javax.swing.JTextField txtcuotaspendientes;
-    private javax.swing.JTextField txtmontopendiente;
+    private javax.swing.JTextArea txtAreaCuotas;
     // End of variables declaration//GEN-END:variables
 }
