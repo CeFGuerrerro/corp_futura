@@ -154,7 +154,11 @@ public class DS_Solicitud2 implements JRDataSource {
                 valor = listaSolicitudes.get(indice).getIvaAsesoria();
                 return valor;
             case "cuota":
+                if(listaSolicitudes.get(indice).getDescuentoCf()){
                 valor = listaSolicitudes.get(indice).getCuota();
+                }else {
+                    valor = 0.0;
+                }
                 return valor;
 
         }
