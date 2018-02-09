@@ -3,6 +3,7 @@ package FORMS.PANELS;
 
 import CONTROLADORES.CreditosJpaController;
 import Entidades.Creditos;
+import FORMS.PAGO_FORM;
 import MODELOSTBL.modeloCreditos;
 import UTILIDADES.fechas;
 import UTILIDADES.monto;
@@ -18,10 +19,14 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
     public modeloCreditos modelo = new modeloCreditos();
     public CreditosJpaController cjc = new  CreditosJpaController();
     
-    public LISTA_CREDITOS_PNL() {
-        
+    public LISTA_MORAS_PNL mp;
+    
+    public LISTA_CREDITOS_PNL(LISTA_MORAS_PNL mp1) {
+
         initComponents();
         cargarModelo();
+        
+         mp=mp1;
     
     }
     
@@ -37,6 +42,33 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         tblCreditos.clearSelection();
         tblCreditos.updateUI();
     
+    }
+    
+    public void cargarTotalesCredito(int indice){
+    
+        Creditos credito = modelo.obtenerCredito(indice);
+        monto monto = new monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago(), credito.getSolicitudCredito().getTasaInteres());
+        txtTotalPago.setText(monto.getTotalPago());
+        txtTotalIntereses.setText(monto.getTotalIntereses());
+        txtTotalIva.setText(monto.getTotalIva());
+        txtTotalCuota.setText(String.valueOf(monto.numeroCuotas()));
+        txtCuota.setText(credito.getCuota().toString());
+        cmbplazos.setSelectedIndex(credito.getPlazo());
+        cmbformapagos.setSelectedIndex(credito.getFormaPago());
+        chkCuotaFinal.setSelected(credito.getDescuentoCf());
+    }
+    
+    public void limpiarTotales(){
+        
+        txtTotalPago.setText("");
+        txtTotalIntereses.setText("");
+        txtTotalIva.setText("");
+        txtTotalCuota.setText("");  
+        
+        txtCuota.setText("");
+        cmbplazos.setSelectedIndex(0);
+        cmbformapagos.setSelectedIndex(0);
+        
     }
 
    
@@ -96,9 +128,19 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         tblCreditos.getColumn("Mora Pagada").setCellRenderer( leftRenderer );
         tblCreditos.getColumn("Cuotas Pagadas").setCellRenderer( leftRenderer );
 
+        LISTA_CREDITOS_PNL cp = this;
+
         tblCreditos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
+
                 cargarTotalesCredito(tblCreditos.getSelectedRow());
+
+                if(e.getClickCount()==2){
+                    Creditos credito = modelo.obtenerCredito(tblCreditos.getSelectedRow());
+                    PAGO_FORM pagoForm = new PAGO_FORM(credito,cp,mp);
+                    pagoForm.setVisible(true);
+                }
+
             }
         });
 
@@ -164,11 +206,6 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
         cmbformapagos.setFocusable(false);
 
         btnDetallePagos.setText("Detalle de Pagos");
-        btnDetallePagos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDetallePagosActionPerformed(evt);
-            }
-        });
 
         chkCuotaFinal.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         chkCuotaFinal.setForeground(new java.awt.Color(51, 51, 51));
@@ -272,43 +309,10 @@ public class LISTA_CREDITOS_PNL extends javax.swing.JPanel {
 
     private void hvreloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvreloadMouseClicked
         cargarModelo();
+        limpiarTotales();
     }//GEN-LAST:event_hvreloadMouseClicked
 
-    private void btnDetallePagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetallePagosActionPerformed
-      
-        Creditos credito = modelo.obtenerCredito(tblCreditos.getSelectedRow());
-        for(String fecha: fechas.fechasdeCuotas(credito)){
-        
-            System.out.println(fecha);
-        } 
-    }//GEN-LAST:event_btnDetallePagosActionPerformed
 
-    public void cargarTotalesCredito(int indice){
-    
-        Creditos credito = modelo.obtenerCredito(indice);
-        monto monto = new monto(credito.getMonto().toString(),credito.getPlazo(),credito.getFormaPago(), credito.getSolicitudCredito().getTasaInteres());
-        txtTotalPago.setText(monto.getTotalPago());
-        txtTotalIntereses.setText(monto.getTotalIntereses());
-        txtTotalIva.setText(monto.getTotalIva());
-        txtTotalCuota.setText(String.valueOf(monto.numeroCuotas()));
-        txtCuota.setText(credito.getCuota().toString());
-        cmbplazos.setSelectedIndex(credito.getPlazo());
-        cmbformapagos.setSelectedIndex(credito.getFormaPago());
-        chkCuotaFinal.setSelected(credito.getDescuentoCf());
-    }
-    
-    public void limpiarTotales(){
-        
-        txtTotalPago.setText("");
-        txtTotalIntereses.setText("");
-        txtTotalIva.setText("");
-        txtTotalCuota.setText("");  
-        
-        txtCuota.setText("");
-        cmbplazos.setSelectedIndex(0);
-        cmbformapagos.setSelectedIndex(0);
-        
-    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

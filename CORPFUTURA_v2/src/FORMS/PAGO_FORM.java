@@ -10,6 +10,7 @@ import Entidades.Mora;
 import Entidades.Pagos;
 import FORMS.PANELS.LISTA_CREDITOS_PNL;
 import FORMS.PANELS.LISTA_MORAS_PNL;
+import MODELOSTBL.modeloPagos;
 import UTILIDADES.fechas;
 import UTILIDADES.monto;
 import java.util.ArrayList;
@@ -27,15 +28,35 @@ public class PAGO_FORM extends javax.swing.JFrame {
     public Creditos credito;
     public Mora mora;
     public Pagos pago;
+   
     public LISTA_CREDITOS_PNL cp;
     public LISTA_MORAS_PNL mp;
-
-    int cuotasalafecha;
     
-    public boolean montosPendientes=false;
-    public double capitalV;
-    public double interesV;
-    public double ivaV;
+    private modeloPagos modelo = new modeloPagos();
+    
+    private int cuotasalafecha;
+    private int cuotaspagadas;
+    private int cuotaCap;
+    private int cuotaInt;
+    private int cuotaIva;
+    
+    private double capitalxcuota;
+    private double interesxcuota;
+    private double ivaxcuota;
+             
+    private boolean montosPendientes=false;
+    private double morapendiente;
+    private double capitalV;
+    private double interesV;
+    private double ivaV;
+    
+    private double montoPago;
+    private double pagoMora;
+    private double pagoInteres;
+    private double pagoIva;
+    private double pagoCapital;
+    
+ 
     
     public CreditosJpaController cjc = new CreditosJpaController();
     public PagosJpaController pjc = new PagosJpaController();
@@ -46,17 +67,15 @@ public class PAGO_FORM extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        
         credito=credito1;
         mora = credito.getSolicitudCredito().getMora();
         
         cp=cp1;
         mp=mp1;
-        
-        cuotasalafecha = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(),mp.panel.fechasistema.getDate());
-        
+                        
         cargarCredito();
         cargarListaCuotas();
+        cargarPagos();
         cargarMontosPendientes();
         
     }
@@ -114,8 +133,8 @@ public class PAGO_FORM extends javax.swing.JFrame {
         txtIVA = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         btnguardar1 = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbnPagoCapital = new javax.swing.JRadioButton();
+        rbnPagoCredito = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -124,6 +143,8 @@ public class PAGO_FORM extends javax.swing.JFrame {
         txtTotalPendiente = new javax.swing.JTextField();
         txtMontoPendiente = new javax.swing.JTextField();
         txtMoraPendiente = new javax.swing.JTextField();
+        rbnPagoCuotas = new javax.swing.JRadioButton();
+        btnguardar2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(240, 236, 236));
@@ -253,7 +274,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         tblPagos.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblPagos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblPagos);
-        //tblPagos.setModel(modelo);
+        tblPagos.setModel(modelo);
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         leftRenderer.setHorizontalAlignment(DefaultTableCellRenderer.LEFT);
 
@@ -352,13 +373,13 @@ public class PAGO_FORM extends javax.swing.JFrame {
             }
         });
 
-        jRadioButton1.setBackground(new java.awt.Color(240, 236, 236));
-        bgroup.add(jRadioButton1);
-        jRadioButton1.setText("Abono a  Capital");
+        rbnPagoCapital.setBackground(new java.awt.Color(240, 236, 236));
+        bgroup.add(rbnPagoCapital);
+        rbnPagoCapital.setText("Abono a  Capital");
 
-        jRadioButton2.setBackground(new java.awt.Color(240, 236, 236));
-        bgroup.add(jRadioButton2);
-        jRadioButton2.setText("Pago de Cuotas");
+        rbnPagoCredito.setBackground(new java.awt.Color(240, 236, 236));
+        bgroup.add(rbnPagoCredito);
+        rbnPagoCredito.setText("Abono a Cuotas");
 
         jLabel7.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(51, 51, 51));
@@ -385,6 +406,18 @@ public class PAGO_FORM extends javax.swing.JFrame {
         txtMontoPendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
         txtMoraPendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+
+        rbnPagoCuotas.setBackground(new java.awt.Color(240, 236, 236));
+        bgroup.add(rbnPagoCuotas);
+        rbnPagoCuotas.setText("Pago de Cuotas y abono a Capital");
+
+        btnguardar2.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        btnguardar2.setText("Generar historial de pagos");
+        btnguardar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnguardar2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
@@ -466,50 +499,53 @@ public class PAGO_FORM extends javax.swing.JFrame {
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(contenidoLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6))
+                            .addGroup(contenidoLayout.createSequentialGroup()
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(contenidoLayout.createSequentialGroup()
-                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING))
-                                        .addGap(5, 5, 5)
-                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txtMora, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtIVA, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtintereses, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtcapital, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(contenidoLayout.createSequentialGroup()
                                         .addGap(10, 10, 10)
                                         .addComponent(jLabel8)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtmonto, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(hvreload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
+                                        .addComponent(hvreload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(contenidoLayout.createSequentialGroup()
+                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING))
                                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(contenidoLayout.createSequentialGroup()
-                                                .addComponent(jLabel15)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(fechpago, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel10)
-                                                .addGap(4, 4, 4)
-                                                .addComponent(txtfactura, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(5, 5, 5)
+                                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(txtMora, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtIVA, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtcapital, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                             .addGroup(contenidoLayout.createSequentialGroup()
-                                                .addComponent(jLabel7)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jRadioButton1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jRadioButton2)))))
-                                .addGap(56, 56, 56)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtintereses, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(18, 18, 18)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnguardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(contenidoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6)))
-                        .addGap(63, 63, 63))))
+                                    .addComponent(rbnPagoCapital)
+                                    .addComponent(rbnPagoCuotas)
+                                    .addComponent(rbnPagoCredito)
+                                    .addGroup(contenidoLayout.createSequentialGroup()
+                                        .addComponent(jLabel15)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(fechpago, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel10)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(txtfactura, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel7))
+                                .addGap(56, 56, 56)
+                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(btnguardar2)
+                                    .addComponent(btnguardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(42, 42, 42))))
         );
         contenidoLayout.setVerticalGroup(
             contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -558,29 +594,41 @@ public class PAGO_FORM extends javax.swing.JFrame {
                                         .addComponent(jLabel10)
                                         .addComponent(txtfactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btnguardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(contenidoLayout.createSequentialGroup()
-                                        .addGap(9, 9, 9)
+                                        .addGap(11, 11, 11)
                                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                             .addComponent(jLabel18)
                                             .addComponent(txtcapital, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jRadioButton1)
-                                            .addComponent(jRadioButton2)
                                             .addComponent(jLabel7))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                            .addComponent(jLabel20)
-                                            .addComponent(txtintereses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                            .addComponent(jLabel22)
-                                            .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                            .addComponent(jLabel21)
-                                            .addComponent(txtMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(contenidoLayout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(txtintereses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel20))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                                    .addComponent(jLabel22)
+                                                    .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                                    .addComponent(jLabel21)
+                                                    .addComponent(txtMora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(contenidoLayout.createSequentialGroup()
+                                                .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()
+                                                        .addComponent(rbnPagoCredito)
+                                                        .addGap(27, 27, 27))
+                                                    .addGroup(contenidoLayout.createSequentialGroup()
+                                                        .addGap(25, 25, 25)
+                                                        .addComponent(rbnPagoCuotas)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                                .addComponent(rbnPagoCapital))))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnguardar2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(contenidoLayout.createSequentialGroup()
                                 .addGap(29, 29, 29)
@@ -667,6 +715,37 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
     private void hvreloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvreloadMouseClicked
 
+        limpiarMontos();
+        montoPago = Double.parseDouble(txtmonto.getText());
+        
+        if(montosPendientes==true){
+            
+            if(morapendiente>0){
+                
+                acumularPagoMora();
+                
+                if(montoPago>0){
+                
+                    while(montoPago>0 && montosVencidos()){
+                        
+                        ivaV = ivaV - acumularPagoIvaxCuota();
+                        interesV = interesV - acumularPagoInteresesxCuota();
+                           
+                    }
+                    
+        
+                }
+              
+            }
+                
+                
+        }
+        
+        txtMora.setText(String.valueOf(pagoMora));
+        txtintereses.setText(String.valueOf(pagoInteres));
+        txtIVA.setText(String.valueOf(pagoIva));
+        
+        
     }//GEN-LAST:event_hvreloadMouseClicked
 
     private void txtmontoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmontoKeyTyped
@@ -680,6 +759,27 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnguardarActionPerformed
 
+    private void btnguardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardar2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnguardar2ActionPerformed
+
+    private void limpiarMontos(){
+        
+        montoPago=0;
+        pagoMora=0;
+        pagoInteres=0;
+        pagoIva=0;
+        pagoCapital=0;
+        
+        interesV = mora.getInteresVencido();
+        ivaV = mora.getIvaVencido();
+        capitalV = mora.getCapitalVencido(); 
+        
+        cuotaspagadas = credito.getCuotasPagadas();
+        
+        
+    }
+    
     private void cargarCredito(){
 
         txtNombre.setText(credito.getSolicitudCredito().getDatosPersonales().getNombre());
@@ -688,10 +788,19 @@ public class PAGO_FORM extends javax.swing.JFrame {
         cmbplazos.setSelectedIndex(credito.getPlazo());
         cmbformapagos.setSelectedIndex(credito.getFormaPago());
         
-        txtCapitalCuota.setText(String.valueOf(monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago())));
-        txtInteresCuota.setText(String.valueOf(monto.valorXCuota(credito.getTotalIntereses(), credito.getPlazo(), credito.getFormaPago())));
-        txtIvaCuota.setText(String.valueOf(monto.valorXCuota(credito.getTotalIva(), credito.getPlazo(), credito.getFormaPago())));
+        capitalxcuota = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
+        interesxcuota = monto.valorXCuota(credito.getTotalIntereses(), credito.getPlazo(), credito.getFormaPago());
+        ivaxcuota= monto.valorXCuota(credito.getTotalIva(), credito.getPlazo(), credito.getFormaPago());
         
+        txtCapitalCuota.setText(String.valueOf(capitalxcuota));
+        txtInteresCuota.setText(String.valueOf(interesxcuota));
+        txtIvaCuota.setText(String.valueOf(ivaxcuota));
+        
+        cuotasalafecha = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(),mp.panel.fechasistema.getDate());
+        cuotaspagadas = cjc.getCuotasPagadas(credito);
+        
+        cuotaCap=cuotaspagadas; cuotaInt=cuotaspagadas; cuotaIva=cuotaspagadas;
+      
         
     }
     
@@ -710,16 +819,18 @@ public class PAGO_FORM extends javax.swing.JFrame {
         if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), mp.panel.fechasistema.getDate())){
             
             if(mora!=null){
+                
+                if(mora.getEstado()==0){
 
-                montosPendientes=true;
-                String morapendiente = String.valueOf(monto.redondear(mora.getMoraTotal()-mora.getMoraCancelada(), 2));
-                txtMoraPendiente.setText(morapendiente);
+                    montosPendientes=true;
+                    morapendiente = monto.redondear(mora.getMoraTotal()-mora.getMoraCancelada(), 2);
+                    txtMoraPendiente.setText(String.valueOf(morapendiente));
                 
-                interesV = cjc.interesesVencidos(credito, cuotasalafecha); System.out.println(interesV);
-                ivaV = cjc.ivaVencidos(credito, cuotasalafecha);            System.out.println(ivaV);
-                capitalV = cjc.capitalVencido(credito, cuotasalafecha);     System.out.println(capitalV);
-                txtMontoPendiente.setText(String.valueOf(interesV+ivaV+capitalV));
-                
+                    interesV = mora.getInteresVencido();
+                    ivaV = mora.getIvaVencido();
+                    capitalV = mora.getCapitalVencido();     
+                    txtMontoPendiente.setText(String.valueOf(interesV+ivaV+capitalV));
+                }
              
             }else{
             
@@ -729,6 +840,192 @@ public class PAGO_FORM extends javax.swing.JFrame {
     
     }
     
+    private void cargarPagos(){
+        if(credito.getSolicitudCredito().getPagosList().size()>0){
+            for(Pagos pago:credito.getSolicitudCredito().getPagosList()){
+                modelo.agregarPago(pago);
+            }
+        }
+    }
+    
+    private boolean montosVencidos(){
+        boolean pago=true;
+        if(ivaV==0 && interesV==0 && capitalV==0){pago=false;}
+        return pago;
+    }
+    
+    private void acumularPagoMora(){
+    
+        if(morapendiente>0){
+            if(montoPago>morapendiente){
+                pagoMora = morapendiente;
+                montoPago = montoPago-morapendiente;     
+            }else{
+                pagoMora = montoPago;
+                montoPago = 0.0;
+            }
+        }
+    
+    }
+    
+    private double acumularPagoInteresesxCuota(){
+        
+        double pago=0.0;
+        double interesesCP = cuotaspagadas*interesxcuota; 
+        interesesCP = monto.redondear(interesesCP, 2);
+
+        if(cjc.obtenerInteresesPagados(credito)>interesesCP){
+           
+            double adelanto = cjc.obtenerInteresesPagados(credito)-interesesCP;
+            adelanto = monto.redondear(adelanto,2);
+            if(adelanto<interesxcuota){
+                
+                double interesapagar = interesxcuota-adelanto;
+                if(montoPago>interesapagar){
+                    pagoInteres = pagoInteres+interesapagar;
+                    pagoInteres = monto.redondear(pagoInteres, 2);
+                    pago=interesapagar;
+                    montoPago = montoPago-interesapagar;  
+                }else{
+                    pagoInteres = pagoInteres+montoPago;
+                    pagoInteres = monto.redondear(pagoInteres, 2);
+                    pago=montoPago;
+                    montoPago = 0.0;  
+                }
+               
+            }
+           
+        }else if(cjc.obtenerInteresesPagados(credito)==interesesCP){
+            
+            if(montoPago>interesxcuota){
+              
+                pagoInteres = pagoInteres+interesxcuota;
+                pagoInteres = monto.redondear(pagoInteres, 2);
+                pago=interesxcuota;
+                montoPago = montoPago-interesxcuota;     
+            }else{
+                pagoInteres = pagoInteres+montoPago;
+                pagoInteres = monto.redondear(pagoInteres, 2);
+                pago=montoPago;
+                montoPago = 0.0;
+            }
+           
+        }
+        
+        return pago;
+    
+    }
+    
+    private double acumularPagoIvaxCuota(){
+        
+        double pago=0.0;
+        double ivaCP = cuotaspagadas*ivaxcuota; 
+        ivaCP = monto.redondear(ivaCP, 2);
+
+        if(cjc.obtenerIvaPagado(credito)>ivaCP){
+           
+            double adelanto = cjc.obtenerIvaPagado(credito)-ivaCP;
+            adelanto = monto.redondear(adelanto,2);
+            if(adelanto<ivaxcuota){
+                
+                double ivaapagar = ivaxcuota-adelanto;
+                if(montoPago>ivaapagar){
+                    pagoIva = pagoIva+ivaapagar;
+                    pagoIva = monto.redondear(pagoInteres, 2);
+                    pago=ivaapagar;
+                    montoPago = montoPago-ivaapagar;  montoPago = monto.redondear(montoPago, 2);
+                }else{
+                    pagoIva = pagoIva+montoPago;
+                    pagoIva = monto.redondear(pagoIva, 2);
+                    pago=montoPago;
+                    montoPago = 0.0;  
+                }
+               
+            }
+           
+        }else if(cjc.obtenerIvaPagado(credito)==ivaCP){
+            
+            if(montoPago>ivaxcuota){
+              
+                pagoIva = pagoIva+ivaxcuota;
+                pagoIva = monto.redondear(pagoIva, 2);
+                pago=ivaxcuota;
+                montoPago = montoPago-ivaxcuota;  montoPago = monto.redondear(montoPago, 2);    
+            }else{
+                pagoIva = pagoIva+montoPago;
+                pagoIva = monto.redondear(pagoIva, 2);
+                pago=montoPago;
+                montoPago = 0.0;
+            }
+           
+        }
+        
+        return pago;
+    
+    }
+    
+    private double acumularPagoCapitalxCuota(){
+        
+        double pago=0.0;
+        double capitalCP = cuotaspagadas*capitalxcuota; 
+        
+        int cuotaAdelantada = credito.getCuotasPorPagar()-credito.getCuotasAdelantadas();
+        int cuotasPag = cuotaspagadas+1;
+        
+        if(cuotasPag<cuotaAdelantada){
+        
+            if(cjc.obtenerCapitalPagado(credito)>capitalCP){
+                
+                double adelanto = cjc.obtenerCapitalPagado(credito)-capitalCP;
+                adelanto = monto.redondear(adelanto,2);
+                if(adelanto<capitalxcuota){
+                
+                    double capitalapagar = capitalxcuota-adelanto;
+                    if(montoPago>capitalapagar){
+                        pagoCapital = pagoCapital+capitalapagar;
+                        pagoCapital = monto.redondear(pagoCapital, 2);
+                        
+                        pago=capitalapagar;
+                        montoPago = montoPago-capitalapagar;  montoPago = monto.redondear(montoPago, 2);
+                        
+                        cuotaspagadas+=cuotaspagadas+1;
+                    }else{
+                        if(montoPago==capitalapagar){cuotaspagadas+=cuotaspagadas+1;}
+                        pagoCapital = pagoCapital+montoPago;
+                        pagoCapital = monto.redondear(pagoCapital, 2);
+                        pago=montoPago;
+                        montoPago = 0.0;  
+                    }
+               
+                }
+            }else if(cjc.obtenerIvaPagado(credito)==capitalCP){
+            
+                if(montoPago>ivaxcuota){
+              
+                    pagoIva = pagoIva+ivaxcuota;
+                    pagoIva = monto.redondear(pagoIva, 2);
+                    pago=ivaxcuota;
+                    montoPago = montoPago-ivaxcuota;  montoPago = monto.redondear(montoPago, 2);    
+                }else{
+                    pagoIva = pagoIva+montoPago;
+                    pagoIva = monto.redondear(pagoIva, 2);
+                    pago=montoPago;
+                    montoPago = 0.0;
+                }
+           
+            }
+        
+        }
+        
+        
+        
+       
+        
+        return pago;
+    
+    }
+    
+    
     
     
 
@@ -736,6 +1033,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
     private javax.swing.ButtonGroup bgroup;
     private javax.swing.JButton btnguardar;
     private javax.swing.JButton btnguardar1;
+    private javax.swing.JButton btnguardar2;
     private javax.swing.JComboBox<String> cmbformapagos;
     private javax.swing.JComboBox<String> cmbplazos;
     private javax.swing.JPanel contenido;
@@ -767,14 +1065,15 @@ public class PAGO_FORM extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTable tblPagos;
+    private javax.swing.JRadioButton rbnPagoCapital;
+    private javax.swing.JRadioButton rbnPagoCredito;
+    private javax.swing.JRadioButton rbnPagoCuotas;
+    public javax.swing.JTable tblPagos;
     private javax.swing.JTextField txtCapitalCuota;
     private javax.swing.JTextField txtCredito;
     private javax.swing.JTextField txtCuota;

@@ -14,8 +14,9 @@ import javax.swing.JPanel;
  */
 public class CREDITOS_PNL extends javax.swing.JPanel {
 
-    public LISTA_CREDITOS_PNL cp = new LISTA_CREDITOS_PNL();
+    
     public LISTA_MORAS_PNL mp = new LISTA_MORAS_PNL(this);
+    public LISTA_CREDITOS_PNL cp = new LISTA_CREDITOS_PNL(mp);
     
     public PAGO_FORM pagoForm;
    
@@ -24,7 +25,7 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
     public CREDITOS_PNL() {
         initComponents();
         cargarPanel(cp);
-        hvCreditos.setSeleccionado(hvMoras,hvPagos);
+        hvCreditos.setSeleccionado(hvMoras);
         fechasistema.setDate(fechas.fechaActual());
     }
 
@@ -47,7 +48,6 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        hvPagos = new Label.HvLabel();
         hvMoras = new Label.HvLabel();
         hvCreditos = new Label.HvLabel();
         fechasistema = new com.toedter.calendar.JDateChooser();
@@ -58,14 +58,6 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(71, 109, 146));
         jPanel1.setPreferredSize(new java.awt.Dimension(539, 140));
-
-        hvPagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/pagosAct.png"))); // NOI18N
-        hvPagos.setPreferredSize(new java.awt.Dimension(100, 50));
-        hvPagos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                hvPagosMouseClicked(evt);
-            }
-        });
 
         hvMoras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/morasDes.png"))); // NOI18N
         hvMoras.setPreferredSize(new java.awt.Dimension(100, 50));
@@ -98,9 +90,7 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
                 .addComponent(hvCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hvMoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hvPagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fechasistema, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -111,16 +101,13 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(hvPagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hvMoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hvCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                        .addComponent(jLabel15)
-                        .addComponent(fechasistema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel15)
+                    .addComponent(fechasistema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13))
         );
 
-        hvPagos.setImages("/IMAGES/LABELS/pagosDes.png","/IMAGES/LABELS/pagosDes.png", "/IMAGES/LABELS/pagosAct.png");
         hvMoras.setImages("/IMAGES/LABELS/morasAct.png","/IMAGES/LABELS/morasAct.png", "/IMAGES/LABELS/morasDes.png");
         hvCreditos.setImages("/IMAGES/LABELS/listacreditosAct.png","/IMAGES/LABELS/listacreditosAct.png", "/IMAGES/LABELS/listacreditosDes.png");
 
@@ -143,24 +130,14 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void hvPagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvPagosMouseClicked
-        
-        if(cp.tblCreditos.getSelectedRow() != -1){
-            Creditos credito = cp.modelo.obtenerCredito(cp.tblCreditos.getSelectedRow());
-            pagoForm = new PAGO_FORM(credito,cp,mp); 
-            pagoForm.setVisible(true);
-        }
-        
-    }//GEN-LAST:event_hvPagosMouseClicked
-
     private void hvMorasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvMorasMouseClicked
        cargarPanel(mp);
-        hvMoras.setSeleccionado(hvCreditos,hvPagos);
+        hvMoras.setSeleccionado(hvCreditos);
     }//GEN-LAST:event_hvMorasMouseClicked
 
     private void hvCreditosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvCreditosMouseClicked
         cargarPanel(cp);
-        hvCreditos.setSeleccionado(hvMoras,hvPagos);
+        hvCreditos.setSeleccionado(hvMoras);
     }//GEN-LAST:event_hvCreditosMouseClicked
 
 
@@ -169,7 +146,6 @@ public class CREDITOS_PNL extends javax.swing.JPanel {
     public com.toedter.calendar.JDateChooser fechasistema;
     private Label.HvLabel hvCreditos;
     private Label.HvLabel hvMoras;
-    private Label.HvLabel hvPagos;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

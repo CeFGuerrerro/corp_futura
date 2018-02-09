@@ -168,7 +168,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="tblCreditos.setModel(modelo);&#xa;DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();&#xa;leftRenderer.setHorizontalAlignment(DefaultTableCellRenderer.LEFT);&#xa;&#xa;tblCreditos.getColumnModel().getColumn(1).setPreferredWidth(250);&#xa;tblCreditos.getColumnModel().getColumn(0).setPreferredWidth(50);&#xa;tblCreditos.getColumn(&quot;Cr&#xe9;dito&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Monto Aprobado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Capital Pagado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Capital Pendiente&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Intereses Pagados&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;IVA Pagado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Mora Pagada&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Cuotas Pagadas&quot;).setCellRenderer( leftRenderer );&#xa;&#xa;tblCreditos.addMouseListener(new java.awt.event.MouseAdapter() {&#xa;    public void mouseClicked(java.awt.event.MouseEvent e) {&#xa;        cargarTotalesCredito(tblCreditos.getSelectedRow());&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="tblCreditos.setModel(modelo);&#xa;DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();&#xa;leftRenderer.setHorizontalAlignment(DefaultTableCellRenderer.LEFT);&#xa;&#xa;tblCreditos.getColumnModel().getColumn(1).setPreferredWidth(250);&#xa;tblCreditos.getColumnModel().getColumn(0).setPreferredWidth(50);&#xa;tblCreditos.getColumn(&quot;Cr&#xe9;dito&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Monto Aprobado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Capital Pagado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Capital Pendiente&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Intereses Pagados&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;IVA Pagado&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Mora Pagada&quot;).setCellRenderer( leftRenderer );&#xa;tblCreditos.getColumn(&quot;Cuotas Pagadas&quot;).setCellRenderer( leftRenderer );&#xa;&#xa;LISTA_CREDITOS_PNL cp = this;&#xa;&#xa;&#xa;tblCreditos.addMouseListener(new java.awt.event.MouseAdapter() {&#xa;    public void mouseClicked(java.awt.event.MouseEvent e) {&#xa;        &#xa;        cargarTotalesCredito(tblCreditos.getSelectedRow());&#xa;        &#xa;        if(e.getClickCount()==2){&#xa;            Creditos credito = modelo.obtenerCredito(tblCreditos.getSelectedRow());&#xa;            PAGO_FORM pagoForm = new PAGO_FORM(credito,cp,mp); &#xa;            pagoForm.setVisible(true);&#xa;        }&#xa;&#xa;    }&#xa;});"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>
@@ -365,9 +365,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Detalle de Pagos"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDetallePagosActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="chkCuotaFinal">
       <Properties>

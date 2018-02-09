@@ -54,9 +54,7 @@
                   <Component id="hvCreditos" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="hvMoras" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="hvPagos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="245" max="32767" attributes="0"/>
+                  <EmptySpace pref="351" max="32767" attributes="0"/>
                   <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="fechasistema" min="-2" pref="150" max="-2" attributes="0"/>
@@ -69,13 +67,10 @@
               <Group type="102" attributes="0">
                   <EmptySpace pref="35" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="hvPagos" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="hvMoras" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="hvCreditos" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" alignment="2" groupAlignment="2" attributes="0">
-                          <Component id="jLabel15" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechasistema" alignment="2" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jLabel15" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="fechasistema" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
               </Group>
@@ -83,22 +78,6 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="Label.HvLabel" name="hvPagos">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/IMAGES/LABELS/pagosAct.png"/>
-            </Property>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[100, 50]"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="hvPagosMouseClicked"/>
-          </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="hvPagos.setImages(&quot;/IMAGES/LABELS/pagosDes.png&quot;,&quot;/IMAGES/LABELS/pagosDes.png&quot;, &quot;/IMAGES/LABELS/pagosAct.png&quot;);"/>
-          </AuxValues>
-        </Component>
         <Component class="Label.HvLabel" name="hvMoras">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">

@@ -278,17 +278,8 @@ public class CreditosJpaController implements Serializable {
         return capV;
     }
     
-    public int getCuotasPagadascf(Creditos credito){
-    
-       int cuotas=0;
-        
-            if(credito.getCuotasPagadas()==(credito.getCuotasPorPagar()-1)){
-                cuotas = credito.getCuotasPorPagar();
-            }else{
-                cuotas = credito.getCuotasPagadas()-1;
-            }
-
-       return cuotas; 
+    public int getCuotasPagadas(Creditos credito){
+      return credito.getCuotasPagadas()-credito.getCuotasAdelantadas(); 
     }
     
     public double obtenerCapitalPagado(Creditos credito){
@@ -307,11 +298,15 @@ public class CreditosJpaController implements Serializable {
                 pagado = credito.getSaldoPagado();   
         }
      
+        if(credito.getSaldoAdelantado()!=null){
+              pagado = pagado - credito.getSaldoAdelantado();
+        }
+        
         pagado = monto.redondear(pagado, 2);
         
         return pagado;
     }
-    
+      
     public double obtenerIvaPagado(Creditos credito){
         
         double pagado=0.0;

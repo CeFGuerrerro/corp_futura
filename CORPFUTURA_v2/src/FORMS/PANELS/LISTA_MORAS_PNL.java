@@ -173,8 +173,7 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                if(credito.getDescuentoCf()){
                    if(!fechas.esLunes_miercoles(panel.fechasistema.getDate())){
                        
-                        int cuotasPagadas = cjc.getCuotasPagadascf(credito);
-                        if(cuotasPagadas<cuotas){
+                        if(cjc.getCuotasPagadas(credito)<cuotas){
                            
                             Mora mora = credito.getSolicitudCredito().getMora();
                             if(mora==null){
@@ -213,7 +212,7 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                         
                         if(!fechas.esLunes(panel.fechasistema.getDate())){
                            
-                            if(credito.getCuotasPagadas()<cuotas){
+                            if(cjc.getCuotasPagadas(credito)<cuotas){
                       
                                 Mora mora = credito.getSolicitudCredito().getMora();
                                 if(mora==null){
@@ -249,7 +248,7 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
                         
                    }else{
                     
-                        if(credito.getCuotasPagadas()<cuotas){
+                        if(cjc.getCuotasPagadas(credito)<cuotas){
                       
                                 Mora mora = credito.getSolicitudCredito().getMora();
                                 if(mora==null){
@@ -312,8 +311,8 @@ public class LISTA_MORAS_PNL extends javax.swing.JPanel {
         mora.setIvaVencido(cjc.ivaVencidos(credito, cuota));
         
         if(credito.getSolicitudCredito().getTipoCredito()==5){
-            mora.setDiasAtrasoXpress((short)1);
-            mora.setUltimaFechaMora(panel.fechasistema.getDate());}
+            mora.setUltimaFechaMora(panel.fechasistema.getDate());
+        }
         
         mora.setSolicitudCredito(credito.getSolicitudCredito());
         
