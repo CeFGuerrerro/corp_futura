@@ -5,8 +5,6 @@ import CONTROLADORES.exceptions.IllegalOrphanException;
 import CONTROLADORES.exceptions.NonexistentEntityException;
 import Entidades.Usuarios;
 import MODELOSTBL.modeloUsuarios;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -25,10 +23,13 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         cargarModelo();
         txtCartera.setEnabled(false);
+        btnModificar.setVisible(false);
+        btnEliminar.setVisible(false);
 
     }
 
     public void cargarModelo() {
+        modelo.borrartodos();
 
         for (Usuarios usuario : ujc.findUsuariosEntities()) {
             modelo.agregarUsuario(usuario);
@@ -51,6 +52,25 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
             }
             try {
                 ujc.create(usuario);
+            } catch (Exception ex) {
+                estado = false;
+            }
+        return estado;
+    }
+    
+    public boolean ModificarUsuario(Usuarios usuario) {
+        boolean estado = true;
+    
+            usuario.setNombre(txtNombre.getText());
+            usuario.setRol((short) cmbRol.getSelectedIndex());
+            if (chkCartera.isSelected()) {
+                usuario.setChkCartera(true);
+                usuario.setCartera(Short.parseShort(txtCartera.getText()));
+            } else {
+                usuario.setChkCartera(false);
+            }
+            try {
+                ujc.edit(usuario);
             } catch (Exception ex) {
                 estado = false;
             }
@@ -87,7 +107,9 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         cmbRol.setSelectedIndex(usuario.getRol());
         txtNombre.setText(usuario.getNombre());
         chkCartera.setSelected(usuario.getChkCartera());
-
+        btnModificar.setVisible(true);
+        btnGuardar.setVisible(false);
+        btnEliminar.setVisible(true);
         if (usuario.getChkCartera()) {
             txtCartera.setText(usuario.getCartera().toString());
         }
@@ -107,14 +129,15 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         chkCartera = new javax.swing.JCheckBox();
-        btnGenerar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         cmbRol = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
         txtCartera = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(240, 236, 236));
@@ -181,10 +204,10 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
             }
         });
 
-        btnGenerar.setText("Guardar Usuario");
-        btnGenerar.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setText("Guardar Usuario");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
 
@@ -232,10 +255,17 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Eliminar Usuario");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setText("Eliminar Usuario");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnModificar.setText("Modificar Usuario");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
             }
         });
 
@@ -271,8 +301,9 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
                                     .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(3, 3, 3)))
                         .addGap(0, 25, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -293,15 +324,18 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
                             .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
                         .addGap(18, 18, 18)
-                        .addComponent(chkCartera))
-                    .addGroup(contenidoLayout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkCartera)
+                        .addGap(18, 18, 18)
                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(txtCartera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtCartera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(contenidoLayout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -332,7 +366,7 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_hvCerrarMouseClicked
 
-    private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (validarUsuario()) {
             if (GuardarUsuario(usuario)) {
                 JOptionPane.showMessageDialog(null, "Usuario registrado con éxito");
@@ -342,7 +376,7 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error al regstrar el usuario");
             }
         }
-    }//GEN-LAST:event_btnGenerarActionPerformed
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtCarteraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCarteraKeyTyped
         char c = evt.getKeyChar();
@@ -359,7 +393,7 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chkCarteraItemStateChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog(null, "Desea eliminar el usuario seleccionado?", "Advertencia", dialogButton);
         if (dialogResult == JOptionPane.YES_OPTION) {
@@ -367,6 +401,10 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
                 try {
                     ujc.destroy(usuario.getIdUsuario());
                     cargarModelo();
+                    limpiarUsuario();
+                    btnGuardar.setVisible(true);
+                    btnModificar.setVisible(false);
+                    btnEliminar.setVisible(false);
                     JOptionPane.showMessageDialog(null, "Usuario Eliminado con éxito!");
                 } catch (IllegalOrphanException ex) {
                     JOptionPane.showMessageDialog(null, "Error al eliminar al usuario: " + ex);
@@ -377,17 +415,33 @@ public class USUARIOS_FORM extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No se puede eliminar el usuario: Solicitudes activas");
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        if (validarUsuario()) {
+            if (ModificarUsuario(usuario)) {
+                JOptionPane.showMessageDialog(null, "Usuario Modificado!!");
+                limpiarUsuario();
+                cargarModelo();
+                btnModificar.setVisible(false);
+                btnGuardar.setVisible(true);
+                btnEliminar.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al modificar el usuario");
+            }
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGenerar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnModificar;
     public javax.swing.JCheckBox chkCartera;
     private javax.swing.JComboBox<String> cmbRol;
     private javax.swing.JPanel contenido;
     private javax.swing.JPanel encabezado;
     private Label.HoverIcon hvCerrar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
