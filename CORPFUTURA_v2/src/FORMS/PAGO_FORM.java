@@ -132,7 +132,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         txtMora = new javax.swing.JTextField();
         txtIVA = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
-        btnguardar1 = new javax.swing.JButton();
+        btnGenerarFactura = new javax.swing.JButton();
         rbnPagoCapital = new javax.swing.JRadioButton();
         rbnPagoCredito = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
@@ -144,7 +144,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         txtMontoPendiente = new javax.swing.JTextField();
         txtMoraPendiente = new javax.swing.JTextField();
         rbnPagoCuotas = new javax.swing.JRadioButton();
-        btnguardar2 = new javax.swing.JButton();
+        btnGenerarHistorial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(240, 236, 236));
@@ -365,11 +365,11 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        btnguardar1.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
-        btnguardar1.setText("Generar Factura");
-        btnguardar1.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerarFactura.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        btnGenerarFactura.setText("Generar Factura");
+        btnGenerarFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnguardar1ActionPerformed(evt);
+                btnGenerarFacturaActionPerformed(evt);
             }
         });
 
@@ -411,11 +411,11 @@ public class PAGO_FORM extends javax.swing.JFrame {
         bgroup.add(rbnPagoCuotas);
         rbnPagoCuotas.setText("Pago de Cuotas y abono a Capital");
 
-        btnguardar2.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
-        btnguardar2.setText("Generar historial de pagos");
-        btnguardar2.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerarHistorial.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        btnGenerarHistorial.setText("Generar historial de pagos");
+        btnGenerarHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnguardar2ActionPerformed(evt);
+                btnGenerarHistorialActionPerformed(evt);
             }
         });
 
@@ -542,8 +542,8 @@ public class PAGO_FORM extends javax.swing.JFrame {
                                     .addComponent(jLabel7))
                                 .addGap(56, 56, 56)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                    .addComponent(btnguardar2)
-                                    .addComponent(btnguardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnGenerarHistorial)
+                                    .addComponent(btnGenerarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(42, 42, 42))))
         );
@@ -593,7 +593,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
                                     .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel10)
                                         .addComponent(txtfactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnguardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(btnGenerarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(contenidoLayout.createSequentialGroup()
                                         .addGap(11, 11, 11)
@@ -627,7 +627,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
                                                 .addComponent(rbnPagoCapital))))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnguardar2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnGenerarHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(contenidoLayout.createSequentialGroup()
@@ -685,9 +685,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_hvCerrarMouseClicked
 
-    private void btnguardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardar1ActionPerformed
+    private void btnGenerarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFacturaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnguardar1ActionPerformed
+    }//GEN-LAST:event_btnGenerarFacturaActionPerformed
 
     private void txtIVAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIVAKeyTyped
         char caracter= evt.getKeyChar();
@@ -759,9 +759,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnguardarActionPerformed
 
-    private void btnguardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardar2ActionPerformed
+    private void btnGenerarHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarHistorialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnguardar2ActionPerformed
+    }//GEN-LAST:event_btnGenerarHistorialActionPerformed
 
     private void limpiarMontos(){
         
@@ -878,10 +878,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
            
             double adelanto = cjc.obtenerInteresesPagados(credito)-interesesCP;
             adelanto = monto.redondear(adelanto,2);
-            if(adelanto<interesxcuota){
-                
+            if(adelanto<interesxcuota){ 
                 double interesapagar = interesxcuota-adelanto;
-                if(montoPago>interesapagar){
+                if(montoPago>=interesapagar){
                     pagoInteres = pagoInteres+interesapagar;
                     pagoInteres = monto.redondear(pagoInteres, 2);
                     pago=interesapagar;
@@ -897,8 +896,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
            
         }else if(cjc.obtenerInteresesPagados(credito)==interesesCP){
             
-            if(montoPago>interesxcuota){
-              
+            if(montoPago>=interesxcuota){
                 pagoInteres = pagoInteres+interesxcuota;
                 pagoInteres = monto.redondear(pagoInteres, 2);
                 pago=interesxcuota;
@@ -926,10 +924,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
            
             double adelanto = cjc.obtenerIvaPagado(credito)-ivaCP;
             adelanto = monto.redondear(adelanto,2);
-            if(adelanto<ivaxcuota){
-                
+            if(adelanto<ivaxcuota){  
                 double ivaapagar = ivaxcuota-adelanto;
-                if(montoPago>ivaapagar){
+                if(montoPago>=ivaapagar){
                     pagoIva = pagoIva+ivaapagar;
                     pagoIva = monto.redondear(pagoInteres, 2);
                     pago=ivaapagar;
@@ -945,8 +942,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
            
         }else if(cjc.obtenerIvaPagado(credito)==ivaCP){
             
-            if(montoPago>ivaxcuota){
-              
+            if(montoPago>=ivaxcuota){
                 pagoIva = pagoIva+ivaxcuota;
                 pagoIva = monto.redondear(pagoIva, 2);
                 pago=ivaxcuota;
@@ -979,18 +975,14 @@ public class PAGO_FORM extends javax.swing.JFrame {
                 double adelanto = cjc.obtenerCapitalPagado(credito)-capitalCP;
                 adelanto = monto.redondear(adelanto,2);
                 if(adelanto<capitalxcuota){
-                
                     double capitalapagar = capitalxcuota-adelanto;
-                    if(montoPago>capitalapagar){
+                    if(montoPago>=capitalapagar){
                         pagoCapital = pagoCapital+capitalapagar;
                         pagoCapital = monto.redondear(pagoCapital, 2);
-                        
                         pago=capitalapagar;
                         montoPago = montoPago-capitalapagar;  montoPago = monto.redondear(montoPago, 2);
-                        
                         cuotaspagadas+=cuotaspagadas+1;
                     }else{
-                        if(montoPago==capitalapagar){cuotaspagadas+=cuotaspagadas+1;}
                         pagoCapital = pagoCapital+montoPago;
                         pagoCapital = monto.redondear(pagoCapital, 2);
                         pago=montoPago;
@@ -998,17 +990,18 @@ public class PAGO_FORM extends javax.swing.JFrame {
                     }
                
                 }
-            }else if(cjc.obtenerIvaPagado(credito)==capitalCP){
+                
+            }else if(cjc.obtenerCapitalPagado(credito)==capitalCP){
             
-                if(montoPago>ivaxcuota){
-              
-                    pagoIva = pagoIva+ivaxcuota;
-                    pagoIva = monto.redondear(pagoIva, 2);
-                    pago=ivaxcuota;
-                    montoPago = montoPago-ivaxcuota;  montoPago = monto.redondear(montoPago, 2);    
+                if(montoPago>=capitalxcuota){ 
+                    pagoCapital = pagoCapital+capitalxcuota;
+                    pagoCapital = monto.redondear(pagoCapital, 2);
+                    pago=capitalxcuota;
+                    montoPago = montoPago-capitalxcuota;  montoPago = monto.redondear(montoPago, 2);  
+                    cuotaspagadas+=cuotaspagadas+1;
                 }else{
-                    pagoIva = pagoIva+montoPago;
-                    pagoIva = monto.redondear(pagoIva, 2);
+                    pagoCapital = pagoCapital+montoPago;
+                    pagoCapital = monto.redondear(pagoCapital, 2);
                     pago=montoPago;
                     montoPago = 0.0;
                 }
@@ -1031,9 +1024,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgroup;
+    private javax.swing.JButton btnGenerarFactura;
+    private javax.swing.JButton btnGenerarHistorial;
     private javax.swing.JButton btnguardar;
-    private javax.swing.JButton btnguardar1;
-    private javax.swing.JButton btnguardar2;
     private javax.swing.JComboBox<String> cmbformapagos;
     private javax.swing.JComboBox<String> cmbplazos;
     private javax.swing.JPanel contenido;
