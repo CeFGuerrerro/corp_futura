@@ -972,6 +972,7 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
             credito.setInteresPagados(Double.valueOf(mont.valorXCuota(mont.getTotalIntereses())));
             credito.setIvaPagado(Double.valueOf(mont.valorXCuota(mont.getTotalIva())));
             credito.setSaldoPagado(Double.valueOf(mont.valorXCuota(String.valueOf(mont.getMonto()))));
+            credito.setSaldoAdelantado(Double.valueOf(mont.valorXCuota(String.valueOf(mont.getMonto()))));
         }
         else{
             credito.setCuotasPagadas((short)0);
@@ -979,6 +980,7 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
             credito.setInteresPagados(0.0);
             credito.setIvaPagado(0.0);
             credito.setSaldoPagado(0.0);
+            credito.setSaldoAdelantado(0.0);
         }
         
         credito.setEstado((short)1); 

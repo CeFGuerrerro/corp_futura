@@ -70,7 +70,7 @@ public class fechas {
         
             String cadena = "Cuota "+contador;
             if(contador==1){
-                cadena = cadena+" \t"+formatearFecha(fecha);
+                cadena = formatearFecha(fecha)+" \t"+cadena;
                 cuotas.add(cadena);
             }else{
             
@@ -87,7 +87,7 @@ public class fechas {
                         break;
                 }
                 
-                cadena = cadena+" \t"+formatearFecha(fecha);
+                cadena = formatearFecha(fecha)+" \t"+cadena;
                 cuotas.add(cadena);
             
             }

@@ -56,6 +56,14 @@ public class PAGO_FORM extends javax.swing.JFrame {
     private double pagoIva;
     private double pagoCapital;
     
+    private double totalInteresPagado;
+    private double totalIvaPagado;
+    private double totalCapitalPagado;
+    
+    private double totalPagado;
+    
+    private int cuotasAd;
+    
  
     
     public CreditosJpaController cjc = new CreditosJpaController();
@@ -72,6 +80,8 @@ public class PAGO_FORM extends javax.swing.JFrame {
         
         cp=cp1;
         mp=mp1;
+        
+        rbnAbonoCuotas.setSelected(true);
                         
         cargarCredito();
         cargarListaCuotas();
@@ -133,8 +143,8 @@ public class PAGO_FORM extends javax.swing.JFrame {
         txtIVA = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         btnGenerarFactura = new javax.swing.JButton();
-        rbnPagoCapital = new javax.swing.JRadioButton();
-        rbnPagoCredito = new javax.swing.JRadioButton();
+        rbnAbonoCapital = new javax.swing.JRadioButton();
+        rbnAbonoCuotas = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -143,7 +153,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         txtTotalPendiente = new javax.swing.JTextField();
         txtMontoPendiente = new javax.swing.JTextField();
         txtMoraPendiente = new javax.swing.JTextField();
-        rbnPagoCuotas = new javax.swing.JRadioButton();
+        rbnAbonoCuotasyCap = new javax.swing.JRadioButton();
         btnGenerarHistorial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -282,7 +292,6 @@ public class PAGO_FORM extends javax.swing.JFrame {
         jLabel32.setForeground(new java.awt.Color(51, 51, 51));
         jLabel32.setText("CUOTAS:");
 
-        txtListaCuotas.setEditable(false);
         txtListaCuotas.setColumns(20);
         txtListaCuotas.setRows(5);
         jScrollPane2.setViewportView(txtListaCuotas);
@@ -367,19 +376,14 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
         btnGenerarFactura.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         btnGenerarFactura.setText("Generar Factura");
-        btnGenerarFactura.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarFacturaActionPerformed(evt);
-            }
-        });
 
-        rbnPagoCapital.setBackground(new java.awt.Color(240, 236, 236));
-        bgroup.add(rbnPagoCapital);
-        rbnPagoCapital.setText("Abono a  Capital");
+        rbnAbonoCapital.setBackground(new java.awt.Color(240, 236, 236));
+        bgroup.add(rbnAbonoCapital);
+        rbnAbonoCapital.setText("Abono a  Capital");
 
-        rbnPagoCredito.setBackground(new java.awt.Color(240, 236, 236));
-        bgroup.add(rbnPagoCredito);
-        rbnPagoCredito.setText("Abono a Cuotas");
+        rbnAbonoCuotas.setBackground(new java.awt.Color(240, 236, 236));
+        bgroup.add(rbnAbonoCuotas);
+        rbnAbonoCuotas.setText("Abono a Cuotas");
 
         jLabel7.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(51, 51, 51));
@@ -407,17 +411,12 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
         txtMoraPendiente.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
-        rbnPagoCuotas.setBackground(new java.awt.Color(240, 236, 236));
-        bgroup.add(rbnPagoCuotas);
-        rbnPagoCuotas.setText("Pago de Cuotas y abono a Capital");
+        rbnAbonoCuotasyCap.setBackground(new java.awt.Color(240, 236, 236));
+        bgroup.add(rbnAbonoCuotasyCap);
+        rbnAbonoCuotasyCap.setText("Pago de Cuotas y abono a Capital");
 
         btnGenerarHistorial.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         btnGenerarHistorial.setText("Generar historial de pagos");
-        btnGenerarHistorial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarHistorialActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
@@ -528,9 +527,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
                                                 .addComponent(txtintereses, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addGap(18, 18, 18)
                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rbnPagoCapital)
-                                    .addComponent(rbnPagoCuotas)
-                                    .addComponent(rbnPagoCredito)
+                                    .addComponent(rbnAbonoCapital)
+                                    .addComponent(rbnAbonoCuotasyCap)
+                                    .addComponent(rbnAbonoCuotas)
                                     .addGroup(contenidoLayout.createSequentialGroup()
                                         .addComponent(jLabel15)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -618,13 +617,13 @@ public class PAGO_FORM extends javax.swing.JFrame {
                                             .addGroup(contenidoLayout.createSequentialGroup()
                                                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()
-                                                        .addComponent(rbnPagoCredito)
+                                                        .addComponent(rbnAbonoCuotas)
                                                         .addGap(27, 27, 27))
                                                     .addGroup(contenidoLayout.createSequentialGroup()
                                                         .addGap(25, 25, 25)
-                                                        .addComponent(rbnPagoCuotas)
+                                                        .addComponent(rbnAbonoCuotasyCap)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                                .addComponent(rbnPagoCapital))))
+                                                .addComponent(rbnAbonoCapital))))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenidoLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(btnGenerarHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -685,10 +684,6 @@ public class PAGO_FORM extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_hvCerrarMouseClicked
 
-    private void btnGenerarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFacturaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnGenerarFacturaActionPerformed
-
     private void txtIVAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIVAKeyTyped
         char caracter= evt.getKeyChar();
         char punto = '.';
@@ -720,30 +715,39 @@ public class PAGO_FORM extends javax.swing.JFrame {
         
         if(montosPendientes==true){
             
-            if(morapendiente>0){
+            if(morapendiente>0){acumularPagoMora();}
                 
-                acumularPagoMora();
-                
-                if(montoPago>0){
-                
-                    while(montoPago>0 && montosVencidos()){
-                        
-                        ivaV = ivaV - acumularPagoIvaxCuota();
-                        interesV = interesV - acumularPagoInteresesxCuota();
-                           
-                    }
-                    
-        
+            if(montoPago>0){
+                while(montoPago>0 && cancelacionDeMontosVencidos()){
+                    ivaV = ivaV - acumularPagoIvaxCuota();
+                    interesV = interesV - acumularPagoInteresesxCuota();
+                    capitalV = capitalV - acumularPagoCapitalxCuota();    
                 }
-              
             }
                 
-                
+        }        
+            
+        
+        if(montoPago>0){
+                    
+            if(rbnAbonoCuotas.isSelected()){
+               
+                while(montoPago>0){
+                        
+                    acumularPagoIvaxCuota();
+                    acumularPagoInteresesxCuota();
+                    acumularPagoCapitalxCuota();    
+                }
+              
+            }else if(rbnAbonoCuotasyCap.isSelected()){
+            }else if(rbnAbonoCapital.isSelected()){}
+                     
         }
         
         txtMora.setText(String.valueOf(pagoMora));
         txtintereses.setText(String.valueOf(pagoInteres));
         txtIVA.setText(String.valueOf(pagoIva));
+        txtcapital.setText(String.valueOf(pagoCapital));
         
         
     }//GEN-LAST:event_hvreloadMouseClicked
@@ -756,12 +760,24 @@ public class PAGO_FORM extends javax.swing.JFrame {
     }//GEN-LAST:event_txtmontoKeyTyped
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
-
+       
+        if(fechpago.getDate()!=null && !txtfactura.getText().trim().isEmpty() && !txtmonto.getText().trim().isEmpty()){
+        
+            llenarPago();
+            actualizarCredito();
+            
+            try { pjc.create(pago);} 
+            catch (Exception ex) {Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);}            
+            try { cjc.edit(credito);} 
+            catch (Exception ex) {Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);}
+            
+            
+            cargarPagos();
+            
+            
+        }else{ JOptionPane.showMessageDialog(this, "Es necesario especificar la fecha de pago y número de factura.");}
+ 
     }//GEN-LAST:event_btnguardarActionPerformed
-
-    private void btnGenerarHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarHistorialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnGenerarHistorialActionPerformed
 
     private void limpiarMontos(){
         
@@ -771,11 +787,14 @@ public class PAGO_FORM extends javax.swing.JFrame {
         pagoIva=0;
         pagoCapital=0;
         
-        interesV = mora.getInteresVencido();
-        ivaV = mora.getIvaVencido();
-        capitalV = mora.getCapitalVencido(); 
+        totalInteresPagado = cjc.obtenerInteresesPagados(credito);
+        totalIvaPagado = cjc.obtenerIvaPagado(credito);
+        totalCapitalPagado = cjc.obtenerCapitalPagado(credito);
         
-        cuotaspagadas = credito.getCuotasPagadas();
+        
+        cargarMontosPendientes();
+        
+        cuotaspagadas = cjc.getCuotasPagadas(credito);
         
         
     }
@@ -798,18 +817,59 @@ public class PAGO_FORM extends javax.swing.JFrame {
         
         cuotasalafecha = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(),mp.panel.fechasistema.getDate());
         cuotaspagadas = cjc.getCuotasPagadas(credito);
+        cuotasAd = credito.getCuotasPorPagar()-credito.getCuotasAdelantadas();
         
-        cuotaCap=cuotaspagadas; cuotaInt=cuotaspagadas; cuotaIva=cuotaspagadas;
+        totalInteresPagado = cjc.obtenerInteresesPagados(credito);
+        totalIvaPagado = cjc.obtenerIvaPagado(credito);
+        totalCapitalPagado = cjc.obtenerCapitalPagado(credito);
+        
+        totalPagado = totalInteresPagado+totalIvaPagado+totalCapitalPagado;
+        totalPagado = monto.redondear(totalPagado, 2);
+        
+        
       
         
     }
-    
+     
     private void cargarListaCuotas(){
     
         ArrayList<String> listaCuotas = fechas.fechasdeCuotas(credito);
         
+        int contador=1;
+        int pagadas = credito.getCuotasPorPagar()-credito.getCuotasAdelantadas();
+        
+        
         for(String cuota: listaCuotas){
-            txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\n");
+          
+            if(contador<=cjc.getCuotasPagadas(credito)){
+                txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\tCancelada\n");    
+            }else{
+                
+                if(contador==(cjc.getCuotasPagadas(credito)+1)){
+                    double total = monto.redondear((credito.getCuota()*cuotaspagadas), 2);
+                    if(totalPagado>total){
+                        total = monto.redondear((totalPagado-total),2);
+                        txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\tAbonada: "+total+"\n");
+                    }else{
+                        txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\n");
+                    }
+                    
+                }else{
+                    
+                    if(credito.getCuotasAdelantadas()>0){
+                        if(contador>cuotasAd){
+                            txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\tCancelada\n");
+                        }else{
+                            txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\n");
+                        }
+                    }else{
+                        txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\n");
+                    }  
+                    
+                }
+            }
+           
+            contador++;
         }
     
     }
@@ -830,6 +890,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
                     ivaV = mora.getIvaVencido();
                     capitalV = mora.getCapitalVencido();     
                     txtMontoPendiente.setText(String.valueOf(interesV+ivaV+capitalV));
+                    txtTotalPendiente.setText(String.valueOf(interesV+ivaV+capitalV+morapendiente));
                 }
              
             }else{
@@ -841,14 +902,16 @@ public class PAGO_FORM extends javax.swing.JFrame {
     }
     
     private void cargarPagos(){
+        modelo.borrartodos();
         if(credito.getSolicitudCredito().getPagosList().size()>0){
             for(Pagos pago:credito.getSolicitudCredito().getPagosList()){
                 modelo.agregarPago(pago);
             }
         }
+        tblPagos.updateUI();
     }
     
-    private boolean montosVencidos(){
+    private boolean cancelacionDeMontosVencidos(){
         boolean pago=true;
         if(ivaV==0 && interesV==0 && capitalV==0){pago=false;}
         return pago;
@@ -874,7 +937,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         double interesesCP = cuotaspagadas*interesxcuota; 
         interesesCP = monto.redondear(interesesCP, 2);
 
-        if(cjc.obtenerInteresesPagados(credito)>interesesCP){
+        if(totalInteresPagado>interesesCP){
            
             double adelanto = cjc.obtenerInteresesPagados(credito)-interesesCP;
             adelanto = monto.redondear(adelanto,2);
@@ -894,21 +957,24 @@ public class PAGO_FORM extends javax.swing.JFrame {
                
             }
            
-        }else if(cjc.obtenerInteresesPagados(credito)==interesesCP){
-            
-            if(montoPago>=interesxcuota){
-                pagoInteres = pagoInteres+interesxcuota;
-                pagoInteres = monto.redondear(pagoInteres, 2);
-                pago=interesxcuota;
-                montoPago = montoPago-interesxcuota;     
-            }else{
-                pagoInteres = pagoInteres+montoPago;
-                pagoInteres = monto.redondear(pagoInteres, 2);
-                pago=montoPago;
-                montoPago = 0.0;
+        }else if(totalInteresPagado==interesesCP){
+
+            if(cuotaspagadas<cuotasAd){
+                if(montoPago>=interesxcuota){
+                    pagoInteres = pagoInteres+interesxcuota;
+                    pagoInteres = monto.redondear(pagoInteres, 2);
+                    pago=interesxcuota;
+                    montoPago = montoPago-interesxcuota;     
+                }else{
+                    pagoInteres = pagoInteres+montoPago;
+                    pagoInteres = monto.redondear(pagoInteres, 2);
+                    pago=montoPago;
+                    montoPago = 0.0;
+                }
             }
-           
         }
+        
+        totalInteresPagado= monto.redondear((totalInteresPagado+pago), 2); 
         
         return pago;
     
@@ -919,8 +985,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
         double pago=0.0;
         double ivaCP = cuotaspagadas*ivaxcuota; 
         ivaCP = monto.redondear(ivaCP, 2);
+        
 
-        if(cjc.obtenerIvaPagado(credito)>ivaCP){
+        if(totalIvaPagado>ivaCP){
            
             double adelanto = cjc.obtenerIvaPagado(credito)-ivaCP;
             adelanto = monto.redondear(adelanto,2);
@@ -940,21 +1007,25 @@ public class PAGO_FORM extends javax.swing.JFrame {
                
             }
            
-        }else if(cjc.obtenerIvaPagado(credito)==ivaCP){
+        }else if(totalIvaPagado==ivaCP){
             
-            if(montoPago>=ivaxcuota){
-                pagoIva = pagoIva+ivaxcuota;
-                pagoIva = monto.redondear(pagoIva, 2);
-                pago=ivaxcuota;
-                montoPago = montoPago-ivaxcuota;  montoPago = monto.redondear(montoPago, 2);    
-            }else{
-                pagoIva = pagoIva+montoPago;
-                pagoIva = monto.redondear(pagoIva, 2);
-                pago=montoPago;
-                montoPago = 0.0;
+            if(cuotaspagadas<cuotasAd){
+                if(montoPago>=ivaxcuota){
+                    pagoIva = pagoIva+ivaxcuota;
+                    pagoIva = monto.redondear(pagoIva, 2);
+                    pago=ivaxcuota;
+                    montoPago = montoPago-ivaxcuota;  montoPago = monto.redondear(montoPago, 2);    
+                }else{
+                    pagoIva = pagoIva+montoPago;
+                    pagoIva = monto.redondear(pagoIva, 2);
+                    pago=montoPago;
+                    montoPago = 0.0;
+                }
             }
-           
+            
         }
+        
+        totalIvaPagado= monto.redondear((totalIvaPagado+pago), 2);
         
         return pago;
     
@@ -964,59 +1035,125 @@ public class PAGO_FORM extends javax.swing.JFrame {
         
         double pago=0.0;
         double capitalCP = cuotaspagadas*capitalxcuota; 
-        
-        int cuotaAdelantada = credito.getCuotasPorPagar()-credito.getCuotasAdelantadas();
-        int cuotasPag = cuotaspagadas+1;
-        
-        if(cuotasPag<cuotaAdelantada){
-        
-            if(cjc.obtenerCapitalPagado(credito)>capitalCP){
+        capitalCP = monto.redondear(capitalCP, 2);
+          
+            if(totalCapitalPagado>capitalCP){
                 
-                double adelanto = cjc.obtenerCapitalPagado(credito)-capitalCP;
-                adelanto = monto.redondear(adelanto,2);
-                if(adelanto<capitalxcuota){
-                    double capitalapagar = capitalxcuota-adelanto;
-                    if(montoPago>=capitalapagar){
-                        pagoCapital = pagoCapital+capitalapagar;
+                if(cuotaspagadas<(cuotasAd-1)){
+                    double adelanto = cjc.obtenerCapitalPagado(credito)-capitalCP;
+                    adelanto = monto.redondear(adelanto,2);
+                    if(adelanto<capitalxcuota){
+                        double capitalapagar = capitalxcuota-adelanto;
+                        if(montoPago>=capitalapagar){
+                            pagoCapital = pagoCapital+capitalapagar;
+                            pagoCapital = monto.redondear(pagoCapital, 2);
+                            pago=capitalapagar;
+                            montoPago = montoPago-capitalapagar;  montoPago = monto.redondear(montoPago, 2);
+                            cuotaspagadas=cuotaspagadas+1;
+                        }else{
+                            pagoCapital = pagoCapital+montoPago;
+                            pagoCapital = monto.redondear(pagoCapital, 2);
+                            pago=montoPago;
+                            montoPago = 0.0;  
+                        }
+                    }   
+                }else{
+                    pago = pagoUltimaCuota();  
+                }
+                
+            }else if(totalCapitalPagado==capitalCP){
+                
+                if(cuotaspagadas<(cuotasAd-1)){
+                    if(montoPago>=capitalxcuota){ 
+                        pagoCapital = pagoCapital+capitalxcuota;
                         pagoCapital = monto.redondear(pagoCapital, 2);
-                        pago=capitalapagar;
-                        montoPago = montoPago-capitalapagar;  montoPago = monto.redondear(montoPago, 2);
-                        cuotaspagadas+=cuotaspagadas+1;
+                        pago=capitalxcuota;
+                        montoPago = montoPago-capitalxcuota;  montoPago = monto.redondear(montoPago, 2);  
+                        cuotaspagadas=cuotaspagadas+1;
                     }else{
                         pagoCapital = pagoCapital+montoPago;
                         pagoCapital = monto.redondear(pagoCapital, 2);
                         pago=montoPago;
-                        montoPago = 0.0;  
+                        montoPago = 0.0;
                     }
-               
-                }
-                
-            }else if(cjc.obtenerCapitalPagado(credito)==capitalCP){
-            
-                if(montoPago>=capitalxcuota){ 
-                    pagoCapital = pagoCapital+capitalxcuota;
-                    pagoCapital = monto.redondear(pagoCapital, 2);
-                    pago=capitalxcuota;
-                    montoPago = montoPago-capitalxcuota;  montoPago = monto.redondear(montoPago, 2);  
-                    cuotaspagadas+=cuotaspagadas+1;
-                }else{
-                    pagoCapital = pagoCapital+montoPago;
-                    pagoCapital = monto.redondear(pagoCapital, 2);
-                    pago=montoPago;
-                    montoPago = 0.0;
-                }
-           
+                }else if(cuotaspagadas==(cuotasAd-1)){
+                    pago = pagoUltimaCuota();  
+                }  
+                 
             }
         
-        }
-        
-        
-        
-       
+        totalCapitalPagado= monto.redondear((totalCapitalPagado+pago), 2);
         
         return pago;
     
     }
+    
+    private double pagoUltimaCuota(){
+        
+        double pago=0.0;
+        double pendiente = credito.getMonto()-credito.getSaldoPagado()-pagoCapital;
+        pendiente=monto.redondear(pendiente, 2);
+                    
+        if(montoPago>pendiente){ 
+            pagoCapital = pagoCapital+pendiente;
+            pagoCapital = monto.redondear(pagoCapital, 2);
+            pago=pendiente;
+            montoPago = montoPago-pendiente;  montoPago = monto.redondear(montoPago, 2);  
+            cuotaspagadas=cuotaspagadas+1;
+            JOptionPane.showMessageDialog(this,"El credito se ha pagado totalmente.\nMonto restante del pago: "+montoPago);          
+        }else{
+            pagoCapital = pagoCapital+montoPago;
+            pagoCapital = monto.redondear(pagoCapital, 2);
+            pago= montoPago;
+            if(montoPago==pendiente){cuotaspagadas=cuotaspagadas+1;}
+        }
+    
+        montoPago=0.0;
+        
+        return pago;
+    }
+    
+    private void llenarPago(){
+    
+        pago = new Pagos();
+        
+        pago.setSolicitudCredito(credito.getSolicitudCredito());
+        pago.setIdPago(pjc.getPagosCount()+1);
+        
+        pago.setFechaPago(fechpago.getDate());
+        pago.setNumFactura(txtfactura.getText());
+    
+        pago.setInteres(pagoInteres);
+        pago.setIvaIntereses(pagoIva);
+        pago.setCapitalAbonado(pagoCapital);
+        
+        double morasinIva =  monto.redondear((pagoMora/1.13), 2);
+        double ivaMora = monto.redondear((pagoMora-morasinIva), 2);
+        
+        pago.setMora(morasinIva);
+        pago.setIvaMora(ivaMora);
+        
+        double pendiente = credito.getMonto()-credito.getSaldoPagado()-pagoCapital;
+        pago.setCapitalPendiente(monto.redondear(pendiente, 2));
+        
+        pago.setMontoPagado(Double.valueOf(txtmonto.getText()));
+        
+        
+   
+    }
+    
+    private void actualizarCredito(){
+        
+        credito.setSaldoPagado(credito.getSaldoPagado()+pagoCapital);
+        credito.setInteresPagados(credito.getInteresPagados()+pagoInteres);
+        credito.setIvaPagado(credito.getIvaPagado()+pagoIva);
+        
+        if(pagoMora>0){credito.setMoraPagada(credito.getMoraPagada()+pagoMora);}
+    
+        credito.setCuotasPagadas((short)(cuotaspagadas+credito.getCuotasAdelantadas()));
+    
+    }
+    
     
     
     
@@ -1063,9 +1200,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JRadioButton rbnPagoCapital;
-    private javax.swing.JRadioButton rbnPagoCredito;
-    private javax.swing.JRadioButton rbnPagoCuotas;
+    private javax.swing.JRadioButton rbnAbonoCapital;
+    private javax.swing.JRadioButton rbnAbonoCuotas;
+    private javax.swing.JRadioButton rbnAbonoCuotasyCap;
     public javax.swing.JTable tblPagos;
     private javax.swing.JTextField txtCapitalCuota;
     private javax.swing.JTextField txtCredito;

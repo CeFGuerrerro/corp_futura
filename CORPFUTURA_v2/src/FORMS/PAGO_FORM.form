@@ -256,9 +256,9 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="rbnPagoCapital" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="rbnPagoCuotas" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="rbnPagoCredito" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbnAbonoCapital" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbnAbonoCuotasyCap" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbnAbonoCuotas" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
@@ -367,16 +367,16 @@
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Group type="103" groupAlignment="0" attributes="0">
                                                       <Group type="102" alignment="1" attributes="0">
-                                                          <Component id="rbnPagoCredito" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="rbnAbonoCuotas" min="-2" max="-2" attributes="0"/>
                                                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                                                       </Group>
                                                       <Group type="102" alignment="0" attributes="0">
                                                           <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
-                                                          <Component id="rbnPagoCuotas" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="rbnAbonoCuotasyCap" min="-2" max="-2" attributes="0"/>
                                                           <EmptySpace max="-2" attributes="0"/>
                                                       </Group>
                                                   </Group>
-                                                  <Component id="rbnPagoCapital" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="rbnAbonoCapital" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -692,7 +692,6 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="txtListaCuotas">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
@@ -871,11 +870,8 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Generar Factura"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarFacturaActionPerformed"/>
-          </Events>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="rbnPagoCapital">
+        <Component class="javax.swing.JRadioButton" name="rbnAbonoCapital">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ec" green="ec" red="f0" type="rgb"/>
@@ -886,7 +882,7 @@
             <Property name="text" type="java.lang.String" value="Abono a  Capital"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="rbnPagoCredito">
+        <Component class="javax.swing.JRadioButton" name="rbnAbonoCuotas">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ec" green="ec" red="f0" type="rgb"/>
@@ -973,7 +969,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="rbnPagoCuotas">
+        <Component class="javax.swing.JRadioButton" name="rbnAbonoCuotasyCap">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ec" green="ec" red="f0" type="rgb"/>
@@ -991,9 +987,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Generar historial de pagos"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarHistorialActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

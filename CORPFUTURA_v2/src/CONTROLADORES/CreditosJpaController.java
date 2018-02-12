@@ -279,29 +279,14 @@ public class CreditosJpaController implements Serializable {
     }
     
     public int getCuotasPagadas(Creditos credito){
-      return credito.getCuotasPagadas()-credito.getCuotasAdelantadas(); 
+            
+      return credito.getCuotasPagadas()-credito.getCuotasAdelantadas();
+      
     }
     
     public double obtenerCapitalPagado(Creditos credito){
         
-        double pagado=0.0;
-        
-        if(credito.getDescuentoCf()){
-            if(credito.getCuotasPagadas()==(credito.getCuotasPorPagar()-1)){
-                pagado = credito.getSaldoPagado();
-            }else{
-                double capitalcf = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
-                pagado = credito.getSaldoPagado()-capitalcf;
-                
-            }
-        }else{
-                pagado = credito.getSaldoPagado();   
-        }
-     
-        if(credito.getSaldoAdelantado()!=null){
-              pagado = pagado - credito.getSaldoAdelantado();
-        }
-        
+        double pagado=credito.getSaldoPagado()-credito.getSaldoAdelantado();
         pagado = monto.redondear(pagado, 2);
         
         return pagado;
@@ -312,12 +297,8 @@ public class CreditosJpaController implements Serializable {
         double pagado=0.0;
         
         if(credito.getDescuentoCf()){
-            if(credito.getCuotasPagadas()==(credito.getCuotasPorPagar()-1)){
-                pagado = credito.getIvaPagado();
-            }else{
                 double ivacf = monto.valorXCuota(credito.getTotalIva(), credito.getPlazo(), credito.getFormaPago());
-                pagado = credito.getIvaPagado()-ivacf;    
-            }
+                pagado = credito.getIvaPagado()-ivacf;            
         }else{
                 pagado = credito.getIvaPagado();   
         }
@@ -332,12 +313,8 @@ public class CreditosJpaController implements Serializable {
         double pagado=0.0;
         
         if(credito.getDescuentoCf()){
-            if(credito.getCuotasPagadas()==(credito.getCuotasPorPagar()-1)){
-                pagado = credito.getInteresPagados();
-            }else{
                 double interesescf = monto.valorXCuota(credito.getTotalIntereses(), credito.getPlazo(), credito.getFormaPago());
-                pagado = credito.getInteresPagados()-interesescf;    
-            }
+                pagado = credito.getInteresPagados()-interesescf;          
         }else{
                 pagado = credito.getInteresPagados();   
         }
@@ -345,8 +322,10 @@ public class CreditosJpaController implements Serializable {
         pagado = monto.redondear(pagado, 2);
      
         return pagado;
-
     }
-         
+        
+        
+        
+        
       
 }

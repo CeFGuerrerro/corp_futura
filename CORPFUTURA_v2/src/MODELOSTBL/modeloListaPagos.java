@@ -2,10 +2,8 @@
 package MODELOSTBL;
 
 
-import Entidades.Creditos;
 import Entidades.Pagos;
 import UTILIDADES.fechas;
-import UTILIDADES.monto;
 import java.util.LinkedList;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -15,13 +13,16 @@ import javax.swing.table.TableModel;
  *
  * @author DFUENTES
  */
-public class modeloPagos implements TableModel {
+public class modeloListaPagos implements TableModel {
+    
     private LinkedList<Pagos> datos = new LinkedList();
     private LinkedList listeners = new LinkedList();
     
     final Class[] tipoColumnas = {
         java.lang.String.class,
         java.lang.String.class,
+        java.lang.String.class,
+        java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
@@ -31,7 +32,7 @@ public class modeloPagos implements TableModel {
         java.lang.Long.class
     };
 
-    public modeloPagos(){
+    public modeloListaPagos(){
     }
 
     @Override
@@ -41,20 +42,21 @@ public class modeloPagos implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 9;
+        return 11;
     }
 
     @Override
     public String getColumnName(int i) {
         String columna="";
         switch(i){
+            
             case 0:      columna="Fecha"; 
                          break;
-            case 1:      columna="Factura"; 
+            case 1:      columna="Nombre Cliente"; 
                          break;
-            case 2:      columna="Pago"; 
+            case 2:      columna="Factura"; 
                          break;
-            case 3:      columna="Pago Capital"; 
+            case 3:      columna="Capital"; 
                          break;
             case 4:      columna="Intereses"; 
                          break;
@@ -64,7 +66,11 @@ public class modeloPagos implements TableModel {
                          break;
             case 7:      columna="IVA Mora";
                          break;
-            case 8:      columna="Capital Pendiente";
+            case 8:      columna="Asesoria"; 
+                         break;
+            case 9:      columna="IVA Asesoria";
+                         break;
+            case 10:      columna="Total Pagado";
                          break;
                          
         }
@@ -134,9 +140,9 @@ public class modeloPagos implements TableModel {
             case 0:
                 return fechas.formatearFecha(aux.getFechaPago());
             case 1:
-                return aux.getNumFactura();
+                return aux.getSolicitudCredito().getDatosPersonales().getNombre();
             case 2:
-                return aux.getMontoPagado();
+                return aux.getNumFactura();
             case 3:
                 return aux.getCapitalAbonado();
             case 4:
@@ -148,7 +154,11 @@ public class modeloPagos implements TableModel {
             case 7:
                 return aux.getIvaMora();
             case 8:
-                return aux.getCapitalPendiente();
+                return aux.getAsesoria();
+            case 9:
+                return aux.getIvaAsesoria();
+            case 10:
+                return aux.getMontoPagado();
             default:
                 return null;
         }

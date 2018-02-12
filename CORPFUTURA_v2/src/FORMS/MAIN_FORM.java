@@ -3,6 +3,7 @@ package FORMS;
 
 import FORMS.PANELS.CLIENTE_PNL;
 import FORMS.PANELS.CREDITOS_PNL;
+import FORMS.PANELS.REPORTES_PNL;
 import FORMS.PANELS.SOLICITUD_PNL;
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ public class MAIN_FORM extends javax.swing.JFrame {
     private CLIENTE_PNL   cliente   = new CLIENTE_PNL();
     private CREDITOS_PNL creditos = new CREDITOS_PNL();
     private SOLICITUD_PNL solicitud = new SOLICITUD_PNL(creditos);
+    private REPORTES_PNL reportes = new REPORTES_PNL();
     
     
     public MAIN_FORM() {
@@ -82,6 +84,11 @@ public class MAIN_FORM extends javax.swing.JFrame {
         });
 
         a3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/reporteDes.png"))); // NOI18N
+        a3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                a3MouseClicked(evt);
+            }
+        });
 
         jSeparator1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
         jSeparator1.setPreferredSize(new java.awt.Dimension(50, 3));
@@ -163,6 +170,7 @@ public class MAIN_FORM extends javax.swing.JFrame {
         a1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/solicitudAct.png"))); 
         a.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/clienteDes.png"))); 
         a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/creditosDes.png")));
+        a3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/reporteDes.png")));
         cargarPanel(solicitud);
         
     }//GEN-LAST:event_a1MouseClicked
@@ -172,6 +180,7 @@ public class MAIN_FORM extends javax.swing.JFrame {
         a1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/solicitudDes.png"))); 
         a.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/clienteAct.png"))); 
         a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/creditosDes.png")));
+        a3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/reporteDes.png")));
 
         cargarPanel(cliente);
       
@@ -182,6 +191,7 @@ public class MAIN_FORM extends javax.swing.JFrame {
         a1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/solicitudDes.png"))); 
         a.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/clienteDes.png"))); 
         a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/creditosAct.png")));
+        a3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/reporteDes.png")));
 
         cargarPanel(creditos);
     }//GEN-LAST:event_a2MouseClicked
@@ -193,6 +203,17 @@ public class MAIN_FORM extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_hvUsuariosMouseClicked
+
+    private void a3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_a3MouseClicked
+        
+        a1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/solicitudDes.png"))); 
+        a.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/clienteDes.png"))); 
+        a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/creditosDes.png")));
+        a3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/LABELS/reporteAct.png")));
+        
+        cargarPanel(reportes);
+        
+    }//GEN-LAST:event_a3MouseClicked
 
     
     public static void main(String args[]) {

@@ -2,9 +2,8 @@
 package MODELOSTBL;
 
 
+import CONTROLADORES.MoraJpaController;
 import Entidades.Creditos;
-import Entidades.Pagos;
-import UTILIDADES.fechas;
 import UTILIDADES.monto;
 import java.util.LinkedList;
 import javax.swing.event.TableModelEvent;
@@ -15,23 +14,23 @@ import javax.swing.table.TableModel;
  *
  * @author DFUENTES
  */
-public class modeloPagos implements TableModel {
-    private LinkedList<Pagos> datos = new LinkedList();
+public class modeloDiapago implements TableModel {
+    
+    private LinkedList<Creditos> datos = new LinkedList();
     private LinkedList listeners = new LinkedList();
+    
+    private MoraJpaController mjc = new MoraJpaController();
     
     final Class[] tipoColumnas = {
         java.lang.String.class,
-        java.lang.String.class,
         java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
-        java.lang.Long.class,
-        java.lang.Long.class
     };
 
-    public modeloPagos(){
+    public modeloDiapago(){
     }
 
     @Override
@@ -41,32 +40,24 @@ public class modeloPagos implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 9;
+        return 6;
     }
 
     @Override
     public String getColumnName(int i) {
         String columna="";
         switch(i){
-            case 0:      columna="Fecha"; 
+            case 0:      columna="Nombre"; 
                          break;
-            case 1:      columna="Factura"; 
+            case 1:      columna="Capital"; 
                          break;
-            case 2:      columna="Pago"; 
+            case 2:      columna="Interes"; 
                          break;
-            case 3:      columna="Pago Capital"; 
+            case 3:      columna="Iva"; 
                          break;
-            case 4:      columna="Intereses"; 
+            case 4:      columna="Saldo Mora"; 
                          break;
-            case 5:      columna="IVA Int."; 
-                         break;
-            case 6:      columna="Mora"; 
-                         break;
-            case 7:      columna="IVA Mora";
-                         break;
-            case 8:      columna="Capital Pendiente";
-                         break;
-                         
+            case 5:      columna="Total"; 
         }
         return columna;
     }
@@ -81,9 +72,9 @@ public class modeloPagos implements TableModel {
        return false;
     }
     
-    public void agregarPago (Pagos pago){
+    public void agregarPago (Creditos credito){
         // Añade la persona al modelo 
-        datos.add (pago);
+        datos.add (credito);
         // Avisa a los suscriptores creando un TableModelEvent...
         TableModelEvent evento;
         evento = new TableModelEvent (this, this.getRowCount()-1,
@@ -105,13 +96,13 @@ public class modeloPagos implements TableModel {
     
     public void nuevaFila(){
 
-        Pagos pago = new Pagos();
-        datos.add(pago);
+        Creditos credito = new Creditos();
+        datos.add(credito);
         
     }
     
-    public Pagos obtenerPago(int index){
-        return (Pagos)datos.get(index);
+    public Creditos obtenerPago(int index){
+        return (Creditos)datos.get(index);
     }
     
     public void borrartodos(){
@@ -126,29 +117,25 @@ public class modeloPagos implements TableModel {
      
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Pagos aux;
+        Creditos aux;
         
-        aux = (Pagos)(datos.get(rowIndex));
+        aux = (Creditos)(datos.get(rowIndex));
         switch (columnIndex)
         {
             case 0:
-                return fechas.formatearFecha(aux.getFechaPago());
+                return aux.getSolicitudCredito().getDatosPersonales().getNombre();
             case 1:
-                return aux.getNumFactura();
+                return aux.getCuota();
             case 2:
-                return aux.getMontoPagado();
+                return monto.valorXCuota(aux.getMonto(), aux.getPlazo(), aux.getFormaPago());
             case 3:
-                return aux.getCapitalAbonado();
+                return monto.valorXCuota(aux.getTotalIntereses(), aux.getPlazo(), aux.getFormaPago());
             case 4:
-                return aux.getInteres();
+                return monto.valorXCuota(aux.getTotalIva(), aux.getPlazo(), aux.getFormaPago());
             case 5:
-                return aux.getIvaIntereses();
+                return mjc.getMoraPendiente(aux);
             case 6:
-                return aux.getMora();
-            case 7:
-                return aux.getIvaMora();
-            case 8:
-                return aux.getCapitalPendiente();
+                return monto.redondear((aux.getCuota()+mjc.getMoraPendiente(aux)), 2);
             default:
                 return null;
         }

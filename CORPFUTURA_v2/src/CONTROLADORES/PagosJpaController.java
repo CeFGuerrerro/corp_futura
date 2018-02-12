@@ -46,6 +46,8 @@ public class PagosJpaController implements Serializable {
                 solicitudCredito = em.merge(solicitudCredito);
             }
             em.getTransaction().commit();
+            em.refresh(solicitudCredito);
+            em.refresh(solicitudCredito.getCreditos());
         } catch (Exception ex) {
             if (findPagos(pagos.getIdPago()) != null) {
                 throw new PreexistingEntityException("Pagos " + pagos + " already exists.", ex);
