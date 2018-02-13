@@ -1,10 +1,10 @@
-
 package FORMS;
-
 
 import CONTROLADORES.CreditosJpaController;
 import CONTROLADORES.MoraJpaController;
 import CONTROLADORES.PagosJpaController;
+import DOCS_DATASOURCES.DS_HistorialPagos;
+import DOCS_DATASOURCES.JasperGenerator;
 import Entidades.Creditos;
 import Entidades.Mora;
 import Entidades.Pagos;
@@ -14,83 +14,91 @@ import MODELOSTBL.modeloPagos;
 import UTILIDADES.fechas;
 import UTILIDADES.monto;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
  * @author DFUENTES
  */
 public class PAGO_FORM extends javax.swing.JFrame {
-    
+
     public Creditos credito;
     public Mora mora;
     public Pagos pago;
-   
+
     public LISTA_CREDITOS_PNL cp;
     public LISTA_MORAS_PNL mp;
-    
+
     private modeloPagos modelo = new modeloPagos();
-    
+
     private int cuotasalafecha;
     private int cuotaspagadas;
     private int cuotaCap;
     private int cuotaInt;
     private int cuotaIva;
-    
+
     private double capitalxcuota;
     private double interesxcuota;
     private double ivaxcuota;
-             
-    private boolean montosPendientes=false;
+
+    private boolean montosPendientes = false;
     private double morapendiente;
     private double capitalV;
     private double interesV;
     private double ivaV;
-    
+
     private double montoPago;
     private double pagoMora;
     private double pagoInteres;
     private double pagoIva;
     private double pagoCapital;
-    
+
     private double totalInteresPagado;
     private double totalIvaPagado;
     private double totalCapitalPagado;
-    
+
     private double totalPagado;
-    
+
     private int cuotasAd;
-    
- 
-    
+
+    private DS_HistorialPagos pagos = new DS_HistorialPagos();
+    private JasperGenerator jasper = new JasperGenerator();
+    private Map parametros = new HashMap();
+    private List<Pagos> listaPagos = new ArrayList<Pagos>();
+
     public CreditosJpaController cjc = new CreditosJpaController();
     public PagosJpaController pjc = new PagosJpaController();
     public MoraJpaController mjc = new MoraJpaController();
-    
+
     public PAGO_FORM(Creditos credito1, LISTA_CREDITOS_PNL cp1, LISTA_MORAS_PNL mp1) {
-        
+
         initComponents();
         this.setLocationRelativeTo(null);
-        
-        credito=credito1;
+
+        credito = credito1;
         mora = credito.getSolicitudCredito().getMora();
-        
-        cp=cp1;
-        mp=mp1;
-        
+
+        cp = cp1;
+        mp = mp1;
+
         rbnAbonoCuotas.setSelected(true);
-                        
+
         cargarCredito();
         cargarListaCuotas();
         cargarPagos();
         cargarMontosPendientes();
-        
+        pagos.addCredito(credito);
+        getPagos();
+
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -417,6 +425,11 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
         btnGenerarHistorial.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         btnGenerarHistorial.setText("Generar historial de pagos");
+        btnGenerarHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarHistorialActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
         contenido.setLayout(contenidoLayout);
@@ -685,479 +698,513 @@ public class PAGO_FORM extends javax.swing.JFrame {
     }//GEN-LAST:event_hvCerrarMouseClicked
 
     private void txtIVAKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIVAKeyTyped
-        char caracter= evt.getKeyChar();
+        char caracter = evt.getKeyChar();
         char punto = '.';
-        if((!Character.isDigit(caracter)) && (caracter!=punto)) evt.consume();
+        if ((!Character.isDigit(caracter)) && (caracter != punto)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtIVAKeyTyped
 
     private void txtMoraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMoraKeyTyped
-        char caracter= evt.getKeyChar();
+        char caracter = evt.getKeyChar();
         char punto = '.';
-        if((!Character.isDigit(caracter)) && (caracter!=punto)) evt.consume();
+        if ((!Character.isDigit(caracter)) && (caracter != punto)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtMoraKeyTyped
 
     private void txtinteresesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtinteresesKeyTyped
-        char caracter= evt.getKeyChar();
+        char caracter = evt.getKeyChar();
         char punto = '.';
-        if((!Character.isDigit(caracter)) && (caracter!=punto)) evt.consume();
+        if ((!Character.isDigit(caracter)) && (caracter != punto)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtinteresesKeyTyped
 
     private void txtcapitalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcapitalKeyTyped
-        char caracter= evt.getKeyChar();
+        char caracter = evt.getKeyChar();
         char punto = '.';
-        if((!Character.isDigit(caracter)) && (caracter!=punto)) evt.consume();
+        if ((!Character.isDigit(caracter)) && (caracter != punto)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtcapitalKeyTyped
 
     private void hvreloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvreloadMouseClicked
 
         limpiarMontos();
         montoPago = Double.parseDouble(txtmonto.getText());
-        
-        if(montosPendientes==true){
-            
-            if(morapendiente>0){acumularPagoMora();}
-                
-            if(montoPago>0){
-                while(montoPago>0 && cancelacionDeMontosVencidos()){
+
+        if (montosPendientes == true) {
+
+            if (morapendiente > 0) {
+                acumularPagoMora();
+            }
+
+            if (montoPago > 0) {
+                while (montoPago > 0 && cancelacionDeMontosVencidos()) {
                     ivaV = ivaV - acumularPagoIvaxCuota();
                     interesV = interesV - acumularPagoInteresesxCuota();
-                    capitalV = capitalV - acumularPagoCapitalxCuota();    
+                    capitalV = capitalV - acumularPagoCapitalxCuota();
                 }
             }
-                
-        }        
-            
-        
-        if(montoPago>0){
-                    
-            if(rbnAbonoCuotas.isSelected()){
-               
-                while(montoPago>0){
-                        
+
+        }
+
+        if (montoPago > 0) {
+
+            if (rbnAbonoCuotas.isSelected()) {
+
+                while (montoPago > 0) {
+
                     acumularPagoIvaxCuota();
                     acumularPagoInteresesxCuota();
-                    acumularPagoCapitalxCuota();    
+                    acumularPagoCapitalxCuota();
                 }
-              
-            }else if(rbnAbonoCuotasyCap.isSelected()){
-            }else if(rbnAbonoCapital.isSelected()){}
-                     
+
+            } else if (rbnAbonoCuotasyCap.isSelected()) {
+            } else if (rbnAbonoCapital.isSelected()) {
+            }
+
         }
-        
+
         txtMora.setText(String.valueOf(pagoMora));
         txtintereses.setText(String.valueOf(pagoInteres));
         txtIVA.setText(String.valueOf(pagoIva));
         txtcapital.setText(String.valueOf(pagoCapital));
-        
-        
+
+
     }//GEN-LAST:event_hvreloadMouseClicked
 
     private void txtmontoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmontoKeyTyped
 
-        char caracter= evt.getKeyChar();
+        char caracter = evt.getKeyChar();
         char punto = '.';
-        if((!Character.isDigit(caracter)) && (caracter!=punto)) evt.consume();
+        if ((!Character.isDigit(caracter)) && (caracter != punto)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtmontoKeyTyped
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
-       
-        if(fechpago.getDate()!=null && !txtfactura.getText().trim().isEmpty() && !txtmonto.getText().trim().isEmpty()){
-        
+
+        if (fechpago.getDate() != null && !txtfactura.getText().trim().isEmpty() && !txtmonto.getText().trim().isEmpty()) {
+
             llenarPago();
             actualizarCredito();
-            
-            try { pjc.create(pago);} 
-            catch (Exception ex) {Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);}            
-            try { cjc.edit(credito);} 
-            catch (Exception ex) {Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);}
-            
-            
+
+            try {
+                pjc.create(pago);
+            } catch (Exception ex) {
+                Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                cjc.edit(credito);
+            } catch (Exception ex) {
+                Logger.getLogger(PAGO_FORM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             cargarPagos();
-            
-            
-        }else{ JOptionPane.showMessageDialog(this, "Es necesario especificar la fecha de pago y número de factura.");}
- 
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Es necesario especificar la fecha de pago y número de factura.");
+        }
+
     }//GEN-LAST:event_btnguardarActionPerformed
 
-    private void limpiarMontos(){
-        
-        montoPago=0;
-        pagoMora=0;
-        pagoInteres=0;
-        pagoIva=0;
-        pagoCapital=0;
-        
+    private void btnGenerarHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarHistorialActionPerformed
+        String doc = "HistorialPagos";
+        parametros.clear();
+        parametros.put("Pagos", listaPagos);
+        try {
+            jasper.crearReporteConParam(doc, credito.getSolicitudCredito().getDatosPersonales().getNombre(), parametros, pagos);
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());;
+        }
+    }//GEN-LAST:event_btnGenerarHistorialActionPerformed
+
+    private List<Pagos> getPagos() {
+        for (Pagos p : credito.getSolicitudCredito().getPagosList()) {
+            listaPagos.add(p);
+        }
+        return listaPagos;
+    }
+
+    private void limpiarMontos() {
+
+        montoPago = 0;
+        pagoMora = 0;
+        pagoInteres = 0;
+        pagoIva = 0;
+        pagoCapital = 0;
+
         totalInteresPagado = cjc.obtenerInteresesPagados(credito);
         totalIvaPagado = cjc.obtenerIvaPagado(credito);
         totalCapitalPagado = cjc.obtenerCapitalPagado(credito);
-        
-        
+
         cargarMontosPendientes();
-        
+
         cuotaspagadas = cjc.getCuotasPagadas(credito);
-        
-        
+
     }
-    
-    private void cargarCredito(){
+
+    private void cargarCredito() {
 
         txtNombre.setText(credito.getSolicitudCredito().getDatosPersonales().getNombre());
         txtCredito.setText(String.valueOf(credito.getCreditosPK().getIdSolicitudCredito()));
         txtCuota.setText(credito.getCuota().toString());
         cmbplazos.setSelectedIndex(credito.getPlazo());
         cmbformapagos.setSelectedIndex(credito.getFormaPago());
-        
+
         capitalxcuota = monto.valorXCuota(credito.getMonto(), credito.getPlazo(), credito.getFormaPago());
         interesxcuota = monto.valorXCuota(credito.getTotalIntereses(), credito.getPlazo(), credito.getFormaPago());
-        ivaxcuota= monto.valorXCuota(credito.getTotalIva(), credito.getPlazo(), credito.getFormaPago());
-        
+        ivaxcuota = monto.valorXCuota(credito.getTotalIva(), credito.getPlazo(), credito.getFormaPago());
+
         txtCapitalCuota.setText(String.valueOf(capitalxcuota));
         txtInteresCuota.setText(String.valueOf(interesxcuota));
         txtIvaCuota.setText(String.valueOf(ivaxcuota));
-        
-        cuotasalafecha = fechas.numerodepagos(credito.getFormaPago(),credito.getFechaPrimerPago(),mp.panel.fechasistema.getDate());
+
+        cuotasalafecha = fechas.numerodepagos(credito.getFormaPago(), credito.getFechaPrimerPago(), mp.panel.fechasistema.getDate());
         cuotaspagadas = cjc.getCuotasPagadas(credito);
-        cuotasAd = credito.getCuotasPorPagar()-credito.getCuotasAdelantadas();
-        
+        cuotasAd = credito.getCuotasPorPagar() - credito.getCuotasAdelantadas();
+
         totalInteresPagado = cjc.obtenerInteresesPagados(credito);
         totalIvaPagado = cjc.obtenerIvaPagado(credito);
         totalCapitalPagado = cjc.obtenerCapitalPagado(credito);
-        
-        totalPagado = totalInteresPagado+totalIvaPagado+totalCapitalPagado;
+
+        totalPagado = totalInteresPagado + totalIvaPagado + totalCapitalPagado;
         totalPagado = monto.redondear(totalPagado, 2);
-        
-        
-      
-        
+
     }
-     
-    private void cargarListaCuotas(){
-    
+
+    private void cargarListaCuotas() {
+
         ArrayList<String> listaCuotas = fechas.fechasdeCuotas(credito);
-        
-        int contador=1;
-        int pagadas = credito.getCuotasPorPagar()-credito.getCuotasAdelantadas();
-        
-        
-        for(String cuota: listaCuotas){
-          
-            if(contador<=cjc.getCuotasPagadas(credito)){
-                txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\tCancelada\n");    
-            }else{
-                
-                if(contador==(cjc.getCuotasPagadas(credito)+1)){
-                    double total = monto.redondear((credito.getCuota()*cuotaspagadas), 2);
-                    if(totalPagado>total){
-                        total = monto.redondear((totalPagado-total),2);
-                        txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\tAbonada: "+total+"\n");
-                    }else{
-                        txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\n");
+
+        int contador = 1;
+        int pagadas = credito.getCuotasPorPagar() - credito.getCuotasAdelantadas();
+
+        for (String cuota : listaCuotas) {
+
+            if (contador <= cjc.getCuotasPagadas(credito)) {
+                txtListaCuotas.setText(txtListaCuotas.getText() + cuota + "\tCancelada\n");
+            } else {
+
+                if (contador == (cjc.getCuotasPagadas(credito) + 1)) {
+                    double total = monto.redondear((credito.getCuota() * cuotaspagadas), 2);
+                    if (totalPagado > total) {
+                        total = monto.redondear((totalPagado - total), 2);
+                        txtListaCuotas.setText(txtListaCuotas.getText() + cuota + "\tAbonada: " + total + "\n");
+                    } else {
+                        txtListaCuotas.setText(txtListaCuotas.getText() + cuota + "\n");
                     }
-                    
-                }else{
-                    
-                    if(credito.getCuotasAdelantadas()>0){
-                        if(contador>cuotasAd){
-                            txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\tCancelada\n");
-                        }else{
-                            txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\n");
+
+                } else {
+
+                    if (credito.getCuotasAdelantadas() > 0) {
+                        if (contador > cuotasAd) {
+                            txtListaCuotas.setText(txtListaCuotas.getText() + cuota + "\tCancelada\n");
+                        } else {
+                            txtListaCuotas.setText(txtListaCuotas.getText() + cuota + "\n");
                         }
-                    }else{
-                        txtListaCuotas.setText(txtListaCuotas.getText()+cuota+"\n");
-                    }  
-                    
+                    } else {
+                        txtListaCuotas.setText(txtListaCuotas.getText() + cuota + "\n");
+                    }
+
                 }
             }
-           
+
             contador++;
         }
-    
-    }
-    
-    private void cargarMontosPendientes(){
-        
-        if(fechas.verificarPrimerPago(credito.getFechaPrimerPago(), mp.panel.fechasistema.getDate())){
-            
-            if(mora!=null){
-                
-                if(mora.getEstado()==0){
 
-                    montosPendientes=true;
-                    morapendiente = monto.redondear(mora.getMoraTotal()-mora.getMoraCancelada(), 2);
+    }
+
+    private void cargarMontosPendientes() {
+
+        if (fechas.verificarPrimerPago(credito.getFechaPrimerPago(), mp.panel.fechasistema.getDate())) {
+
+            if (mora != null) {
+
+                if (mora.getEstado() == 0) {
+
+                    montosPendientes = true;
+                    morapendiente = monto.redondear(mora.getMoraTotal() - mora.getMoraCancelada(), 2);
                     txtMoraPendiente.setText(String.valueOf(morapendiente));
-                
+
                     interesV = mora.getInteresVencido();
                     ivaV = mora.getIvaVencido();
-                    capitalV = mora.getCapitalVencido();     
-                    txtMontoPendiente.setText(String.valueOf(interesV+ivaV+capitalV));
-                    txtTotalPendiente.setText(String.valueOf(interesV+ivaV+capitalV+morapendiente));
+                    capitalV = mora.getCapitalVencido();
+                    txtMontoPendiente.setText(String.valueOf(interesV + ivaV + capitalV));
+                    txtTotalPendiente.setText(String.valueOf(interesV + ivaV + capitalV + morapendiente));
                 }
-             
-            }else{
-            
+
+            } else {
+
                 txtTotalPendiente.setText("0.0");
             }
         }
-    
+
     }
-    
-    private void cargarPagos(){
+
+    private void cargarPagos() {
         modelo.borrartodos();
-        if(credito.getSolicitudCredito().getPagosList().size()>0){
-            for(Pagos pago:credito.getSolicitudCredito().getPagosList()){
+        if (credito.getSolicitudCredito().getPagosList().size() > 0) {
+            for (Pagos pago : credito.getSolicitudCredito().getPagosList()) {
                 modelo.agregarPago(pago);
             }
         }
         tblPagos.updateUI();
     }
-    
-    private boolean cancelacionDeMontosVencidos(){
-        boolean pago=true;
-        if(ivaV==0 && interesV==0 && capitalV==0){pago=false;}
+
+    private boolean cancelacionDeMontosVencidos() {
+        boolean pago = true;
+        if (ivaV == 0 && interesV == 0 && capitalV == 0) {
+            pago = false;
+        }
         return pago;
     }
-    
-    private void acumularPagoMora(){
-    
-        if(morapendiente>0){
-            if(montoPago>morapendiente){
+
+    private void acumularPagoMora() {
+
+        if (morapendiente > 0) {
+            if (montoPago > morapendiente) {
                 pagoMora = morapendiente;
-                montoPago = montoPago-morapendiente;     
-            }else{
+                montoPago = montoPago - morapendiente;
+            } else {
                 pagoMora = montoPago;
                 montoPago = 0.0;
             }
         }
-    
+
     }
-    
-    private double acumularPagoInteresesxCuota(){
-        
-        double pago=0.0;
-        double interesesCP = cuotaspagadas*interesxcuota; 
+
+    private double acumularPagoInteresesxCuota() {
+
+        double pago = 0.0;
+        double interesesCP = cuotaspagadas * interesxcuota;
         interesesCP = monto.redondear(interesesCP, 2);
 
-        if(totalInteresPagado>interesesCP){
-           
-            double adelanto = cjc.obtenerInteresesPagados(credito)-interesesCP;
-            adelanto = monto.redondear(adelanto,2);
-            if(adelanto<interesxcuota){ 
-                double interesapagar = interesxcuota-adelanto;
-                if(montoPago>=interesapagar){
-                    pagoInteres = pagoInteres+interesapagar;
-                    pagoInteres = monto.redondear(pagoInteres, 2);
-                    pago=interesapagar;
-                    montoPago = montoPago-interesapagar;  
-                }else{
-                    pagoInteres = pagoInteres+montoPago;
-                    pagoInteres = monto.redondear(pagoInteres, 2);
-                    pago=montoPago;
-                    montoPago = 0.0;  
-                }
-               
-            }
-           
-        }else if(totalInteresPagado==interesesCP){
+        if (totalInteresPagado > interesesCP) {
 
-            if(cuotaspagadas<cuotasAd){
-                if(montoPago>=interesxcuota){
-                    pagoInteres = pagoInteres+interesxcuota;
+            double adelanto = cjc.obtenerInteresesPagados(credito) - interesesCP;
+            adelanto = monto.redondear(adelanto, 2);
+            if (adelanto < interesxcuota) {
+                double interesapagar = interesxcuota - adelanto;
+                if (montoPago >= interesapagar) {
+                    pagoInteres = pagoInteres + interesapagar;
                     pagoInteres = monto.redondear(pagoInteres, 2);
-                    pago=interesxcuota;
-                    montoPago = montoPago-interesxcuota;     
-                }else{
-                    pagoInteres = pagoInteres+montoPago;
+                    pago = interesapagar;
+                    montoPago = montoPago - interesapagar;
+                } else {
+                    pagoInteres = pagoInteres + montoPago;
                     pagoInteres = monto.redondear(pagoInteres, 2);
-                    pago=montoPago;
+                    pago = montoPago;
+                    montoPago = 0.0;
+                }
+
+            }
+
+        } else if (totalInteresPagado == interesesCP) {
+
+            if (cuotaspagadas < cuotasAd) {
+                if (montoPago >= interesxcuota) {
+                    pagoInteres = pagoInteres + interesxcuota;
+                    pagoInteres = monto.redondear(pagoInteres, 2);
+                    pago = interesxcuota;
+                    montoPago = montoPago - interesxcuota;
+                } else {
+                    pagoInteres = pagoInteres + montoPago;
+                    pagoInteres = monto.redondear(pagoInteres, 2);
+                    pago = montoPago;
                     montoPago = 0.0;
                 }
             }
         }
-        
-        totalInteresPagado= monto.redondear((totalInteresPagado+pago), 2); 
-        
+
+        totalInteresPagado = monto.redondear((totalInteresPagado + pago), 2);
+
         return pago;
-    
+
     }
-    
-    private double acumularPagoIvaxCuota(){
-        
-        double pago=0.0;
-        double ivaCP = cuotaspagadas*ivaxcuota; 
+
+    private double acumularPagoIvaxCuota() {
+
+        double pago = 0.0;
+        double ivaCP = cuotaspagadas * ivaxcuota;
         ivaCP = monto.redondear(ivaCP, 2);
-        
 
-        if(totalIvaPagado>ivaCP){
-           
-            double adelanto = cjc.obtenerIvaPagado(credito)-ivaCP;
-            adelanto = monto.redondear(adelanto,2);
-            if(adelanto<ivaxcuota){  
-                double ivaapagar = ivaxcuota-adelanto;
-                if(montoPago>=ivaapagar){
-                    pagoIva = pagoIva+ivaapagar;
+        if (totalIvaPagado > ivaCP) {
+
+            double adelanto = cjc.obtenerIvaPagado(credito) - ivaCP;
+            adelanto = monto.redondear(adelanto, 2);
+            if (adelanto < ivaxcuota) {
+                double ivaapagar = ivaxcuota - adelanto;
+                if (montoPago >= ivaapagar) {
+                    pagoIva = pagoIva + ivaapagar;
                     pagoIva = monto.redondear(pagoInteres, 2);
-                    pago=ivaapagar;
-                    montoPago = montoPago-ivaapagar;  montoPago = monto.redondear(montoPago, 2);
-                }else{
-                    pagoIva = pagoIva+montoPago;
+                    pago = ivaapagar;
+                    montoPago = montoPago - ivaapagar;
+                    montoPago = monto.redondear(montoPago, 2);
+                } else {
+                    pagoIva = pagoIva + montoPago;
                     pagoIva = monto.redondear(pagoIva, 2);
-                    pago=montoPago;
-                    montoPago = 0.0;  
+                    pago = montoPago;
+                    montoPago = 0.0;
                 }
-               
+
             }
-           
-        }else if(totalIvaPagado==ivaCP){
-            
-            if(cuotaspagadas<cuotasAd){
-                if(montoPago>=ivaxcuota){
-                    pagoIva = pagoIva+ivaxcuota;
+
+        } else if (totalIvaPagado == ivaCP) {
+
+            if (cuotaspagadas < cuotasAd) {
+                if (montoPago >= ivaxcuota) {
+                    pagoIva = pagoIva + ivaxcuota;
                     pagoIva = monto.redondear(pagoIva, 2);
-                    pago=ivaxcuota;
-                    montoPago = montoPago-ivaxcuota;  montoPago = monto.redondear(montoPago, 2);    
-                }else{
-                    pagoIva = pagoIva+montoPago;
+                    pago = ivaxcuota;
+                    montoPago = montoPago - ivaxcuota;
+                    montoPago = monto.redondear(montoPago, 2);
+                } else {
+                    pagoIva = pagoIva + montoPago;
                     pagoIva = monto.redondear(pagoIva, 2);
-                    pago=montoPago;
+                    pago = montoPago;
                     montoPago = 0.0;
                 }
             }
-            
+
         }
-        
-        totalIvaPagado= monto.redondear((totalIvaPagado+pago), 2);
-        
+
+        totalIvaPagado = monto.redondear((totalIvaPagado + pago), 2);
+
         return pago;
-    
+
     }
-    
-    private double acumularPagoCapitalxCuota(){
-        
-        double pago=0.0;
-        double capitalCP = cuotaspagadas*capitalxcuota; 
+
+    private double acumularPagoCapitalxCuota() {
+
+        double pago = 0.0;
+        double capitalCP = cuotaspagadas * capitalxcuota;
         capitalCP = monto.redondear(capitalCP, 2);
-          
-            if(totalCapitalPagado>capitalCP){
-                
-                if(cuotaspagadas<(cuotasAd-1)){
-                    double adelanto = cjc.obtenerCapitalPagado(credito)-capitalCP;
-                    adelanto = monto.redondear(adelanto,2);
-                    if(adelanto<capitalxcuota){
-                        double capitalapagar = capitalxcuota-adelanto;
-                        if(montoPago>=capitalapagar){
-                            pagoCapital = pagoCapital+capitalapagar;
-                            pagoCapital = monto.redondear(pagoCapital, 2);
-                            pago=capitalapagar;
-                            montoPago = montoPago-capitalapagar;  montoPago = monto.redondear(montoPago, 2);
-                            cuotaspagadas=cuotaspagadas+1;
-                        }else{
-                            pagoCapital = pagoCapital+montoPago;
-                            pagoCapital = monto.redondear(pagoCapital, 2);
-                            pago=montoPago;
-                            montoPago = 0.0;  
-                        }
-                    }   
-                }else{
-                    pago = pagoUltimaCuota();  
-                }
-                
-            }else if(totalCapitalPagado==capitalCP){
-                
-                if(cuotaspagadas<(cuotasAd-1)){
-                    if(montoPago>=capitalxcuota){ 
-                        pagoCapital = pagoCapital+capitalxcuota;
+
+        if (totalCapitalPagado > capitalCP) {
+
+            if (cuotaspagadas < (cuotasAd - 1)) {
+                double adelanto = cjc.obtenerCapitalPagado(credito) - capitalCP;
+                adelanto = monto.redondear(adelanto, 2);
+                if (adelanto < capitalxcuota) {
+                    double capitalapagar = capitalxcuota - adelanto;
+                    if (montoPago >= capitalapagar) {
+                        pagoCapital = pagoCapital + capitalapagar;
                         pagoCapital = monto.redondear(pagoCapital, 2);
-                        pago=capitalxcuota;
-                        montoPago = montoPago-capitalxcuota;  montoPago = monto.redondear(montoPago, 2);  
-                        cuotaspagadas=cuotaspagadas+1;
-                    }else{
-                        pagoCapital = pagoCapital+montoPago;
+                        pago = capitalapagar;
+                        montoPago = montoPago - capitalapagar;
+                        montoPago = monto.redondear(montoPago, 2);
+                        cuotaspagadas = cuotaspagadas + 1;
+                    } else {
+                        pagoCapital = pagoCapital + montoPago;
                         pagoCapital = monto.redondear(pagoCapital, 2);
-                        pago=montoPago;
+                        pago = montoPago;
                         montoPago = 0.0;
                     }
-                }else if(cuotaspagadas==(cuotasAd-1)){
-                    pago = pagoUltimaCuota();  
-                }  
-                 
+                }
+            } else {
+                pago = pagoUltimaCuota();
             }
-        
-        totalCapitalPagado= monto.redondear((totalCapitalPagado+pago), 2);
-        
-        return pago;
-    
-    }
-    
-    private double pagoUltimaCuota(){
-        
-        double pago=0.0;
-        double pendiente = credito.getMonto()-credito.getSaldoPagado()-pagoCapital;
-        pendiente=monto.redondear(pendiente, 2);
-                    
-        if(montoPago>pendiente){ 
-            pagoCapital = pagoCapital+pendiente;
-            pagoCapital = monto.redondear(pagoCapital, 2);
-            pago=pendiente;
-            montoPago = montoPago-pendiente;  montoPago = monto.redondear(montoPago, 2);  
-            cuotaspagadas=cuotaspagadas+1;
-            JOptionPane.showMessageDialog(this,"El credito se ha pagado totalmente.\nMonto restante del pago: "+montoPago);          
-        }else{
-            pagoCapital = pagoCapital+montoPago;
-            pagoCapital = monto.redondear(pagoCapital, 2);
-            pago= montoPago;
-            if(montoPago==pendiente){cuotaspagadas=cuotaspagadas+1;}
+
+        } else if (totalCapitalPagado == capitalCP) {
+
+            if (cuotaspagadas < (cuotasAd - 1)) {
+                if (montoPago >= capitalxcuota) {
+                    pagoCapital = pagoCapital + capitalxcuota;
+                    pagoCapital = monto.redondear(pagoCapital, 2);
+                    pago = capitalxcuota;
+                    montoPago = montoPago - capitalxcuota;
+                    montoPago = monto.redondear(montoPago, 2);
+                    cuotaspagadas = cuotaspagadas + 1;
+                } else {
+                    pagoCapital = pagoCapital + montoPago;
+                    pagoCapital = monto.redondear(pagoCapital, 2);
+                    pago = montoPago;
+                    montoPago = 0.0;
+                }
+            } else if (cuotaspagadas == (cuotasAd - 1)) {
+                pago = pagoUltimaCuota();
+            }
+
         }
-    
-        montoPago=0.0;
-        
+
+        totalCapitalPagado = monto.redondear((totalCapitalPagado + pago), 2);
+
+        return pago;
+
+    }
+
+    private double pagoUltimaCuota() {
+
+        double pago = 0.0;
+        double pendiente = credito.getMonto() - credito.getSaldoPagado() - pagoCapital;
+        pendiente = monto.redondear(pendiente, 2);
+
+        if (montoPago > pendiente) {
+            pagoCapital = pagoCapital + pendiente;
+            pagoCapital = monto.redondear(pagoCapital, 2);
+            pago = pendiente;
+            montoPago = montoPago - pendiente;
+            montoPago = monto.redondear(montoPago, 2);
+            cuotaspagadas = cuotaspagadas + 1;
+            JOptionPane.showMessageDialog(this, "El credito se ha pagado totalmente.\nMonto restante del pago: " + montoPago);
+        } else {
+            pagoCapital = pagoCapital + montoPago;
+            pagoCapital = monto.redondear(pagoCapital, 2);
+            pago = montoPago;
+            if (montoPago == pendiente) {
+                cuotaspagadas = cuotaspagadas + 1;
+            }
+        }
+
+        montoPago = 0.0;
+
         return pago;
     }
-    
-    private void llenarPago(){
-    
+
+    private void llenarPago() {
+
         pago = new Pagos();
-        
+
         pago.setSolicitudCredito(credito.getSolicitudCredito());
-        pago.setIdPago(pjc.getPagosCount()+1);
-        
+        pago.setIdPago(pjc.getPagosCount() + 1);
+
         pago.setFechaPago(fechpago.getDate());
         pago.setNumFactura(txtfactura.getText());
-    
+
         pago.setInteres(pagoInteres);
         pago.setIvaIntereses(pagoIva);
         pago.setCapitalAbonado(pagoCapital);
-        
-        double morasinIva =  monto.redondear((pagoMora/1.13), 2);
-        double ivaMora = monto.redondear((pagoMora-morasinIva), 2);
-        
+
+        double morasinIva = monto.redondear((pagoMora / 1.13), 2);
+        double ivaMora = monto.redondear((pagoMora - morasinIva), 2);
+
         pago.setMora(morasinIva);
         pago.setIvaMora(ivaMora);
-        
-        double pendiente = credito.getMonto()-credito.getSaldoPagado()-pagoCapital;
+
+        double pendiente = credito.getMonto() - credito.getSaldoPagado() - pagoCapital;
         pago.setCapitalPendiente(monto.redondear(pendiente, 2));
-        
+
         pago.setMontoPagado(Double.valueOf(txtmonto.getText()));
-        
-        
-   
+
     }
-    
-    private void actualizarCredito(){
-        
-        credito.setSaldoPagado(credito.getSaldoPagado()+pagoCapital);
-        credito.setInteresPagados(credito.getInteresPagados()+pagoInteres);
-        credito.setIvaPagado(credito.getIvaPagado()+pagoIva);
-        
-        if(pagoMora>0){credito.setMoraPagada(credito.getMoraPagada()+pagoMora);}
-    
-        credito.setCuotasPagadas((short)(cuotaspagadas+credito.getCuotasAdelantadas()));
-    
+
+    private void actualizarCredito() {
+
+        credito.setSaldoPagado(credito.getSaldoPagado() + pagoCapital);
+        credito.setInteresPagados(credito.getInteresPagados() + pagoInteres);
+        credito.setIvaPagado(credito.getIvaPagado() + pagoIva);
+
+        if (pagoMora > 0) {
+            credito.setMoraPagada(credito.getMoraPagada() + pagoMora);
+        }
+
+        credito.setCuotasPagadas((short) (cuotaspagadas + credito.getCuotasAdelantadas()));
+
     }
-    
-    
-    
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgroup;

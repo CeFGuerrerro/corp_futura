@@ -987,6 +987,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Generar historial de pagos"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarHistorialActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
