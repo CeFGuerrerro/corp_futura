@@ -11,8 +11,7 @@ import MODELOSTBL.modeloListaPagos;
  */
 public class REPORTE_LISTA_PAGOS_PNL extends javax.swing.JPanel {
 
-    private modeloListaPagos modelo = new modeloListaPagos();
-    
+    private modeloListaPagos modelo = new modeloListaPagos();   
     private PagosJpaController pagos = new PagosJpaController();
     
     
