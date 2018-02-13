@@ -61,9 +61,13 @@ public class REPORTE_LISTA_PAGOS_PNL extends javax.swing.JPanel {
         fechasistema1.setBackground(new java.awt.Color(240, 236, 236));
 
         rbnAbonoCuotas.setBackground(new java.awt.Color(240, 236, 236));
+        rbnAbonoCuotas.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        rbnAbonoCuotas.setForeground(new java.awt.Color(51, 51, 51));
         rbnAbonoCuotas.setText("Dia");
 
         rbnAbonoCapital.setBackground(new java.awt.Color(240, 236, 236));
+        rbnAbonoCapital.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        rbnAbonoCapital.setForeground(new java.awt.Color(51, 51, 51));
         rbnAbonoCapital.setText("Intervalo de fechas");
 
         jLabel6.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -71,7 +75,7 @@ public class REPORTE_LISTA_PAGOS_PNL extends javax.swing.JPanel {
         jLabel6.setText("DETALLE DE INGRESOS");
 
         jButton2.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
-        jButton2.setText("Generar Documento");
+        jButton2.setText("Cargar Pagos");
 
         tblListapagos.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tblListapagos.setModel(new javax.swing.table.DefaultTableModel(
@@ -117,7 +121,7 @@ public class REPORTE_LISTA_PAGOS_PNL extends javax.swing.JPanel {
                                 .addComponent(fechasistema1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2)))
-                        .addGap(0, 457, Short.MAX_VALUE)))
+                        .addGap(0, 493, Short.MAX_VALUE)))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -138,7 +142,7 @@ public class REPORTE_LISTA_PAGOS_PNL extends javax.swing.JPanel {
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
