@@ -122,4 +122,27 @@ public class JasperGenerator {
         }
 
     }
+    
+    public void crearReporteConParamDesktop(String nombreDoc, Map parametros, JRDataSource dataSource) throws JRException {
+        path =System.getProperty("user.home") + "\\Desktop";
+        crearDirectorio(path);
+        JasperDesign jasperDesign = JRXmlLoader.load(getClass().getResourceAsStream("/DOCS_PLANTILLAS/" + nombreDoc + ".jrxml"));
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+        
+        JRPdfExporter pdfEx = new JRPdfExporter();
+        pdfEx.setExporterInput(new SimpleExporterInput(jasperPrint));
+        pdfEx.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "\\" + nombreDoc + ".pdf"));
+        
+        SimplePdfExporterConfiguration config = new SimplePdfExporterConfiguration();
+        pdfEx.setConfiguration(config);
+        pdfEx.exportReport();
+        
+         File pdf = new File(path + "\\" + nombreDoc + ".pdf");
+        try {
+            Desktop.getDesktop().open(pdf);
+        } catch (IOException ex) {
+            Logger.getLogger(JasperGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

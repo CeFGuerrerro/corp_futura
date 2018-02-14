@@ -2,8 +2,14 @@
 package FORMS.PANELS;
 
 import CONTROLADORES.CreditosJpaController;
+import DOCS_DATASOURCES.DS_PagosDia;
+import DOCS_DATASOURCES.JasperGenerator;
 import Entidades.Creditos;
 import MODELOSTBL.modeloDiapago;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -14,6 +20,10 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
 
     private modeloDiapago modelo = new modeloDiapago();
     private CreditosJpaController cjc = new CreditosJpaController();
+    private DS_PagosDia listaPagos = new DS_PagosDia();
+    private JasperGenerator jasper = new JasperGenerator();
+    private Map parametros = new HashMap();
+    
     
     
     public REPORTE_DIAPAGO_PNL() {
@@ -31,7 +41,7 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbldiapagos = new javax.swing.JTable();
         cargarpagos = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnGenerarDoc = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         fechapago = new com.toedter.calendar.JDateChooser();
 
@@ -63,8 +73,13 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
-        jButton2.setText("Generar Documento");
+        btnGenerarDoc.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
+        btnGenerarDoc.setText("Generar Documento");
+        btnGenerarDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarDocActionPerformed(evt);
+            }
+        });
 
         jLabel15.setFont(new java.awt.Font("Corbel", 1, 12)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(51, 51, 51));
@@ -83,7 +98,7 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cargarpagos)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(btnGenerarDoc)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -97,7 +112,7 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cargarpagos)
-                        .addComponent(jButton2))
+                        .addComponent(btnGenerarDoc))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                         .addComponent(jLabel15)
                         .addComponent(fechapago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -114,6 +129,7 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
             modelo.borrartodos();
             for(Creditos credito: cjc.obtenerPagosDelDia(fechapago.getDate()) ){
                 modelo.agregarPago(credito);
+                listaPagos.addCredito(credito);
             }
         }
         
@@ -121,13 +137,28 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
        
     }//GEN-LAST:event_cargarpagosActionPerformed
 
+    private void btnGenerarDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarDocActionPerformed
+        String doc = "ListaAbonos";
+            parametros.clear();
+            if(fechapago.getDate() !=null){
+            parametros.put("Fecha",fechapago.getDate());
+            try {
+                jasper.crearReporteConParamDesktop(doc, parametros, listaPagos);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());;
+            }
+            }else {
+                JOptionPane.showMessageDialog(null, "Por favor seleccionar una fecha");
+            }
+    }//GEN-LAST:event_btnGenerarDocActionPerformed
+
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerarDoc;
     private javax.swing.JButton cargarpagos;
     public com.toedter.calendar.JDateChooser fechapago;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTable tbldiapagos;
