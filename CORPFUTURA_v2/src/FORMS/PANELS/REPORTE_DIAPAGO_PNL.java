@@ -109,7 +109,9 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
 
     private void cargarpagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarpagosActionPerformed
         
+        
         if(fechapago.getDate()!=null){
+            modelo.borrartodos();
             for(Creditos credito: cjc.obtenerPagosDelDia(fechapago.getDate()) ){
                 modelo.agregarPago(credito);
             }
