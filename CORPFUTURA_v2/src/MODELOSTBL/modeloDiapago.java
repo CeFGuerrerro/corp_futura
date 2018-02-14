@@ -135,7 +135,7 @@ public class modeloDiapago implements TableModel {
             case 5:
                 return mjc.getMoraPendiente(aux);
             case 6:
-                return monto.redondear((aux.getCuota()+mjc.getMoraPendiente(aux)), 2);
+                return mjc.getMontoenMora(aux);
             default:
                 return null;
         }
@@ -157,6 +157,7 @@ public class modeloDiapago implements TableModel {
       // Elimina los suscriptores.
       listeners.remove(l);
     }
+    
     
     
     

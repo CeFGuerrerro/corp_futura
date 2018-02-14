@@ -150,29 +150,24 @@ public class SOLICITUD_PNL extends javax.swing.JPanel {
         
         nuevasolicitud = new NUEVA_SOLICITUD_FORM(sp,cpanel.fechasistema.getDate());
         nuevasolicitud.setVisible(true);
-      
-
-        
+     
     }//GEN-LAST:event_hvNuevaSolMouseClicked
 
     private void hvEvaluacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvEvaluacionMouseClicked
         if(sp.getTblSolicitudes().getSelectedRow()!= -1){
             SolicitudCredito sol = sp.modelo.obtenersolicitud(sp.tblSolicitudes.getSelectedRow());
-            if(sol.getEstado()<3){
             evaluacion = new EVALUACION_FORM(sol,sp);
-            evaluacion.setVisible(true);}
-            else{JOptionPane.showMessageDialog(null,"La solicitud ya ha sido evaluada.");}
+            evaluacion.setVisible(true);
         }
     }//GEN-LAST:event_hvEvaluacionMouseClicked
 
     private void hvResolucionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvResolucionMouseClicked
          if(sp.getTblSolicitudes().getSelectedRow()!= -1){
             SolicitudCredito sol = sp.modelo.obtenersolicitud(sp.tblSolicitudes.getSelectedRow());
-            if(sol.getEstado()==3){
+            if(sol.getEstado()>=3){
             resolucion = new RESOLUCION_FORM(sol,sp);
             resolucion.setVisible(true);}           
             else if(sol.getEstado()<3){JOptionPane.showMessageDialog(null,"Es necesario que el estado de la solicitud sea: Resolución pendiente.");}
-            else if(sol.getEstado()>3){JOptionPane.showMessageDialog(null,"La solicitud ya ha sido resuelta.");}
         }
     }//GEN-LAST:event_hvResolucionMouseClicked
 

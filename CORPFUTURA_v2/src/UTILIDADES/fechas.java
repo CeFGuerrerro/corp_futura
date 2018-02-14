@@ -64,7 +64,8 @@ public class fechas {
     
         ArrayList cuotas = new ArrayList();
         int contador =1;
-        Date fecha = normalizarFecha(credito.getFechaPrimerPago());
+        Date fecha = new Date();
+             fecha = normalizarFecha(credito.getFechaPrimerPago());
         
         while(contador<=credito.getCuotasPorPagar()){
         
@@ -95,6 +96,46 @@ public class fechas {
         }
         
         return cuotas;
+    }
+     
+    public static ArrayList<Date> fechasxCreditos(Creditos credito){
+    
+        ArrayList<Date> fechas = new ArrayList();
+        int contador =1;
+        
+        Date fecha = new Date(); 
+             fecha.setTime(credito.getFechaPrimerPago().getTime());
+        
+        while(contador<=credito.getCuotasPorPagar()){
+        
+             Date fecha2 = new Date();
+            
+            if(contador==1){
+                fecha2.setTime(fecha.getTime());
+                fechas.add(fecha2);
+            }else{
+            
+                switch (credito.getFormaPago()) {
+                    case 1:
+                        fecha.setTime(fecha.getTime()+(86400000*7));
+                        break;
+                    case 2:
+                        fecha.setTime(fecha.getTime()+(86400000*14));
+                        break;
+                    case 3:
+                        fecha.setTime(fecha.getTime()+(86400000*14));
+                        fecha.setTime(fecha.getTime()+(86400000*14));
+                        break;
+                }
+                
+                fecha2.setTime(fecha.getTime());
+                fechas.add(fecha2);
+            
+            }
+            contador++;  
+        }
+          
+        return fechas;
     }
     
     public static Date fechaVencimiento(Date fechaInicio, int formaPago, int numeroCuotas){

@@ -323,6 +323,26 @@ public class CreditosJpaController implements Serializable {
      
         return pagado;
     }
+    
+    public ArrayList<Creditos> obtenerPagosDelDia(Date fecha){
+        
+        ArrayList<Creditos> creditosconPagos = new ArrayList();
+        
+        fecha = fechas.normalizarFecha(fecha);
+        
+        for(Creditos credito: getCreditosActivos((short)2)){
+            for(Date fechacredito: fechas.fechasxCreditos(credito)){
+                fechacredito = fechas.normalizarFecha(fechacredito);
+                System.out.print(fechacredito+"  ");
+                System.out.println(fecha);
+                
+                
+                if(fechacredito.equals(fecha)){creditosconPagos.add(credito);}
+            }
+        }
+       
+        return creditosconPagos;
+    }
         
         
         
