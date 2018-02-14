@@ -250,7 +250,8 @@ public class MoraJpaController implements Serializable {
         if(credito.getSolicitudCredito().getMora()!=null){               
                 if(credito.getSolicitudCredito().getMora().getEstado()==0){            
                     Mora mora = credito.getSolicitudCredito().getMora();
-                    montoPendiente = mora.getInteresVencido() + mora.getIvaVencido()+ mora.getCapitalVencido();     
+                    montoPendiente = mora.getInteresVencido() + mora.getIvaVencido()+ mora.getCapitalVencido();  
+                    montoPendiente = montoPendiente + getMoraPendiente(credito);
                 }       
         }
         
@@ -258,7 +259,6 @@ public class MoraJpaController implements Serializable {
         
         return montoPendiente;
     }
-    
     
     public ArrayList<String> cuotasEnMora(Mora mora){
     

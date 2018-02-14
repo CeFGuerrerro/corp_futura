@@ -786,27 +786,56 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
         boolean valido = true;
+        
+        
         if(validarCampos()){
-            if(cmbresolucion.getSelectedIndex()==1){
-                llenarCredito();
-                try {
-                    solicitud.setEstado((short)4);
-                    scjc.edit(solicitud);
-                    cjc.create(credito);
-                    
-                } catch (Exception ex) {
-                    valido=false;
-                    Logger.getLogger(RESOLUCION_FORM.class.getName()).log(Level.SEVERE, null, ex);
+            if(solicitud.getCreditos() == null){
+                if(cmbresolucion.getSelectedIndex()==1){
+                    llenarCredito();
+                    try {
+                        solicitud.setEstado((short)4);
+                        scjc.edit(solicitud);
+                        cjc.create(credito);
+                    } catch (Exception ex) {
+                        valido=false;
+                        Logger.getLogger(RESOLUCION_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    solicitud.setEstado((short)5);
+                    try {
+                        scjc.edit(solicitud);
+                    }catch (Exception ex){
+                        valido=false;
+                        Logger.getLogger(RESOLUCION_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }else{
-                solicitud.setEstado((short)5);
-                try {
-                    scjc.edit(solicitud);
-                }catch (Exception ex){
-                    valido=false;
-                    Logger.getLogger(RESOLUCION_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                 
+                if(cmbresolucion.getSelectedIndex()==1){
+                    llenarCredito();
+                    try {
+                        cjc.edit(credito);
+                    } catch (Exception ex) {
+                        valido=false;
+                        Logger.getLogger(RESOLUCION_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                
+                    solicitud.setEstado((short)5);
+                    credito.setEstado((short)7);
+                    try {
+                        cjc.edit(credito);
+                        scjc.edit(solicitud);
+                    } catch (Exception ex) {
+                        valido=false;
+                        Logger.getLogger(RESOLUCION_FORM.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                
                 }
-            }
+            
+            
+            }   
+            
             
             if(valido){
                 listasolicitud.cargarModelo();
@@ -862,17 +891,22 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
         txtIdsolicitud.setText(String.valueOf(solicitud.getSolicitudCreditoPK().getIdSolicitudCredito()));
         fechsolicitud.setDate(solicitud.getFechaSolicitud());
         txttasa.setText(solicitud.getTasaInteres());
-        if(solicitud.getEvaluacionCredito() != null){
-        fechevaluacion.setDate(solicitud.getEvaluacionCredito().getFechaEvaluacion());
-        cargarEvaluacion(solicitud.getEvaluacionCredito());}
+        cmbtipocredito.setSelectedIndex(solicitud.getTipoCredito());
+        if(solicitud.getCreditos() != null){
+            credito = solicitud.getCreditos();
+            cargarResolucion(credito,solicitud.getEvaluacionCredito()); 
+        }else if(solicitud.getEvaluacionCredito() != null ){
+            fechevaluacion.setDate(solicitud.getEvaluacionCredito().getFechaEvaluacion());
+            cargarEvaluacion(solicitud.getEvaluacionCredito());
+        
+        }
     }
    
     public void cargarEvaluacion(EvaluacionCredito evaluacion){     
-            cmbtipocredito.setSelectedIndex(solicitud.getTipoCredito());
+            
             txtmonto.setText(String.valueOf(evaluacion.getMonto())); 
             cmbplazos.setSelectedIndex(evaluacion.getPlazo());
-            cmbformapagos.setSelectedIndex(evaluacion.getFormaPago());  
-            
+            cmbformapagos.setSelectedIndex(evaluacion.getFormaPago());     
             txtcapitald.setText(solicitud.getCapitalDes().toString());
             txtinteresesd.setText(solicitud.getInteresesDes().toString());
             txtmorad.setText(solicitud.getMoraDes().toString());
@@ -884,6 +918,30 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
             chkcuotafinal.setSelected(evaluacion.getDescuentoCf());
             chkAsesoria.setSelected(evaluacion.getDescuentoAsesoria());
             
+    }
+    
+    public void cargarResolucion(Creditos credito, EvaluacionCredito evaluacion){
+        
+        txtmonto.setText(String.valueOf(credito.getMonto()));
+        cmbplazos.setSelectedIndex(credito.getPlazo());
+        cmbformapagos.setSelectedIndex(credito.getFormaPago());
+        
+        txtcapitald.setText(solicitud.getCapitalDes().toString());
+        txtinteresesd.setText(solicitud.getInteresesDes().toString());
+        txtmorad.setText(solicitud.getMoraDes().toString());
+        if(cmbtipocredito.getSelectedIndex()==3){ 
+               txtTotalIntereses.setText(solicitud.getInteresesGa().toString());
+               txtTotalIva.setText(solicitud.getIvaGa().toString());
+        }
+            
+        chkcuotafinal.setSelected(evaluacion.getDescuentoCf());
+        chkAsesoria.setSelected(evaluacion.getDescuentoAsesoria());
+        
+        fechinicio.setDate(credito.getFechaInicio());
+        fechprimerpago.setDate(credito.getFechaPrimerPago());
+        fechvencimiento.setDate(credito.getFechaVencimiento());
+        
+        if(credito.getSolicitudCredito().getEstado()==4){cmbresolucion.setSelectedIndex(1);}
     }
     
     public void obtenerdetallemonto(monto monto){
@@ -913,12 +971,14 @@ public class RESOLUCION_FORM extends javax.swing.JFrame {
     
     public void llenarCredito(){
        
-        credito = new Creditos();
-        CreditosPK pk = new CreditosPK();
-        pk.setDui(solicitud.getSolicitudCreditoPK().getDui());
-        pk.setIdSolicitudCredito(solicitud.getSolicitudCreditoPK().getIdSolicitudCredito());
-        credito.setCreditosPK(pk);
-        credito.setSolicitudCredito(solicitud);
+        if(solicitud.getCreditos()==null){
+            credito = new Creditos();
+            CreditosPK pk = new CreditosPK();
+            pk.setDui(solicitud.getSolicitudCreditoPK().getDui());
+            pk.setIdSolicitudCredito(solicitud.getSolicitudCreditoPK().getIdSolicitudCredito());
+            credito.setCreditosPK(pk);
+            credito.setSolicitudCredito(solicitud);
+        }
         
         credito.setFormaPago((short)cmbformapagos.getSelectedIndex());
         credito.setMonto(Double.parseDouble(txtmonto.getText()));

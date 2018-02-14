@@ -613,7 +613,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         contenidoLayout.setVerticalGroup(
             contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contenidoLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(15, 15, 15)
                 .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel5)
                     .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -674,7 +674,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
                                             .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                                 .addComponent(jLabel18)
                                                 .addComponent(txtcapitald, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                                         .addGroup(contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                             .addComponent(jLabel20)
                                             .addComponent(txtinteresesd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -739,7 +739,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel31)))
                     .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -878,7 +878,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
         txtmontosol.setText(String.valueOf(solicitud.getMontoRequerido())); 
         cmbplazossol.setSelectedIndex(solicitud.getPlazo());
         cmbformapagossol.setSelectedIndex(solicitud.getFormaPago());
-        cmbEstadocredito.setSelectedIndex(solicitud.getEstado());
+        cargarEstadoSolicitud(solicitud.getEstado());
         txttasa.setText(solicitud.getTasaInteres());
         chkcuotafinal.setSelected(solicitud.getDescuentoCf());
         chkAsesoria.setSelected(solicitud.getDescuentoAsesoria());
@@ -917,7 +917,7 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
             chkAsesoria.setSelected(evaluacion.getDescuentoAsesoria());
         }
         
-        cmbEstadocredito.setSelectedIndex(solicitud.getEstado());
+        cargarEstadoSolicitud(solicitud.getEstado());
         
         
         if(solicitud.getTipoCredito()!=3){
@@ -954,6 +954,16 @@ public class EVALUACION_FORM extends javax.swing.JFrame {
             || cmbtipogarantia.getSelectedIndex()==0 || txtjustificacion.getText().trim().isEmpty())
          {validacion = false;}         
         return validacion;
+    }
+    
+    public void cargarEstadoSolicitud(int estado){
+    
+        if(estado<=2){cmbEstadocredito.setSelectedIndex(solicitud.getEstado());}
+        else{
+            cmbEstadocredito.setEnabled(false);
+            cmbEstadocredito.addItem("Aprobado");
+            cmbEstadocredito.setSelectedIndex(solicitud.getEstado());
+        }  
     }
     
     

@@ -28,6 +28,7 @@ public class modeloDiapago implements TableModel {
         java.lang.Long.class,
         java.lang.Long.class,
         java.lang.Long.class,
+        java.lang.Long.class
     };
 
     public modeloDiapago(){
@@ -40,7 +41,7 @@ public class modeloDiapago implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 6;
+        return 7;
     }
 
     @Override
@@ -49,15 +50,17 @@ public class modeloDiapago implements TableModel {
         switch(i){
             case 0:      columna="Nombre"; 
                          break;
-            case 1:      columna="Capital"; 
+            case 1:      columna="Cuota"; 
+                         break;             
+            case 2:      columna="Capital"; 
                          break;
-            case 2:      columna="Interes"; 
+            case 3:      columna="Interes"; 
                          break;
-            case 3:      columna="Iva"; 
+            case 4:      columna="Iva"; 
                          break;
-            case 4:      columna="Saldo Mora"; 
+            case 5:      columna="Saldo Mora"; 
                          break;
-            case 5:      columna="Total"; 
+            case 6:      columna="Total"; 
         }
         return columna;
     }
@@ -133,11 +136,12 @@ public class modeloDiapago implements TableModel {
             case 4:
                 return monto.valorXCuota(aux.getTotalIva(), aux.getPlazo(), aux.getFormaPago());
             case 5:
-                return mjc.getMoraPendiente(aux);
-            case 6:
                 return mjc.getMontoenMora(aux);
+            case 6:
+                return monto.redondear((aux.getCuota()+mjc.getMontoenMora(aux)), 2);
             default:
                 return null;
+                
         }
         
     }
