@@ -85,53 +85,60 @@ public class DS_Solicitud2 implements JRDataSource {
             case "nneg":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getNombre();
-                    return valor;
                 }
+                return valor;
             case "giro":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getGiro();
-                    return valor;
+
                 }
+                return valor;
             case "dirneg":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getDireccion();
-                    return valor;
+
                 }
+                return valor;
             case "llegarneg":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getComoLlegar();
-                    return valor;
                 }
+                return valor;
             case "tneg":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getTiempoFuncion();
-                    return valor;
                 }
+                return valor;
             case "telneg":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getTelefono();
-                    return valor;
+
                 }
+                return valor;
             case "hventa":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getHorarios();
-                    return valor;
+
                 }
+                return valor;
             case "rutas":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getRutasVenta();
-                    return valor;
+
                 }
+                return valor;
             case "utilidad":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getUtilidadMensual();
-                    return valor;
+
                 }
+                return valor;
             case "empleados":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     valor = listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getNumeroEmpleados();
-                    return valor;
+
                 }
+                return valor;
             case "local":
                 if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio() != null) {
                     if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getTipoLocal() == 1) {
@@ -139,8 +146,8 @@ public class DS_Solicitud2 implements JRDataSource {
                     } else if (listaSolicitudes.get(indice).getDatosPersonales().getInformacionNegocio().getTipoLocal() == 2) {
                         valor = "ALQUILADO";
                     }
-                    return valor;
                 }
+                return valor;
             case "capital":
                 valor = listaSolicitudes.get(indice).getCapitalDes();
                 return valor;
@@ -154,9 +161,9 @@ public class DS_Solicitud2 implements JRDataSource {
                 valor = listaSolicitudes.get(indice).getIvaAsesoria();
                 return valor;
             case "cuota":
-                if(listaSolicitudes.get(indice).getDescuentoCf()){
-                valor = listaSolicitudes.get(indice).getCuota();
-                }else {
+                if (listaSolicitudes.get(indice).getDescuentoCf()) {
+                    valor = listaSolicitudes.get(indice).getCuota();
+                } else {
                     valor = 0.0;
                 }
                 return valor;
