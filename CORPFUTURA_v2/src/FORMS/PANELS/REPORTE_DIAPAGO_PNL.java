@@ -127,9 +127,9 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
         
         if(fechapago.getDate()!=null){
             modelo.borrartodos();
+            
             for(Creditos credito: cjc.obtenerPagosDelDia(fechapago.getDate()) ){
                 modelo.agregarPago(credito);
-                listaPagos.addCredito(credito);
             }
         }
         
@@ -142,6 +142,9 @@ public class REPORTE_DIAPAGO_PNL extends javax.swing.JPanel {
             parametros.clear();
             if(fechapago.getDate() !=null){
             parametros.put("Fecha",fechapago.getDate());
+            for(Creditos credito: cjc.obtenerPagosDelDia(fechapago.getDate()) ){
+                listaPagos.addCredito(credito);
+            }
             try {
                 jasper.crearReporteConParamDesktop(doc, parametros, listaPagos);
             } catch (JRException ex) {
