@@ -1,4 +1,3 @@
-
 package FORMS.PANELS;
 
 import CONTROLADORES.DatosPersonalesJpaController;
@@ -14,20 +13,17 @@ public class REPORTE_CLIENTES_PNL extends javax.swing.JPanel {
     private modeloClientes modelo = new modeloClientes();
 
     private DatosPersonalesJpaController djc = new DatosPersonalesJpaController();
-    
-    
+
     public REPORTE_CLIENTES_PNL() {
 
         initComponents();
-   
-    }
-    
-  
-    public void cargarObservacion(int indice){   
-        txtObservaciones.setText(modelo.obtenerCliente(indice).getObservacion());  
+
     }
 
-   
+    public void cargarObservacion(int indice) {
+        txtObservaciones.setText(modelo.obtenerCliente(indice).getObservacion());
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -168,18 +164,32 @@ public class REPORTE_CLIENTES_PNL extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCargarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarClientesActionPerformed
-        
-        if(rbnTodos.isSelected()){
-        
-            for(DatosPersonales dp: djc.findDatosPersonalesEntities()){
+
+        if (rbnTodos.isSelected()) {
+            modelo.borrartodos();
+            for (DatosPersonales dp : djc.findDatosPersonalesEntities()) {
+                modelo.agregarCliente(dp);
+            }
+        } else if (rbnProcede.isSelected()) {
+            modelo.borrartodos();
+            for (DatosPersonales dp : djc.findByProcede(true)) {
+                modelo.agregarCliente(dp);
+            }
+        } else if (rbnNoprocede.isSelected()) {
+            modelo.borrartodos();
+            for (DatosPersonales dp : djc.findByProcede(false)) {
+                modelo.agregarCliente(dp);
+            }
+        } else if(rbnActivos.isSelected()){
+            modelo.borrartodos();
+            short estado = 2;
+            for(DatosPersonales dp: djc.findConCreditosActivos(estado)){
                 modelo.agregarCliente(dp);
             }
         }
-        
+
     }//GEN-LAST:event_btnCargarClientesActionPerformed
 
-
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCargarClientes;

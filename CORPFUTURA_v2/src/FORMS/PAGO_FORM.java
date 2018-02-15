@@ -819,6 +819,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         } catch (JRException ex) {
             JOptionPane.showMessageDialog(null, "Error al crear el documento: " + ex.getMessage());;
         }
+        this.dispose();
     }//GEN-LAST:event_btnGenerarHistorialActionPerformed
 
     private List<Pagos> getPagos() {
