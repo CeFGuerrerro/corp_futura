@@ -10,10 +10,14 @@ import javax.persistence.criteria.Root;
 import Entidades.SolicitudCredito;
 import CONTROLADORES.exceptions.NonexistentEntityException;
 import CONTROLADORES.exceptions.PreexistingEntityException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
 
 /**
  *
@@ -170,4 +174,38 @@ public class PagosJpaController implements Serializable {
         }
     }
     
+    public List<Pagos> findPagosPorDia(Date fecha){
+        List<Pagos> pagos = new ArrayList<>();
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Pagos> rt = cq.from(Pagos.class);
+        cq.select(rt).where(cb.equal(rt.get("fechaPago"),fecha));
+        cq.orderBy(cb.asc(rt.get("numFactura")));
+        try{
+            pagos = em.createQuery(cq).getResultList();
+        }finally{
+            em.close();
+        }
+        
+        return pagos;
+    }
+    
+    public List<Pagos> findPagosPorIntervalo(Date fechaInicio, Date fechaFin){
+        List<Pagos> pagos = new ArrayList<>();
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Pagos> rt = cq.from(Pagos.class);
+        Path<Date> fechaPago = rt.get("fechaPago");
+        cq.select(rt).where(cb.between(fechaPago,fechaInicio, fechaFin));
+        cq.orderBy(cb.asc(rt.get("fechaPago")));
+        try{
+            pagos = em.createQuery(cq).getResultList();
+        }finally{
+            em.close();
+        }
+        
+        return pagos;
+    }
 }

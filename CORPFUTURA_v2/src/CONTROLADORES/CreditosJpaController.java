@@ -332,10 +332,7 @@ public class CreditosJpaController implements Serializable {
         
         for(Creditos credito: getCreditosActivos((short)2)){
             for(Date fechacredito: fechas.fechasxCreditos(credito)){
-                fechacredito = fechas.normalizarFecha(fechacredito);
-                System.out.print(fechacredito+"  ");
-                System.out.println(fecha);
-                
+                fechacredito = fechas.normalizarFecha(fechacredito);                
                 
                 if(fechacredito.equals(fecha)){creditosconPagos.add(credito);}
             }

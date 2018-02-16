@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.9" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="btnGroup">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ec" green="ec" red="f0" type="rgb"/>
@@ -28,21 +35,21 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="rbnAbonoCuotas" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbnDia" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="rbnAbonoCapital" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbnIntervalo" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="fechasistema" min="-2" pref="150" max="-2" attributes="0"/>
+                              <Component id="fechaInicio" min="-2" pref="150" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="fechasistema1" min="-2" pref="150" max="-2" attributes="0"/>
+                              <Component id="fechaFin" min="-2" pref="150" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnCargar" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="493" max="32767" attributes="0"/>
@@ -59,16 +66,16 @@
               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="rbnAbonoCapital" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="rbnAbonoCuotas" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rbnIntervalo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rbnDia" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
                   <Component id="jLabel15" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="fechasistema" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="fechaInicio" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel16" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="fechasistema1" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="fechaFin" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCargar" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="420" max="-2" attributes="0"/>
@@ -89,7 +96,7 @@
         <Property name="text" type="java.lang.String" value="Fecha inicio:"/>
       </Properties>
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="fechasistema">
+    <Component class="com.toedter.calendar.JDateChooser" name="fechaInicio">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ec" green="ec" red="f0" type="rgb"/>
@@ -110,7 +117,7 @@
         <Property name="text" type="java.lang.String" value="Fecha fin:"/>
       </Properties>
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="fechasistema1">
+    <Component class="com.toedter.calendar.JDateChooser" name="fechaFin">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ec" green="ec" red="f0" type="rgb"/>
@@ -120,10 +127,13 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="rbnAbonoCuotas">
+    <Component class="javax.swing.JRadioButton" name="rbnDia">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ec" green="ec" red="f0" type="rgb"/>
+        </Property>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="btnGroup"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Corbel" size="12" style="1"/>
@@ -134,10 +144,13 @@
         <Property name="text" type="java.lang.String" value="Dia"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="rbnAbonoCapital">
+    <Component class="javax.swing.JRadioButton" name="rbnIntervalo">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ec" green="ec" red="f0" type="rgb"/>
+        </Property>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="btnGroup"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Corbel" size="12" style="1"/>
@@ -159,13 +172,16 @@
         <Property name="text" type="java.lang.String" value="DETALLE DE INGRESOS"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="btnCargar">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Corbel" size="12" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Cargar Pagos"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCargarActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>

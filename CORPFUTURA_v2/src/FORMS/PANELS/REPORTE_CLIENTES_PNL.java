@@ -167,7 +167,7 @@ public class REPORTE_CLIENTES_PNL extends javax.swing.JPanel {
 
         if (rbnTodos.isSelected()) {
             modelo.borrartodos();
-            for (DatosPersonales dp : djc.findDatosPersonalesEntities()) {
+            for (DatosPersonales dp : djc.findTodos()) {
                 modelo.agregarCliente(dp);
             }
         } else if (rbnProcede.isSelected()) {
