@@ -13,6 +13,7 @@
 	<field name="iva" class="java.lang.Double"/>
 	<field name="saldoMora" class="java.lang.Double"/>
 	<field name="total" class="java.lang.Double"/>
+	<sortField name="nombre"/>
 	<variable name="totalCuotas" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{cuota}]]></variableExpression>
 	</variable>
@@ -176,7 +177,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
