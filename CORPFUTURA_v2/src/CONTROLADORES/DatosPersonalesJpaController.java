@@ -624,4 +624,53 @@ public class DatosPersonalesJpaController implements Serializable {
         }
     }
     
+    public List<DatosPersonales> findByProcede(boolean procede){
+        List<DatosPersonales> dt = new ArrayList<>();
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<DatosPersonales> cq = cb.createQuery(DatosPersonales.class);
+        Root<DatosPersonales> rt = cq.from(DatosPersonales.class);
+        cq.select(rt).where(cb.equal(rt.get("procede"), procede));
+        cq.orderBy(cb.asc(rt.get("nombre")));
+        try{
+            dt = em.createQuery(cq).getResultList();
+         }catch(Exception e){}
+        finally {
+            em.close();
+        }
+        return dt;
+    }
+    
+    public List<DatosPersonales> findConCreditosActivos(short estado){
+        List<DatosPersonales> dt = new ArrayList<>();
+        EntityManager em = getEntityManager();
+        Query q = em.createQuery("Select d from DatosPersonales d join d.solicitudCreditoList s join s.creditos c where c.estado =:estado order by d.nombre",DatosPersonales.class);
+        q.setParameter("estado", estado);
+        try{
+            dt = q.getResultList();
+         }catch(Exception e){}
+        finally {
+            em.close();
+        }
+        return dt;
+    }
+    
+    public List<DatosPersonales> findTodos(){
+        List<DatosPersonales> dt = new ArrayList<>();
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<DatosPersonales> cq = cb.createQuery(DatosPersonales.class);
+        Root<DatosPersonales> rt = cq.from(DatosPersonales.class);
+        cq.select(rt);
+        cq.orderBy(cb.asc(rt.get("nombre")));
+        try{
+            dt = em.createQuery(cq).getResultList();
+         }catch(Exception e){}
+        finally {
+            em.close();
+        }
+        
+        return dt;
+    }
+    
 }

@@ -463,7 +463,7 @@ Mora]]></text>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="55" splitType="Stretch">
+		<band height="45" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="15" width="80" height="15" uuid="9d33bfce-7609-46a4-8e7b-8b4e2e873b9e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -699,7 +699,4 @@ Mora]]></text>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
