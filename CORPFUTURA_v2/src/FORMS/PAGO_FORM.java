@@ -40,9 +40,6 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
     private int cuotasalafecha;
     private int cuotaspagadas;
-    private int cuotaCap;
-    private int cuotaInt;
-    private int cuotaIva;
 
     private double capitalxcuota;
     private double interesxcuota;
@@ -67,6 +64,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
     private double totalPagado;
 
     private int cuotasAd;
+    private double capitalAd;
 
     private DS_HistorialPagos pagos = new DS_HistorialPagos();
     private JasperGenerator jasper = new JasperGenerator();
@@ -732,38 +730,71 @@ public class PAGO_FORM extends javax.swing.JFrame {
     private void hvreloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hvreloadMouseClicked
 
         limpiarMontos();
-        montoPago = Double.parseDouble(txtmonto.getText());
+        try{ 
+           
+            montoPago = Double.parseDouble(txtmonto.getText());
+        
+            if (montosPendientes == true) {
 
-        if (montosPendientes == true) {
+                if (morapendiente > 0) {
+                    acumularPagoMora();
+                }
 
-            if (morapendiente > 0) {
-                acumularPagoMora();
+                if (montoPago > 0) {
+                    while (montoPago > 0 && cancelacionDeMontosVencidos()) {
+                        ivaV = ivaV - acumularPagoIvaxCuota();
+                        interesV = interesV - acumularPagoInteresesxCuota();
+                        capitalV = capitalV - acumularPagoCapitalxCuota();
+                    }
+                }
+
             }
 
             if (montoPago > 0) {
-                while (montoPago > 0 && cancelacionDeMontosVencidos()) {
-                    ivaV = ivaV - acumularPagoIvaxCuota();
-                    interesV = interesV - acumularPagoInteresesxCuota();
-                    capitalV = capitalV - acumularPagoCapitalxCuota();
+
+                if (rbnAbonoCuotas.isSelected()) {
+                    
+                    while (montoPago > 0) { 
+                        acumularPagoIvaxCuota();
+                        acumularPagoInteresesxCuota();
+                        acumularPagoCapitalxCuota();
+                    }
+
+                } else if (rbnAbonoCuotasyCap.isSelected()) {
+                    
+                    
+                    double total = monto.redondear((credito.getCuota() * cuotaspagadas), 2);
+                    if (totalPagado > total) {
+                        
+                        acumularPagoIvaxCuota();
+                        acumularPagoInteresesxCuota();
+                        acumularPagoCapitalxCuota();        
+                        
+                    }
+                    
+                    while(montoPago>0){
+                        
+                        if(montoPago>=credito.getCuota()){
+                            acumularPagoIvaxCuota();
+                            acumularPagoInteresesxCuota();
+                            acumularPagoCapitalxCuota();
+                        }else{
+                            adelantoCapital();
+                        
+                        }
+                     
+                    }
+                    
+                    
+                    
+                    
+                } else if (rbnAbonoCapital.isSelected()) {
+                
+                    while (montoPago > 0) {
+                        adelantoCapital();
+                    }
+                
                 }
-            }
-
-        }
-
-        if (montoPago > 0) {
-
-            if (rbnAbonoCuotas.isSelected()) {
-
-                while (montoPago > 0) {
-
-                    acumularPagoIvaxCuota();
-                    acumularPagoInteresesxCuota();
-                    acumularPagoCapitalxCuota();
-                }
-
-            } else if (rbnAbonoCuotasyCap.isSelected()) {
-            } else if (rbnAbonoCapital.isSelected()) {
-            }
 
         }
 
@@ -772,6 +803,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         txtIVA.setText(String.valueOf(pagoIva));
         txtcapital.setText(String.valueOf(pagoCapital));
 
+        }catch(Exception ex){JOptionPane.showMessageDialog(this, "El monto ingresado es invalido");}
 
     }//GEN-LAST:event_hvreloadMouseClicked
 
@@ -843,6 +875,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
         cargarMontosPendientes();
 
         cuotaspagadas = cjc.getCuotasPagadas(credito);
+        cuotasAd = credito.getCuotasPorPagar() - credito.getCuotasAdelantadas();
 
     }
 
@@ -869,9 +902,13 @@ public class PAGO_FORM extends javax.swing.JFrame {
         totalInteresPagado = cjc.obtenerInteresesPagados(credito);
         totalIvaPagado = cjc.obtenerIvaPagado(credito);
         totalCapitalPagado = cjc.obtenerCapitalPagado(credito);
+        
+        capitalAd = credito.getSaldoAdelantado();
 
         totalPagado = totalInteresPagado + totalIvaPagado + totalCapitalPagado;
         totalPagado = monto.redondear(totalPagado, 2);
+        
+        
 
     }
 
@@ -933,7 +970,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
                     ivaV = mora.getIvaVencido();
                     capitalV = mora.getCapitalVencido();
                     txtMontoPendiente.setText(String.valueOf(interesV + ivaV + capitalV));
-                    txtTotalPendiente.setText(String.valueOf(interesV + ivaV + capitalV + morapendiente));
+                    txtTotalPendiente.setText(String.valueOf(mjc.getMontoenMora(credito)));
                 }
 
             } else {
@@ -981,6 +1018,8 @@ public class PAGO_FORM extends javax.swing.JFrame {
         double pago = 0.0;
         double interesesCP = cuotaspagadas * interesxcuota;
         interesesCP = monto.redondear(interesesCP, 2);
+        
+        
 
         if (totalInteresPagado > interesesCP) {
 
@@ -1030,9 +1069,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
         double pago = 0.0;
         double ivaCP = cuotaspagadas * ivaxcuota;
         ivaCP = monto.redondear(ivaCP, 2);
-
+ 
         if (totalIvaPagado > ivaCP) {
-
+            
             double adelanto = cjc.obtenerIvaPagado(credito) - ivaCP;
             adelanto = monto.redondear(adelanto, 2);
             if (adelanto < ivaxcuota) {
@@ -1053,8 +1092,9 @@ public class PAGO_FORM extends javax.swing.JFrame {
             }
 
         } else if (totalIvaPagado == ivaCP) {
-
+             
             if (cuotaspagadas < cuotasAd) {
+             
                 if (montoPago >= ivaxcuota) {
                     pagoIva = pagoIva + ivaxcuota;
                     pagoIva = monto.redondear(pagoIva, 2);
@@ -1071,6 +1111,7 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
         }
 
+        
         totalIvaPagado = monto.redondear((totalIvaPagado + pago), 2);
 
         return pago;
@@ -1163,6 +1204,43 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
         return pago;
     }
+    
+    private double adelantoCapital(){
+    
+        double pago = 0.0;
+        double pendiente = credito.getMonto() - credito.getSaldoPagado() - pagoCapital;
+        pendiente = monto.redondear(pendiente, 2);
+        
+        if(montoPago<pendiente){
+             pagoCapital = pagoCapital + montoPago;
+             pagoCapital = monto.redondear(pagoCapital, 2);
+             capitalAd = capitalAd+montoPago;
+             pago = montoPago;
+             montoPago = 0.0;   
+             actualizarCuotasAd();
+        }else{
+             pagoCapital = pagoCapital + pendiente;
+             pagoCapital = monto.redondear(pagoCapital, 2);
+             capitalAd = capitalAd + pendiente;
+             pago = pendiente;
+             if(montoPago>pendiente){
+                 JOptionPane.showMessageDialog(this, "El credito se ha pagado totalmente.\nMonto restante del pago: " + 
+                 monto.redondear((montoPago-pendiente),2));
+             }
+             montoPago = 0.0;
+        }
+    
+        totalCapitalPagado = monto.redondear((totalCapitalPagado + pago), 2);
+        
+        return pago;
+    }
+    
+    private void actualizarCuotasAd(){
+    
+        int cuotasAdelantadas = (int)(capitalAd/capitalxcuota);
+        cuotasAd = cuotasAdelantadas;
+    
+    }
 
     private void llenarPago() {
 
@@ -1193,15 +1271,24 @@ public class PAGO_FORM extends javax.swing.JFrame {
 
     private void actualizarCredito() {
 
-        credito.setSaldoPagado(credito.getSaldoPagado() + pagoCapital);
-        credito.setInteresPagados(credito.getInteresPagados() + pagoInteres);
-        credito.setIvaPagado(credito.getIvaPagado() + pagoIva);
+        credito.setSaldoPagado(monto.redondear((credito.getSaldoPagado()+pagoCapital), 2));
+        credito.setInteresPagados(monto.redondear(credito.getInteresPagados() + pagoInteres, 2));
+        credito.setIvaPagado(monto.redondear(credito.getIvaPagado() + pagoIva, 2));
 
         if (pagoMora > 0) {
-            credito.setMoraPagada(credito.getMoraPagada() + pagoMora);
+            credito.setMoraPagada(monto.redondear(credito.getMoraPagada() + pagoMora,2));
         }
-
-        credito.setCuotasPagadas((short) (cuotaspagadas + credito.getCuotasAdelantadas()));
+        
+        if(rbnAbonoCuotas.isSelected()){
+            credito.setCuotasPagadas((short) (cuotaspagadas + credito.getCuotasAdelantadas()));
+        }else if(rbnAbonoCapital.isSelected() || rbnAbonoCuotasyCap.isSelected()){
+            
+            credito.setSaldoAdelantado(monto.redondear(capitalAd,2));
+            credito.setCuotasPagadas((short) (cuotaspagadas + cuotasAd));
+            credito.setCuotasAdelantadas((short)cuotasAd);
+              
+        }
+        
 
     }
 
